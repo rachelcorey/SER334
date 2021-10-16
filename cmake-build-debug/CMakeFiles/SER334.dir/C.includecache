@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kirry/SER334/Module-1/CoreyCollatz.c
+stdio.h
+-
+
+/home/kirry/SER334/Module-1/CoreyComputation.c
+stdio.h
+-
+stdlib.h
+-
+
+/home/kirry/SER334/Module-1/CoreyDecrypt.c
+
