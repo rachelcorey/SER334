@@ -1,11 +1,13 @@
-
 /**
-* (A brief description of what the program does)
+* This program reads and parses a data file of students, courses, assignments and scores.
+* The data can be viewed through the console menu options.
+* An optional function is to load a set of instructions that defines which data to print,
+* without having to navigate the menus. See readme.txt for more information.
 *
-* Completion time: (the time it took you to complete the assignment)
+* Completion time: 5.5 hours
 *
-* @author (Your Name), (anyone elses name who's code you used... ie Acuna)
-* @version (a version number or date)
+* @author Rachel Corey, Whoever Wrote BaseReader.c on Canvas
+* @version 10/18/2021
 *
 */
 
@@ -142,6 +144,16 @@ Student* getStudentByID(int id) {
     return s;
 }
 
+Course* getCourseByID(int id) {
+    for (int i = 0; i < numCourses; ++i) {
+        if (courses[i].id == id) {
+            return &courses[i];
+        }
+    }
+    struct Course *c = NULL;
+    return c;
+}
+
 double getStudentsAssnGrade(Course course, int aID, int sID) {
     for (int i = 0; i < course.totalScores; ++i) {
         if (course.scores[i].assignID == aID && course.scores[i].studentID == sID) {
@@ -161,6 +173,50 @@ char* getStudentsAssnComment(Course course, int aID, int sID) {
     return "";
 }
 
+void performInstructions(char* filename) {
+    FILE* file = fopen(filename, "r");
+    int iNum = 0;
+
+    // number of instructions
+    fscanf(file, "%d", &iNum);
+    for (int i = 0; i < iNum; ++i) {
+        int courseID = 0;
+        fscanf(file,"%d",&courseID);
+        int studentID = 0;
+        fscanf(file,"%d",&studentID);
+        int assignmentID = 0;
+        fscanf(file,"%d",&assignmentID);
+
+        printf("\n%s %d, %s %d, %s %d\n\n", "Processing instruction with courseNum", courseID, "studentNum", studentID,
+               "and assignmentNum", assignmentID);
+
+        if (courseID > 0) {
+            if (studentID != 0 || assignmentID != 0) {
+                if (studentID != 0 && assignmentID != 0) {
+                    Student *s = getStudentByID(studentID);
+                    Course *c = getCourseByID(courseID);
+                    Assign *a = getAssignmentByID(*c, assignmentID);
+                    printf("%s %s %s %1.2f %s %s\n\n", "Student with name", s->name, "received a",
+                           getStudentsAssnGrade(*c, assignmentID, studentID), "on assignment",
+                           a->name);
+                }
+                else if (studentID != 0) {
+                    getStudentScores(*getCourseByID(courseID), studentID);
+                }
+                else if (assignmentID != 0) {
+                    getAssignmentScore(*getCourseByID(courseID), assignmentID);
+                }
+            } else {
+                printCourse(*getCourseByID(courseID));
+            }
+        } else {
+            printf("Please define a valid course to read.\n");
+        }
+    }
+    fclose(file);
+    terminate();
+}
+
 /**
 * Loads data from student/course data file
 * @param filename is the name of the file
@@ -168,14 +224,15 @@ char* getStudentsAssnComment(Course course, int aID, int sID) {
 void readFile(char* filename){
     FILE* file = fopen(filename, "r");
 
-    // Scan for student data
     fscanf(file, "%d", &numStudents);
     students = malloc(numStudents * sizeof (struct Student));
+
     for (int i = 0; i < numStudents; ++i) {
+        // Scan for student data
         struct Student* student = NULL;
         student = malloc(sizeof (struct Student));
         int sID = 0;
-        char* sName = (char*)malloc(32 * sizeof (char));
+        char sName[32] = "";
         int sLvl = 0;
         fscanf(file, "%d", &sID);
         student->id = sID;
@@ -184,7 +241,9 @@ void readFile(char* filename){
         fscanf(file, "%d", &sLvl);
         student->level = sLvl;
         students[i] = *student;
+        free(student);
     }
+
 
     // Scan for course data
     fscanf(file, "%d", &numCourses);
@@ -219,6 +278,7 @@ void readFile(char* filename){
             fscanf(file, "%s", assName);
             strcpy(assignment->name, assName);
             course->assignments[j] = *assignment;
+            free(assignment);
         }
 
         // Scan for score data for the course
@@ -242,6 +302,7 @@ void readFile(char* filename){
             fscanf(file, "%s", comm);
             strcpy(score->comment, comm);
             course->scores[k] = *score;
+            free(score);
         }
 
 
@@ -266,12 +327,8 @@ void readFile(char* filename){
         }
         course->studentsEnrolled = idx;
         courses[i] = *course;
+        free(course);
     }
-
-//    printf("%s \n", courses[0].courseName);
-//    printf("%s \n", courses[0].assignments[1].name);
-//    printf("%s \n", courses[0].scores[0].comment);
-
 
     fclose(file);
 }
@@ -281,14 +338,23 @@ void studentsDestructor() {
     printf("Freeing Students.....\n");
     free(&students[0]);
 }
+
+
+void rosterDestructor(Student** st, int numSt) {
+    free(&st[0]);
+}
+
 void coursesDestructor() {
     printf("Freeing Courses.....\n");
     for (int i = 0; i < numCourses; ++i) {
+        rosterDestructor((Student **) courses[i].studentRoster, 0);
         assignsDestructor((Assign **) courses[i].assignments, courses[i].totalAssignments);
         scoresDestructor((ScoreStruct ***) courses[i].scores, courses[i].totalScores);
-        free(&courses[0]);
     }
+    free(&courses[0]);
 }
+
+
 void assignsDestructor(Assign** assigns, int numAssign) {
     printf("Freeing Assignments.....\n");
     free(&assigns[0]);
@@ -298,10 +364,10 @@ void scoresDestructor(ScoreStruct*** scores, int numAssigns) {
     free(&scores[0]);
 }
 
-
 void terminate(){
-//    studentsDestructor();
-//    coursesDestructor();
+    printf("\n");
+    studentsDestructor();
+    coursesDestructor();
     exit(1);
 }
 
@@ -329,22 +395,25 @@ _Noreturn void mainMenu(){
 
 
 void getAssignmentScore(Course course, int assignmentNo) {
-    struct Assign *assignment = malloc(sizeof(struct Assign));
+    int assnID = 0;
+    char name[32] = "";
     for (int i = 0; i < course.totalAssignments; ++i) {
         if (course.assignments[i].id == assignmentNo) {
-            assignment = &course.assignments[i];
+            assnID = course.assignments[i].id;
+            strcpy(name, course.assignments[i].name);
         }
     }
     double scoreT = 0;
     double numScores = 0;
     for (int j = 0; j < course.totalScores; ++j) {
-        if (course.scores[j].assignID == assignment->id) {
+        if (course.scores[j].assignID == assnID) {
             scoreT += course.scores[j].score;
             ++numScores;
         }
     }
-    printf("%s %s %s %g", "The average grade on", assignment->name, "was", scoreT/numScores);
+    printf("\n%s %s %s %1.2f\n", "The average grade on", name, "was", scoreT/numScores);
 }
+
 
 void commonOptions(int option) {
     if(option == -2){
@@ -363,6 +432,7 @@ char* getStudentLevel(enum AcademicLevel lvl) {
         case Sophomore: return "Sophomore";
         case Junior: return "Junior";
         case Senior: return "Senior";
+        default: return "";
     }
 }
 
@@ -380,7 +450,7 @@ void getStudentScores(Course course, int studentNum) {
             printf("   %s            %1.00f        %s\n", getAssignmentByID(course,course.scores[i].assignID)->name,course.scores[i].score,course.scores[i].comment);
         }
     }
-    printf("\n%s%s %1.2f\n", sName, "'s final grade was", allScores/course.totalAssignments);
+    printf("\n%s%s %1.2f\n\n", sName, "'s final grade was", allScores/course.totalAssignments);
 }
 
 _Noreturn void studentMenu(Course course) {
@@ -554,8 +624,8 @@ void print_usage(){
 
 
 int main(int argc, char* argv[]){
-    char* datafile = NULL;
-    char* instructionfile = NULL;
+    char* datafile;
+    char* instructionfile;
     int opt;
     while((opt = getopt(argc, argv, ":d:i:")) != -1){
         switch(opt){
@@ -597,7 +667,6 @@ int main(int argc, char* argv[]){
     }
 
     int iflen;
-    int ifval;
     if(instructionfile != NULL){
         iflen = strlen(instructionfile);
         if(iflen >= 5
@@ -605,7 +674,7 @@ int main(int argc, char* argv[]){
            && (access(instructionfile, F_OK) != -1)){
             printf("Performing instructions defined in %s:\n", instructionfile);
             //uncomment below if doing this optional part of the assignment
-            //performInstructions(instructionfile);
+            performInstructions(instructionfile);
         } else {
             printf("Instruction file has an invalid name or does not exist.\n");
             print_usage();
@@ -617,30 +686,3 @@ int main(int argc, char* argv[]){
     }
     return 0;
 }
-
-
-
-
-
-
-//int main(void) {
-//
-//    FILE * data;
-//    char read [256];
-//
-//    data = fopen("../Module-2/simple-data.txt","r");
-//
-//    int base = 0;
-//    int numberOf = 0;
-//    int id = 0;
-//    char name[32];
-//
-//    fscanf(data, "%d", &numberOf);
-//
-//    for (int i = 0; i < numberOf; ++i) {
-//
-//    }
-//
-//    fclose(data);
-//    return 0;
-//}
