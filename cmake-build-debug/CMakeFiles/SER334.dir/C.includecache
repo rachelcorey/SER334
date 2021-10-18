@@ -6,15 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/kirry/SER334/Module-1/CoreyCollatz.c
-stdio.h
--
-
-/home/kirry/SER334/Module-1/CoreyComputation.c
-stdio.h
--
+/home/kirry/SER334/Module-2/BaseReader.c
 stdlib.h
 -
-
-/home/kirry/SER334/Module-1/CoreyDecrypt.c
+stdio.h
+-
+string.h
+-
+unistd.h
+-
 

@@ -1,8 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o"
-  "CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o"
-  "CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o"
-  "CMakeFiles/SER334.dir/Module-1/test.c.o"
+  "CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o"
   "SER334"
   "SER334.pdb"
 )

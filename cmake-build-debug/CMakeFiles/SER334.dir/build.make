@@ -66,75 +66,30 @@ include CMakeFiles/SER334.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/SER334.dir/flags.make
 
-CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o: CMakeFiles/SER334.dir/flags.make
-CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o: ../Module-1/CoreyCollatz.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o -c /home/kirry/SER334/Module-1/CoreyCollatz.c
+CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o: CMakeFiles/SER334.dir/flags.make
+CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o: ../Module-2/CoreyCourseReader.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o"
+	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o -c /home/kirry/SER334/Module-2/CoreyCourseReader.c
 
-CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.i"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-1/CoreyCollatz.c > CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.i
+CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.i"
+	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-2/CoreyCourseReader.c > CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.i
 
-CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.s"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-1/CoreyCollatz.c -o CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.s
-
-CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o: CMakeFiles/SER334.dir/flags.make
-CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o: ../Module-1/CoreyComputation.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o -c /home/kirry/SER334/Module-1/CoreyComputation.c
-
-CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.i"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-1/CoreyComputation.c > CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.i
-
-CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.s"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-1/CoreyComputation.c -o CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.s
-
-CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o: CMakeFiles/SER334.dir/flags.make
-CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o: ../Module-1/CoreyDecrypt.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o -c /home/kirry/SER334/Module-1/CoreyDecrypt.c
-
-CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.i"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-1/CoreyDecrypt.c > CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.i
-
-CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.s"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-1/CoreyDecrypt.c -o CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.s
-
-CMakeFiles/SER334.dir/Module-1/test.c.o: CMakeFiles/SER334.dir/flags.make
-CMakeFiles/SER334.dir/Module-1/test.c.o: ../Module-1/test.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/SER334.dir/Module-1/test.c.o"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-1/test.c.o -c /home/kirry/SER334/Module-1/test.c
-
-CMakeFiles/SER334.dir/Module-1/test.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-1/test.c.i"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-1/test.c > CMakeFiles/SER334.dir/Module-1/test.c.i
-
-CMakeFiles/SER334.dir/Module-1/test.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-1/test.c.s"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-1/test.c -o CMakeFiles/SER334.dir/Module-1/test.c.s
+CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.s"
+	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-2/CoreyCourseReader.c -o CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.s
 
 # Object files for target SER334
 SER334_OBJECTS = \
-"CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o" \
-"CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o" \
-"CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o" \
-"CMakeFiles/SER334.dir/Module-1/test.c.o"
+"CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o"
 
 # External object files for target SER334
 SER334_EXTERNAL_OBJECTS =
 
-SER334: CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o
-SER334: CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o
-SER334: CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o
-SER334: CMakeFiles/SER334.dir/Module-1/test.c.o
+SER334: CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o
 SER334: CMakeFiles/SER334.dir/build.make
 SER334: CMakeFiles/SER334.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable SER334"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable SER334"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SER334.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

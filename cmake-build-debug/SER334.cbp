@@ -76,16 +76,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/kirry/SER334/Module-1/CoreyCollatz.c">
-			<Option target="SER334"/>
-		</Unit>
-		<Unit filename="/home/kirry/SER334/Module-1/CoreyComputation.c">
-			<Option target="SER334"/>
-		</Unit>
-		<Unit filename="/home/kirry/SER334/Module-1/CoreyDecrypt.c">
-			<Option target="SER334"/>
-		</Unit>
-		<Unit filename="/home/kirry/SER334/Module-1/test.c">
+		<Unit filename="/home/kirry/SER334/Module-2/CoreyCourseReader.c">
 			<Option target="SER334"/>
 		</Unit>
 		<Unit filename="/home/kirry/SER334/CMakeLists.txt">

@@ -129,101 +129,29 @@ SER334/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/build
 .PHONY : SER334/fast
 
-Module-1/CoreyCollatz.o: Module-1/CoreyCollatz.c.o
-.PHONY : Module-1/CoreyCollatz.o
+Module-2/CoreyCourseReader.o: Module-2/CoreyCourseReader.c.o
+.PHONY : Module-2/CoreyCourseReader.o
 
 # target to build an object file
-Module-1/CoreyCollatz.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o
-.PHONY : Module-1/CoreyCollatz.c.o
+Module-2/CoreyCourseReader.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o
+.PHONY : Module-2/CoreyCourseReader.c.o
 
-Module-1/CoreyCollatz.i: Module-1/CoreyCollatz.c.i
-.PHONY : Module-1/CoreyCollatz.i
-
-# target to preprocess a source file
-Module-1/CoreyCollatz.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.i
-.PHONY : Module-1/CoreyCollatz.c.i
-
-Module-1/CoreyCollatz.s: Module-1/CoreyCollatz.c.s
-.PHONY : Module-1/CoreyCollatz.s
-
-# target to generate assembly for a file
-Module-1/CoreyCollatz.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.s
-.PHONY : Module-1/CoreyCollatz.c.s
-
-Module-1/CoreyComputation.o: Module-1/CoreyComputation.c.o
-.PHONY : Module-1/CoreyComputation.o
-
-# target to build an object file
-Module-1/CoreyComputation.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o
-.PHONY : Module-1/CoreyComputation.c.o
-
-Module-1/CoreyComputation.i: Module-1/CoreyComputation.c.i
-.PHONY : Module-1/CoreyComputation.i
+Module-2/CoreyCourseReader.i: Module-2/CoreyCourseReader.c.i
+.PHONY : Module-2/CoreyCourseReader.i
 
 # target to preprocess a source file
-Module-1/CoreyComputation.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.i
-.PHONY : Module-1/CoreyComputation.c.i
+Module-2/CoreyCourseReader.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.i
+.PHONY : Module-2/CoreyCourseReader.c.i
 
-Module-1/CoreyComputation.s: Module-1/CoreyComputation.c.s
-.PHONY : Module-1/CoreyComputation.s
-
-# target to generate assembly for a file
-Module-1/CoreyComputation.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.s
-.PHONY : Module-1/CoreyComputation.c.s
-
-Module-1/CoreyDecrypt.o: Module-1/CoreyDecrypt.c.o
-.PHONY : Module-1/CoreyDecrypt.o
-
-# target to build an object file
-Module-1/CoreyDecrypt.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o
-.PHONY : Module-1/CoreyDecrypt.c.o
-
-Module-1/CoreyDecrypt.i: Module-1/CoreyDecrypt.c.i
-.PHONY : Module-1/CoreyDecrypt.i
-
-# target to preprocess a source file
-Module-1/CoreyDecrypt.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.i
-.PHONY : Module-1/CoreyDecrypt.c.i
-
-Module-1/CoreyDecrypt.s: Module-1/CoreyDecrypt.c.s
-.PHONY : Module-1/CoreyDecrypt.s
+Module-2/CoreyCourseReader.s: Module-2/CoreyCourseReader.c.s
+.PHONY : Module-2/CoreyCourseReader.s
 
 # target to generate assembly for a file
-Module-1/CoreyDecrypt.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.s
-.PHONY : Module-1/CoreyDecrypt.c.s
-
-Module-1/test.o: Module-1/test.c.o
-.PHONY : Module-1/test.o
-
-# target to build an object file
-Module-1/test.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/test.c.o
-.PHONY : Module-1/test.c.o
-
-Module-1/test.i: Module-1/test.c.i
-.PHONY : Module-1/test.i
-
-# target to preprocess a source file
-Module-1/test.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/test.c.i
-.PHONY : Module-1/test.c.i
-
-Module-1/test.s: Module-1/test.c.s
-.PHONY : Module-1/test.s
-
-# target to generate assembly for a file
-Module-1/test.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-1/test.c.s
-.PHONY : Module-1/test.c.s
+Module-2/CoreyCourseReader.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.s
+.PHONY : Module-2/CoreyCourseReader.c.s
 
 # Help Target
 help:
@@ -234,18 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SER334"
-	@echo "... Module-1/CoreyCollatz.o"
-	@echo "... Module-1/CoreyCollatz.i"
-	@echo "... Module-1/CoreyCollatz.s"
-	@echo "... Module-1/CoreyComputation.o"
-	@echo "... Module-1/CoreyComputation.i"
-	@echo "... Module-1/CoreyComputation.s"
-	@echo "... Module-1/CoreyDecrypt.o"
-	@echo "... Module-1/CoreyDecrypt.i"
-	@echo "... Module-1/CoreyDecrypt.s"
-	@echo "... Module-1/test.o"
-	@echo "... Module-1/test.i"
-	@echo "... Module-1/test.s"
+	@echo "... Module-2/CoreyCourseReader.o"
+	@echo "... Module-2/CoreyCourseReader.i"
+	@echo "... Module-2/CoreyCourseReader.s"
 .PHONY : help
 
 

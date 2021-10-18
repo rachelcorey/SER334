@@ -1,1 +1,1 @@
-/bin/gcc -g CMakeFiles/SER334.dir/Module-1/CoreyCollatz.c.o CMakeFiles/SER334.dir/Module-1/CoreyComputation.c.o CMakeFiles/SER334.dir/Module-1/CoreyDecrypt.c.o CMakeFiles/SER334.dir/Module-1/test.c.o -o SER334  -lm 
+/bin/gcc -g CMakeFiles/SER334.dir/Module-2/CoreyCourseReader.c.o -o SER334  -lm 
