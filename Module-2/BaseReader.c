@@ -77,7 +77,7 @@ void subMenu(Course course);
 void subMenuBranch(int option, Course course);
 
 // these are the 'special' functions that you are being asked to implement
-void studentMenu(Course course);
+_Noreturn void studentMenu(Course course);
 void getStudentScores(Course course, int studentNo);
 
 _Noreturn void assignmentMenu(Course course);
