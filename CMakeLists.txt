@@ -6,4 +6,6 @@ set(CMAKE_C_STANDARD 11)
 add_executable(SER334
         Module-2/CoreyCourseReader.c)
 
+include_directories(Module-2/)
+
 target_link_libraries(SER334 PRIVATE m)

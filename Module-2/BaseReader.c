@@ -71,7 +71,7 @@ void printCourse(Course course);
 
 // the following are mostly complete functions that define and 
 // control the CLI menu associated with the program
-void mainMenu();
+_Noreturn void mainMenu();
 void mainMenuBranch(int option);
 void subMenu(Course course);
 void subMenuBranch(int option, Course course);
@@ -79,7 +79,8 @@ void subMenuBranch(int option, Course course);
 // these are the 'special' functions that you are being asked to implement
 void studentMenu(Course course);
 void getStudentScores(Course course, int studentNo);
-void assignmentMenu(Course course);
+
+_Noreturn void assignmentMenu(Course course);
 void getAssignmentScore(Course course, int assignmentNo);
 
 // this is an optional function that parses and executes instructions defined in an input file
@@ -104,7 +105,7 @@ void readFile(char* filename){
 /**
 * Implements main menu functionality, which allows user to select a course to interact with
 */
-void mainMenu(){
+_Noreturn void mainMenu(){
   int input_buffer;
   printf("Course Searcher");  
   do {
