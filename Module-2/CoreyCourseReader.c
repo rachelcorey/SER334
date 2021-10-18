@@ -402,7 +402,28 @@ void print_usage(){
     printf("-i refers to the optionally supported 'instruction file' that provides directions for how the program should execute without CLI input; \n\t must be a valid .txt.file\n");
 }
 
+
+void studentsDestructor() {
+    for (int i = 0; i < numStudents; ++i) {
+        free(&students[i]);
+    }
+}
+void coursesDestructor() {
+    for (int i = 0; i < numCourses; ++i) {
+        assignsDestructor((Assign **) courses[i].assignments, courses[i].totalAssignments);
+    }
+}
+void assignsDestructor(Assign** assigns, int numAssign) {
+    for (int i = 0; i < numAssign; ++i) {
+        free(assigns[i]);
+    }
+}
+void scoresDestructor(ScoreStruct*** scores, int numAssigns) {
+
+}
+
 void terminate(){
+
     //FREE EVERYTHING HERE
     exit(1);
 }
