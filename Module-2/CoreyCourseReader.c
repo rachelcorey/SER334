@@ -36,7 +36,7 @@ typedef struct Assign Assign;
 typedef struct ScoreStruct ScoreStruct;
 typedef struct Course Course;
 
-enum AcademicLevel{Freshman, Sophomore, Junior, Senior};
+enum AcademicLevel{None, Freshman, Sophomore, Junior, Senior};
 
 struct Student{
     int id;
@@ -333,19 +333,15 @@ void readFile(char* filename){
     fclose(file);
 }
 
-
 void studentsDestructor() {
-    printf("Freeing Students.....\n");
     free(&students[0]);
 }
-
 
 void rosterDestructor(Student** st, int numSt) {
     free(&st[0]);
 }
 
 void coursesDestructor() {
-    printf("Freeing Courses.....\n");
     for (int i = 0; i < numCourses; ++i) {
         rosterDestructor((Student **) courses[i].studentRoster, 0);
         assignsDestructor((Assign **) courses[i].assignments, courses[i].totalAssignments);
@@ -354,13 +350,10 @@ void coursesDestructor() {
     free(&courses[0]);
 }
 
-
 void assignsDestructor(Assign** assigns, int numAssign) {
-    printf("Freeing Assignments.....\n");
     free(&assigns[0]);
 }
 void scoresDestructor(ScoreStruct*** scores, int numAssigns) {
-    printf("Freeing Scores........\n");
     free(&scores[0]);
 }
 
@@ -428,10 +421,10 @@ void commonOptions(int option) {
 
 char* getStudentLevel(enum AcademicLevel lvl) {
     switch(lvl) {
-        case Freshman: return "Freshman";
-        case Sophomore: return "Sophomore";
-        case Junior: return "Junior";
-        case Senior: return "Senior";
+        case Freshman: return "(Freshman)";
+        case Sophomore: return "(Sophomore)";
+        case Junior: return "(Junior)";
+        case Senior: return "(Senior)";
         default: return "";
     }
 }
@@ -440,7 +433,7 @@ void getStudentScores(Course course, int studentNum) {
 
     char sName[32] = "";
     strcpy(sName, getStudentByID(studentNum)->name);
-    printf("%s%s", sName, "'s assignment specific grades were:\n");
+    printf("\n%s%s", sName, "'s assignment specific grades were:\n");
     printf("   %s      %s     %s\n", "Assign Name","Score","Comment");
     printf("---------------------------------------\n");
     double allScores = 0;
@@ -450,69 +443,66 @@ void getStudentScores(Course course, int studentNum) {
             printf("   %s            %1.00f        %s\n", getAssignmentByID(course,course.scores[i].assignID)->name,course.scores[i].score,course.scores[i].comment);
         }
     }
-    printf("\n%s%s %1.2f\n\n", sName, "'s final grade was", allScores/course.totalAssignments);
+    printf("\n%s%s %1.2f\n", sName, "'s final grade was", allScores/course.totalAssignments);
 }
 
-_Noreturn void studentMenu(Course course) {
+void studentMenu(Course course) {
     int option;
-    do {
-        printf("\n-----------------------------------\n");
-        printf("Student Menu");
-        printf("\n-----------------------------------\n");
-        printf("Please choose from the following students:\n");
 
-        for(int i = 0; i < course.studentsEnrolled; i++){
-            printf("   %d %s %s \n", course.studentRoster[i].id, course.studentRoster[i].name, getStudentLevel(course.studentRoster [i].level));
-        }
-        printf("   0 REPEAT OPTIONS\n");
-        printf("  -1 RETURN TO PREVIOUS MENU\n");
-        printf("  -2 TERMINATE PROGRAM\n");
-        printf("Please enter your choice ---> ");
-        scanf(" %d", &option);
-        if (option == 0 || option == -2) {
-            commonOptions(option);
-        } else if (option == -1) {
-            commonOptions(option);
-            subMenu(course);
-        } else if (option > 0 && option <= course.studentsEnrolled) {
-            getStudentScores(course,option);
-        } else {
-            printf("Please enter a valid option.\n");
-        }
-    } while (1);
+    printf("\n-----------------------------------\n");
+    printf("Student Menu");
+    printf("\n-----------------------------------\n");
+    printf("Please choose from the following students:\n");
 
+    for(int i = 0; i < course.studentsEnrolled; i++){
+        printf("   %d %s %s \n", course.studentRoster[i].id, course.studentRoster[i].name, getStudentLevel(course.studentRoster [i].level));
+    }
+    printf("   0 REPEAT OPTIONS\n");
+    printf("  -1 RETURN TO PREVIOUS MENU\n");
+    printf("  -2 TERMINATE PROGRAM\n");
+    printf("Please enter your choice ---> ");
+    scanf(" %d", &option);
+    if (option == 0 || option == -2) {
+        commonOptions(option);
+    } else if (option == -1) {
+        commonOptions(option);
+        subMenu(course);
+    } else if (option > 0 && option <= course.studentsEnrolled) {
+        getStudentScores(course,option);
+    } else {
+        printf("Please enter a valid option.\n");
+    }
 }
 
 /**
 * Implements assignment menu functionality, which allows user to select an assignment in the course to interact with
 */
-_Noreturn void assignmentMenu(Course course){
+void assignmentMenu(Course course){
     int option;
-    do {
-        printf("\n-----------------------------------\n");
-        printf("Course Assignments");
-        printf("\n-----------------------------------\n");
-        printf("Please choose from the following assignments:\n");
-        int i;
-        for(i = 0; i < course.totalAssignments; i++){
-            printf("   %d %s\n", course.assignments[i].id, courses->assignments[i].name);
-        }
-        printf("   0 REPEAT OPTIONS\n");
-        printf("  -1 RETURN TO PREVIOUS MENU\n");
-        printf("  -2 TERMINATE PROGRAM\n");
-        printf("Please enter your choice ---> ");
-        scanf(" %d", &option);
-        if (option == 0 || option == -2) {
-            commonOptions(option);
-        } else if (option == -1) {
-            commonOptions(option);
-            subMenu(course);
-        } else if (option > 0 && option <= course.totalAssignments) {
-            getAssignmentScore(course, option);
-        } else {
-            printf("Please enter a valid option.\n");
-        }
-    } while (1);
+
+    printf("\n-----------------------------------\n");
+    printf("Course Assignments");
+    printf("\n-----------------------------------\n");
+    printf("Please choose from the following assignments:\n");
+    int i;
+    for(i = 0; i < course.totalAssignments; i++){
+        printf("   %d %s\n", course.assignments[i].id, courses->assignments[i].name);
+    }
+    printf("   0 REPEAT OPTIONS\n");
+    printf("  -1 RETURN TO PREVIOUS MENU\n");
+    printf("  -2 TERMINATE PROGRAM\n");
+    printf("Please enter your choice ---> ");
+    scanf(" %d", &option);
+    if (option == 0 || option == -2) {
+        commonOptions(option);
+    } else if (option == -1) {
+        commonOptions(option);
+        subMenu(course);
+    } else if (option > 0 && option <= course.totalAssignments) {
+        getAssignmentScore(course, option);
+    } else {
+        printf("Please enter a valid option.\n");
+    }
 }
 
 /**
