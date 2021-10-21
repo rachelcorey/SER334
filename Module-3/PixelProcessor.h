@@ -1,18 +1,18 @@
+#include <malloc.h>
+
 struct Pixel{
-    int red;
-    int blue;
-    int green;
+    unsigned char blue;
+    unsigned char green;
+    unsigned char red;
 };
 
-typedef struct PixelMatrix {
+typedef struct PixelProcessor {
     struct Pixel** pixels;
     int width;
     int height;
-} PixelMatrix;
-
-typedef struct PixelProcessor {
-    struct PixelMatrix pixelMatrix;
 } PixelProcessor;
+
+
 
 /**
  * Shift color of Pixel array. The dimension of the array is width * height. The shift value of RGB is 

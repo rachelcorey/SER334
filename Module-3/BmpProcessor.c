@@ -2,8 +2,6 @@
 #include <malloc.h>
 #include <string.h>
 
-
-
  BMP_Header* BMPHeader_init() {
     BMP_Header *bmpHeader = malloc(sizeof(BMP_Header));
     strcpy(bmpHeader->signature, "BM");
@@ -21,12 +19,6 @@
     dibHeader->yPixelsPerMeter = 3780;
     dibHeader->colorsInTable = 0;
     dibHeader->importantColors = 0;
-
-//    dibHeader->size = size;
-//    dibHeader->imgWidth = imgWidth;
-//    dibHeader->imgHeight = imgHeight;
-//    dibHeader->bitsPerPixel = bitsPerPixel;
-//    dibHeader->imgSize = imgSize;
     return dibHeader;
 }
 
@@ -71,10 +63,18 @@
  * read DIB header from a file. Useful for converting files from PPM to BMP.
  *
  * @param  file: A pointer to the file being read or written
- * @param  header: Pointer to the destination DIB header
  */
  void readDIBHeader(FILE* file, struct DIB_Header* header) {
 
+    fseek(file, 4, SEEK_CUR);
+    fread(&header->imgWidth, sizeof(signed int), 1, file);
+    fread(&header->imgHeight, sizeof(signed int), 1, file);
+    fseek(file, 2, SEEK_CUR);
+    fread(&header->bitsPerPixel, sizeof(unsigned short), 1, file);
+    fseek(file, 4, SEEK_CUR);
+    fread(&header->imgSize, sizeof(int), 1, file);
+    header->imgSize += 54;
+    fseek(file, 16, SEEK_CUR);
 }
 
 /**
@@ -117,11 +117,11 @@
  * read Pixels from BMP file based on width and height.
  *
  * @param  file: A pointer to the file being read or written
- * @param  pArr: Pixel array of the image that this header is for
- * @param  width: Width of the image that this header is for
- * @param  height: Height of the image that this header is for
  */
- void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
+ void readPixelsBMP(FILE* file, struct BmpProcessor *self) {
+
+
+
 
 }
 
@@ -130,10 +130,7 @@
  * write Pixels from BMP file based on width and height.
  *
  * @param  file: A pointer to the file being read or written
- * @param  pArr: Pixel array of the image that this header is for
- * @param  width: Width of the image that this header is for
- * @param  height: Height of the image that this header is for
  */
- void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
+ void writePixelsBMP(FILE* file) {
 
 }

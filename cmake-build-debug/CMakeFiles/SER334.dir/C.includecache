@@ -10,6 +10,10 @@
 bits/types/FILE.h
 -
 
+../Module-3/PixelProcessor.h
+malloc.h
+-
+
 /home/kirry/SER334/Module-3/BmpProcessor.c
 BmpProcessor.h
 -
@@ -33,4 +37,12 @@ ctype.h
 -
 BmpProcessor.c
 /home/kirry/SER334/Module-3/BmpProcessor.c
+PixelProcessor.c
+/home/kirry/SER334/Module-3/PixelProcessor.c
+
+/home/kirry/SER334/Module-3/PixelProcessor.c
+PixelProcessor.h
+-
+malloc.h
+-
 

@@ -1,1 +1,1 @@
-/bin/gcc -g CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o -o SER334  -lm 
+/bin/gcc -g CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o -o SER334  -lm 

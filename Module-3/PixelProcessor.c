@@ -1,22 +1,16 @@
 #include <PixelProcessor.h>
 #include <malloc.h>
 
-struct PixelMatrix* PixelMatrix_init(int imgWidth, int imgHeight) {
-    struct PixelMatrix* pixelMatrix = malloc(sizeof(struct PixelMatrix));
-    struct Pixel** pixelArray = malloc((sizeof(struct Pixel) * imgWidth * 4) * (sizeof(struct Pixel) * imgHeight));
-    pixelMatrix->width = imgWidth;
-    pixelMatrix->height = imgHeight;
-    pixelMatrix->pixels = pixelArray;
-    return pixelMatrix;
-}
-
-PixelProcessor* PixelProcessor_init(int imgWidth, int imgHeight) {
+struct PixelProcessor* PixelProcessor_init(int imgWidth, int imgHeight) {
     PixelProcessor* pixelProcessor = malloc(sizeof(PixelProcessor));
-    pixelProcessor->pixelMatrix = *PixelMatrix_init(imgWidth, imgHeight);
+    struct Pixel** pixelArray = malloc((sizeof(struct Pixel) * imgWidth * 4) * (sizeof(struct Pixel) * imgHeight));
+    pixelProcessor->width = imgWidth;
+    pixelProcessor->height = imgHeight;
+    pixelProcessor->pixels = pixelArray;
     return pixelProcessor;
 }
 
-struct Pixel* Pixel_init(int red, int green, int blue) {
+struct Pixel* Pixel_init(unsigned char red, unsigned char green, unsigned char blue) {
     struct Pixel* pixel = malloc(sizeof (struct Pixel));
     pixel->red = red;
     pixel->green = green;
@@ -25,7 +19,7 @@ struct Pixel* Pixel_init(int red, int green, int blue) {
 }
 
 void buildPixelArray(PixelProcessor *self, struct Pixel* pix, int x, int y) {
-    self->pixelMatrix.pixels[x][y] = *pix;
+    self->pixels[x][y] = *pix;
 }
 
 /**

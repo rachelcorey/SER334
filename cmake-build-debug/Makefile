@@ -153,54 +153,6 @@ Module-3/CoreyImageProcessor.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.s
 .PHONY : Module-3/CoreyImageProcessor.c.s
 
-Module-3/PixelProcessor.o: Module-3/PixelProcessor.c.o
-.PHONY : Module-3/PixelProcessor.o
-
-# target to build an object file
-Module-3/PixelProcessor.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o
-.PHONY : Module-3/PixelProcessor.c.o
-
-Module-3/PixelProcessor.i: Module-3/PixelProcessor.c.i
-.PHONY : Module-3/PixelProcessor.i
-
-# target to preprocess a source file
-Module-3/PixelProcessor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.i
-.PHONY : Module-3/PixelProcessor.c.i
-
-Module-3/PixelProcessor.s: Module-3/PixelProcessor.c.s
-.PHONY : Module-3/PixelProcessor.s
-
-# target to generate assembly for a file
-Module-3/PixelProcessor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.s
-.PHONY : Module-3/PixelProcessor.c.s
-
-Module-3/PpmProcessor.o: Module-3/PpmProcessor.c.o
-.PHONY : Module-3/PpmProcessor.o
-
-# target to build an object file
-Module-3/PpmProcessor.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o
-.PHONY : Module-3/PpmProcessor.c.o
-
-Module-3/PpmProcessor.i: Module-3/PpmProcessor.c.i
-.PHONY : Module-3/PpmProcessor.i
-
-# target to preprocess a source file
-Module-3/PpmProcessor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.i
-.PHONY : Module-3/PpmProcessor.c.i
-
-Module-3/PpmProcessor.s: Module-3/PpmProcessor.c.s
-.PHONY : Module-3/PpmProcessor.s
-
-# target to generate assembly for a file
-Module-3/PpmProcessor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.s
-.PHONY : Module-3/PpmProcessor.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -213,12 +165,6 @@ help:
 	@echo "... Module-3/CoreyImageProcessor.o"
 	@echo "... Module-3/CoreyImageProcessor.i"
 	@echo "... Module-3/CoreyImageProcessor.s"
-	@echo "... Module-3/PixelProcessor.o"
-	@echo "... Module-3/PixelProcessor.i"
-	@echo "... Module-3/PixelProcessor.s"
-	@echo "... Module-3/PpmProcessor.o"
-	@echo "... Module-3/PpmProcessor.i"
-	@echo "... Module-3/PpmProcessor.s"
 .PHONY : help
 
 

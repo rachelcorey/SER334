@@ -3,10 +3,7 @@
 
 CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o: \
  ../Module-3/BmpProcessor.h \
- ../Module-3/BmpProcessor.c \
- ../Module-3/CoreyImageProcessor.c
-CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o: \
  ../Module-3/PixelProcessor.h \
+ ../Module-3/BmpProcessor.c \
+ ../Module-3/CoreyImageProcessor.c \
  ../Module-3/PixelProcessor.c
-CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o: \
- ../Module-3/PpmProcessor.c

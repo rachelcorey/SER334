@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "BmpProcessor.c"
+#include "PixelProcessor.c"
 
 
 int validateInt(char* optInt) {
@@ -89,16 +90,14 @@ int main(int argc, char *argv[]) {
 
     // call convert stuff here
     BmpProcessor* bmpP = BmpProcessor_init();
-    const char fName[25] = "../Module-3/wb.bmp";
+    const char fName[25] = "../Module-3/ttt.bmp";
     FILE *img = fopen(fName, "rb");
 
+    char h[45] ="";
 
     readBMPHeader(img, bmpP->bmpHeader);
+    readDIBHeader(img, bmpP->dibHeader);
 
-    printf("\nsignature: %s\n", bmpP->bmpHeader->signature);
-    printf("size: %d\n", bmpP->bmpHeader->size);
-    printf("reserved 1 and 2: %d %d\n", bmpP->bmpHeader->reserved1, bmpP->bmpHeader->reserved2);
-    printf("offset pixel array: %d\n", bmpP->bmpHeader->offset_pixel_array);
 
     fclose(img);
 

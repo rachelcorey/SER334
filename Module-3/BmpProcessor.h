@@ -10,14 +10,14 @@ typedef struct BMP_Header {
 
 typedef struct DIB_Header{
     int size;
-    int imgWidth;
-    int imgHeight;
+    signed int imgWidth;
+    signed int imgHeight;
     int planes;
-    int bitsPerPixel;
+    unsigned short bitsPerPixel;
     int compression;
     int imgSize;
-    int xPixelsPerMeter;
-    int yPixelsPerMeter;
+    signed int xPixelsPerMeter;
+    signed int yPixelsPerMeter;
     int colorsInTable;
     int importantColors;
 } DIB_Header;
