@@ -1,5 +1,8 @@
 struct PPM_Header{
-	//TODO:Finish struct
+    char id[2];
+    int imgWidth;
+    int imgHeight;
+    int maxColorValue;
 };
 
 /**

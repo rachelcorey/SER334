@@ -1,10 +1,31 @@
-struct BMP_Header {
-	//TODO:Finish struct
-};
+#include <bits/types/FILE.h>
 
-struct DIB_Header{
-	//TODO:Finish struct
-};
+typedef struct BMP_Header {
+    char signature[2];
+    int size;
+    short reserved1;
+    short reserved2;
+    int offset_pixel_array;
+} BMP_Header;
+
+typedef struct DIB_Header{
+    int size;
+    int imgWidth;
+    int imgHeight;
+    int planes;
+    int bitsPerPixel;
+    int compression;
+    int imgSize;
+    int xPixelsPerMeter;
+    int yPixelsPerMeter;
+    int colorsInTable;
+    int importantColors;
+} DIB_Header;
+
+typedef struct BmpProcessor {
+    struct BMP_Header *bmpHeader;
+    struct DIB_Header *dibHeader;
+} BmpProcessor;
 
 /**
  * read BMP header of a file. Useful for converting files from PPM to BMP.
@@ -68,7 +89,7 @@ void makeDIBHeader(struct DIB_Header* header, int width, int height);
  * @param  width: Width of the image that this header is for
  * @param  height: Height of the image that this header is for
  */
-void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height);
+//void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height);
 
 
 /**
@@ -79,4 +100,4 @@ void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height);
  * @param  width: Width of the image that this header is for
  * @param  height: Height of the image that this header is for
  */
-void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height);
+//void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height);

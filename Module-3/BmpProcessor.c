@@ -1,4 +1,134 @@
-//
-// Created by kirry on 10/21/21.
-//
+#include <BmpProcessor.h>
+#include <malloc.h>
+#include <string.h>
 
+BmpProcessor* BmpProcessor_init(BMP_Header *bmpHeader, DIB_Header *dibHeader) {
+    BmpProcessor *bmpP = malloc(sizeof (BmpProcessor));
+    bmpP->bmpHeader = bmpHeader;
+    bmpP->dibHeader = dibHeader;
+    return bmpP;
+}
+
+BMP_Header* BMPHeader_init(int iSize, int iOffset) {
+    BMP_Header *bmpHeader = malloc(sizeof(BMP_Header));
+    strcpy(bmpHeader->signature, "BM");
+    bmpHeader->reserved1 = 0;
+    bmpHeader->reserved2 = 0;
+
+    bmpHeader->size = iSize;
+    bmpHeader->offset_pixel_array = iOffset;
+    return bmpHeader;
+}
+
+DIB_Header* DIBHeader_init(int size, int imgWidth, int imgHeight, int bitsPerPixel, int imgSize) {
+    DIB_Header *dibHeader = malloc(sizeof(DIB_Header));
+    dibHeader->planes = 1;
+    dibHeader->compression = 0;
+    dibHeader->xPixelsPerMeter = 3780;
+    dibHeader->yPixelsPerMeter = 3780;
+    dibHeader->colorsInTable = 0;
+    dibHeader->importantColors = 0;
+
+    dibHeader->size = size;
+    dibHeader->imgWidth = imgWidth;
+    dibHeader->imgHeight = imgHeight;
+    dibHeader->bitsPerPixel = bitsPerPixel;
+    dibHeader->imgSize = imgSize;
+    return dibHeader;
+}
+
+void BmpProcessor_clean(BmpProcessor *self) {
+    free(self->bmpHeader);
+    free(self->dibHeader);
+}
+
+/**
+ * read BMP header of a file. Useful for converting files from PPM to BMP.
+ *
+ * @param  file: A pointer to the file being read or written
+ * @param  header: Pointer to the destination BMP header
+ */
+void readBMPHeader(FILE* file, struct BMP_Header* header) {
+
+}
+
+/**
+ * write BMP header of a file. Useful for converting files from PPM to BMP.
+ *
+ * @param  file: A pointer to the file being read or written
+ * @param  header: The header made by makeBMPHeader function
+ */
+void writeBMPHeader(FILE* file, struct BMP_Header* header) {
+
+}
+
+/**
+ * read DIB header from a file. Useful for converting files from PPM to BMP.
+ *
+ * @param  file: A pointer to the file being read or written
+ * @param  header: Pointer to the destination DIB header
+ */
+void readDIBHeader(FILE* file, struct DIB_Header* header) {
+
+}
+
+/**
+ * write DIB header of a file. Useful for converting files from PPM to BMP.
+ *
+ * @param  file: A pointer to the file being read or written
+ * @param  header: The header made by makeDIBHeader function
+ */
+void writeDIBHeader(FILE* file, struct DIB_Header* header) {
+
+}
+
+/**
+ * make BMP header based on width and height.
+ * The purpose of this is to create a new BMPHeader struct using the information
+ * from a PPMHeader when converting from PPM to BMP.
+ *
+ * @param  header: Pointer to the destination DIB header
+ * @param  width: Width of the image that this header is for
+ * @param  height: Height of the image that this header is for
+ */
+void makeBMPHeader(struct BMP_Header* header, int width, int height) {
+
+}
+
+
+/**
+* Makes new DIB header based on width and height. Useful for converting files from PPM to BMP.
+*
+* @param  header: Pointer to the destination DIB header
+* @param  width: Width of the image that this header is for
+* @param  height: Height of the image that this header is for
+*/
+void makeDIBHeader(struct DIB_Header* header, int width, int height) {
+
+}
+
+
+/**
+ * read Pixels from BMP file based on width and height.
+ *
+ * @param  file: A pointer to the file being read or written
+ * @param  pArr: Pixel array of the image that this header is for
+ * @param  width: Width of the image that this header is for
+ * @param  height: Height of the image that this header is for
+ */
+void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
+
+}
+
+
+/**
+ * write Pixels from BMP file based on width and height.
+ *
+ * @param  file: A pointer to the file being read or written
+ * @param  pArr: Pixel array of the image that this header is for
+ * @param  width: Width of the image that this header is for
+ * @param  height: Height of the image that this header is for
+ */
+void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
+
+}

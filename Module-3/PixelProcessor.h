@@ -1,6 +1,18 @@
 struct Pixel{
-	//TODO:Finish struct
+    int red;
+    int blue;
+    int green;
 };
+
+typedef struct PixelMatrix {
+    struct Pixel** pixels;
+    int width;
+    int height;
+} PixelMatrix;
+
+typedef struct PixelProcessor {
+    struct PixelMatrix pixelMatrix;
+} PixelProcessor;
 
 /**
  * Shift color of Pixel array. The dimension of the array is width * height. The shift value of RGB is 
