@@ -44,7 +44,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/home/kirry/SER334/Module-2"/>
+					<Add directory="/home/kirry/SER334/Module-3"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
@@ -64,7 +64,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/home/kirry/SER334/Module-2"/>
+					<Add directory="/home/kirry/SER334/Module-3"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
@@ -78,7 +78,25 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/kirry/SER334/Module-2/CoreyCourseReader.c">
+		<Unit filename="/home/kirry/SER334/Module-3/BmpProcessor.c">
+			<Option target="SER334"/>
+		</Unit>
+		<Unit filename="/home/kirry/SER334/Module-3/BmpProcessor.h">
+			<Option target="SER334"/>
+		</Unit>
+		<Unit filename="/home/kirry/SER334/Module-3/CoreyImageProcessor.c">
+			<Option target="SER334"/>
+		</Unit>
+		<Unit filename="/home/kirry/SER334/Module-3/PixelProcessor.c">
+			<Option target="SER334"/>
+		</Unit>
+		<Unit filename="/home/kirry/SER334/Module-3/PixelProcessor.h">
+			<Option target="SER334"/>
+		</Unit>
+		<Unit filename="/home/kirry/SER334/Module-3/PpmProcessor.c">
+			<Option target="SER334"/>
+		</Unit>
+		<Unit filename="/home/kirry/SER334/Module-3/PpmProcessor.h">
 			<Option target="SER334"/>
 		</Unit>
 		<Unit filename="/home/kirry/SER334/CMakeLists.txt">
