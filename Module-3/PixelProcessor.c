@@ -3,14 +3,17 @@
 
 struct PixelProcessor* PixelProcessor_init(int imgWidth, int imgHeight) {
     PixelProcessor* pixelProcessor = malloc(sizeof(PixelProcessor));
-    struct Pixel** pixelArray = malloc((sizeof(struct Pixel) * imgWidth * 4) * (sizeof(struct Pixel) * imgHeight));
+    struct Pixel** pixelArray = malloc(((sizeof(struct Pixel)) * imgWidth * 4));
+    for (int i = 0; i < imgHeight; ++i) {
+        pixelArray[i] = malloc((sizeof(struct Pixel)) * imgHeight);
+    }
     pixelProcessor->width = imgWidth;
     pixelProcessor->height = imgHeight;
     pixelProcessor->pixels = pixelArray;
     return pixelProcessor;
 }
 
-struct Pixel* Pixel_init(unsigned char red, unsigned char green, unsigned char blue) {
+struct Pixel* Pixel_init(unsigned char blue, unsigned char green, unsigned char red) {
     struct Pixel* pixel = malloc(sizeof (struct Pixel));
     pixel->red = red;
     pixel->green = green;
@@ -20,6 +23,35 @@ struct Pixel* Pixel_init(unsigned char red, unsigned char green, unsigned char b
 
 void buildPixelArray(PixelProcessor *self, struct Pixel* pix, int x, int y) {
     self->pixels[x][y] = *pix;
+}
+
+
+/**
+ * read Pixels from BMP file based on width and height.
+ *
+ * @param  file: A pointer to the file being read or written
+ */
+void readPixelsBMP(FILE* file, struct PixelProcessor *pixelProcessor) {
+    for (int i = pixelProcessor->height - 1; i > 0; --i) {
+        for (int j = pixelProcessor->width - 1; j > 0; --j) {
+            unsigned char b, g, r;
+            fread(&b, sizeof(char), 1, file);
+            fread(&g, sizeof(char), 1, file);
+            fread(&r, sizeof(char), 1, file);
+            struct Pixel *p = Pixel_init(b, g, r);
+            buildPixelArray(pixelProcessor, p, i, j);
+        }
+        fseek(file, 3, SEEK_CUR);
+    }
+
+
+//    for (int i = 0; i < pixelProcessor->height; ++i) {
+//        for (int j = 0; j < pixelProcessor->width; ++j) {
+//            printf("[r:%d b:%d: g:%d] ", pixelProcessor->pixels[i][j].red, pixelProcessor->pixels[i][j].blue, pixelProcessor->pixels[i][j].green);
+//        }
+//        printf("\n end of row \n");
+//        fseek(file, 4, SEEK_CUR);
+//    }
 }
 
 /**

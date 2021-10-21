@@ -2,7 +2,7 @@
 #include <malloc.h>
 #include <string.h>
 
- BMP_Header* BMPHeader_init() {
+BMP_Header* BMPHeader_init() {
     BMP_Header *bmpHeader = malloc(sizeof(BMP_Header));
     strcpy(bmpHeader->signature, "BM");
     bmpHeader->reserved1 = 0;
@@ -13,6 +13,7 @@
 
  DIB_Header* DIBHeader_init() {
     DIB_Header *dibHeader = malloc(sizeof(DIB_Header));
+    dibHeader->size = 40;
     dibHeader->planes = 1;
     dibHeader->compression = 0;
     dibHeader->xPixelsPerMeter = 3780;
@@ -113,17 +114,7 @@
 }
 
 
-/**
- * read Pixels from BMP file based on width and height.
- *
- * @param  file: A pointer to the file being read or written
- */
- void readPixelsBMP(FILE* file, struct BmpProcessor *self) {
 
-
-
-
-}
 
 
 /**
