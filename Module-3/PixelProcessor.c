@@ -32,8 +32,8 @@ void buildPixelArray(PixelProcessor *self, struct Pixel* pix, int x, int y) {
  * @param  file: A pointer to the file being read or written
  */
 void readPixelsBMP(FILE* file, struct PixelProcessor *pixelProcessor) {
-    for (int i = pixelProcessor->height - 1; i > 0; --i) {
-        for (int j = pixelProcessor->width - 1; j > 0; --j) {
+    for (int i = 0; i < pixelProcessor->height; ++i) {
+        for (int j = 0; j < pixelProcessor->width + 1; ++j) {
             unsigned char b, g, r;
             fread(&b, sizeof(char), 1, file);
             fread(&g, sizeof(char), 1, file);
@@ -41,7 +41,6 @@ void readPixelsBMP(FILE* file, struct PixelProcessor *pixelProcessor) {
             struct Pixel *p = Pixel_init(b, g, r);
             buildPixelArray(pixelProcessor, p, i, j);
         }
-        fseek(file, 3, SEEK_CUR);
     }
 
 

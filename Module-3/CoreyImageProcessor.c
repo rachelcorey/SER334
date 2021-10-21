@@ -101,9 +101,6 @@ int main(int argc, char *argv[]) {
     PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
     readPixelsBMP(img, pP);
 
-    int pitch = bmpP->dibHeader->imgWidth * 3;
-
-
     fclose(img);
     FILE *output = fopen("../Module-3/output.bmp", "wb");
     fwrite("BM", sizeof(char) * 2, 1, output);
@@ -133,19 +130,13 @@ int main(int argc, char *argv[]) {
 //           bmpP->dibHeader->colorsInTable, bmpP->dibHeader->importantColors);
 
 
-//    fwrite(&pP->pixels[0][0].red, sizeof(unsigned char), 1, output);
-
-
     for (int i = 0; i < bmpP->dibHeader->imgHeight; ++i) {
-        for (int j = 0; j < bmpP->dibHeader->imgWidth; ++j) {
+        for (int j = 0; j < bmpP->dibHeader->imgWidth + 1; ++j) {
             fwrite(&pP->pixels[i][j].blue, sizeof(unsigned char), 1, output);
             fwrite(&pP->pixels[i][j].green, sizeof(unsigned char), 1, output);
             fwrite(&pP->pixels[i][j].red, sizeof(unsigned char), 1, output);
         }
-
-//        fwrite(&c, sizeof(char) * 2, 1, output);
     }
-
 
 
     fclose(output);
