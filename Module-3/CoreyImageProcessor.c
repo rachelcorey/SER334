@@ -71,23 +71,34 @@ int main(int argc, char *argv[]) {
     }
 
     int dflen;
-    if (imgFile != NULL) {
-        dflen = strlen(imgFile);
-        if (dflen >= 5
-            && ((strcmp(&imgFile[dflen - 4], ".bmp") == 0) || (strcmp(&imgFile[dflen - 4], ".ppm") == 0))
-            && (access(imgFile, F_OK) != -1)) {
-            printf("\nImporting data from %s\n", imgFile);
-//            readFile(imgFile);
-        } else {
-            printf("\nImage file has an invalid name or does not exist.\n");
-            exit(1);
-        }
-    } else {
-        printf("\nNo image file name provided. This is a required field.\n");
-        exit(1);
-    }
+//    if (imgFile != NULL) {
+//        dflen = strlen(imgFile);
+//        if (dflen >= 5
+//            && ((strcmp(&imgFile[dflen - 4], ".bmp") == 0) || (strcmp(&imgFile[dflen - 4], ".ppm") == 0))
+//            && (access(imgFile, F_OK) != -1)) {
+//            printf("\nImporting data from %s\n", imgFile);
+////            readFile(imgFile);
+//        } else {
+//            printf("\nImage file has an invalid name or does not exist.\n");
+//            exit(1);
+//        }
+//    } else {
+//        printf("\nNo image file name provided. This is a required field.\n");
+//        exit(1);
+//    }
 
     // call convert stuff here
+    BmpProcessor* bmpP = BmpProcessor_init();
+    FILE *img = fopen(imgFile, "rb");
+
+    readBMPHeader(img, bmpP->bmpHeader);
+
+    printf("\nsignature: %s\n", bmpP->bmpHeader->signature);
+    printf("size: %d\n", bmpP->bmpHeader->size);
+    printf("reserved 1 and 2: %d %d\n", bmpP->bmpHeader->reserved1, bmpP->bmpHeader->reserved2);
+    printf("offset pixel array: %d\n", bmpP->bmpHeader->offset_pixel_array);
+
+    fclose(img);
 
     return 0;
 }

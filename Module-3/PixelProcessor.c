@@ -3,7 +3,7 @@
 
 struct PixelMatrix* PixelMatrix_init(int imgWidth, int imgHeight) {
     struct PixelMatrix* pixelMatrix = malloc(sizeof(struct PixelMatrix));
-    struct Pixel** pixelArray = malloc((sizeof(struct Pixel) * imgWidth) * (sizeof(struct Pixel) * imgHeight));
+    struct Pixel** pixelArray = malloc((sizeof(struct Pixel) * imgWidth * 4) * (sizeof(struct Pixel) * imgHeight));
     pixelMatrix->width = imgWidth;
     pixelMatrix->height = imgHeight;
     pixelMatrix->pixels = pixelArray;

@@ -2,25 +2,16 @@
 #include <malloc.h>
 #include <string.h>
 
-BmpProcessor* BmpProcessor_init(BMP_Header *bmpHeader, DIB_Header *dibHeader) {
-    BmpProcessor *bmpP = malloc(sizeof (BmpProcessor));
-    bmpP->bmpHeader = bmpHeader;
-    bmpP->dibHeader = dibHeader;
-    return bmpP;
-}
-
-BMP_Header* BMPHeader_init(int iSize, int iOffset) {
+BMP_Header* BMPHeader_init() {
     BMP_Header *bmpHeader = malloc(sizeof(BMP_Header));
     strcpy(bmpHeader->signature, "BM");
     bmpHeader->reserved1 = 0;
     bmpHeader->reserved2 = 0;
 
-    bmpHeader->size = iSize;
-    bmpHeader->offset_pixel_array = iOffset;
     return bmpHeader;
 }
 
-DIB_Header* DIBHeader_init(int size, int imgWidth, int imgHeight, int bitsPerPixel, int imgSize) {
+DIB_Header* DIBHeader_init() {
     DIB_Header *dibHeader = malloc(sizeof(DIB_Header));
     dibHeader->planes = 1;
     dibHeader->compression = 0;
@@ -29,12 +20,19 @@ DIB_Header* DIBHeader_init(int size, int imgWidth, int imgHeight, int bitsPerPix
     dibHeader->colorsInTable = 0;
     dibHeader->importantColors = 0;
 
-    dibHeader->size = size;
-    dibHeader->imgWidth = imgWidth;
-    dibHeader->imgHeight = imgHeight;
-    dibHeader->bitsPerPixel = bitsPerPixel;
-    dibHeader->imgSize = imgSize;
+//    dibHeader->size = size;
+//    dibHeader->imgWidth = imgWidth;
+//    dibHeader->imgHeight = imgHeight;
+//    dibHeader->bitsPerPixel = bitsPerPixel;
+//    dibHeader->imgSize = imgSize;
     return dibHeader;
+}
+
+BmpProcessor* BmpProcessor_init() {
+    BmpProcessor *bmpP = malloc(sizeof (BmpProcessor));
+    bmpP->bmpHeader = BMPHeader_init();
+    bmpP->dibHeader = DIBHeader_init();
+    return bmpP;
 }
 
 void BmpProcessor_clean(BmpProcessor *self) {
@@ -49,7 +47,12 @@ void BmpProcessor_clean(BmpProcessor *self) {
  * @param  header: Pointer to the destination BMP header
  */
 void readBMPHeader(FILE* file, struct BMP_Header* header) {
+    char temp[10];
 
+    fread(&temp, sizeof(char) * 2, 1, file);
+    fread(&header->size, sizeof (int), 1, file);
+    fread(&temp, sizeof(short), 2, file);
+    fread(&header->offset_pixel_array, sizeof(int), 1, file);
 }
 
 /**
