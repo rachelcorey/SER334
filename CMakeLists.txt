@@ -5,7 +5,6 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(SER334
         Module-3/CoreyImageProcessor.c
-        Module-3/BmpProcessor.c
         Module-3/PixelProcessor.c
         Module-3/PpmProcessor.c
         Module-3/BmpProcessor.h

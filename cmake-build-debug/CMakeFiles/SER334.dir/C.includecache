@@ -6,8 +6,20 @@
 
 #IncludeRegexTransform: 
 
-/home/kirry/SER334/Module-2/CoreyCourseReader.c
-stdlib.h
+../Module-3/BmpProcessor.h
+bits/types/FILE.h
+-
+
+/home/kirry/SER334/Module-3/BmpProcessor.c
+BmpProcessor.h
+-
+malloc.h
+-
+string.h
+-
+
+/home/kirry/SER334/Module-3/CoreyImageProcessor.c
+getopt.h
 -
 stdio.h
 -
@@ -15,4 +27,10 @@ string.h
 -
 unistd.h
 -
+stdlib.h
+-
+ctype.h
+-
+BmpProcessor.c
+/home/kirry/SER334/Module-3/BmpProcessor.c
 

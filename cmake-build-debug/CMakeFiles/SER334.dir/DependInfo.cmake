@@ -8,7 +8,6 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/kirry/SER334/Module-3/BmpProcessor.c" "/home/kirry/SER334/cmake-build-debug/CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o"
   "/home/kirry/SER334/Module-3/CoreyImageProcessor.c" "/home/kirry/SER334/cmake-build-debug/CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o"
   "/home/kirry/SER334/Module-3/PixelProcessor.c" "/home/kirry/SER334/cmake-build-debug/CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o"
   "/home/kirry/SER334/Module-3/PpmProcessor.c" "/home/kirry/SER334/cmake-build-debug/CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o"

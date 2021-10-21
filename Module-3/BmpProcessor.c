@@ -2,7 +2,9 @@
 #include <malloc.h>
 #include <string.h>
 
-BMP_Header* BMPHeader_init() {
+
+
+ BMP_Header* BMPHeader_init() {
     BMP_Header *bmpHeader = malloc(sizeof(BMP_Header));
     strcpy(bmpHeader->signature, "BM");
     bmpHeader->reserved1 = 0;
@@ -11,7 +13,7 @@ BMP_Header* BMPHeader_init() {
     return bmpHeader;
 }
 
-DIB_Header* DIBHeader_init() {
+ DIB_Header* DIBHeader_init() {
     DIB_Header *dibHeader = malloc(sizeof(DIB_Header));
     dibHeader->planes = 1;
     dibHeader->compression = 0;
@@ -28,14 +30,14 @@ DIB_Header* DIBHeader_init() {
     return dibHeader;
 }
 
-BmpProcessor* BmpProcessor_init() {
+ BmpProcessor* BmpProcessor_init() {
     BmpProcessor *bmpP = malloc(sizeof (BmpProcessor));
     bmpP->bmpHeader = BMPHeader_init();
     bmpP->dibHeader = DIBHeader_init();
     return bmpP;
 }
 
-void BmpProcessor_clean(BmpProcessor *self) {
+ void BmpProcessor_clean(BmpProcessor *self) {
     free(self->bmpHeader);
     free(self->dibHeader);
 }
@@ -46,8 +48,8 @@ void BmpProcessor_clean(BmpProcessor *self) {
  * @param  file: A pointer to the file being read or written
  * @param  header: Pointer to the destination BMP header
  */
-void readBMPHeader(FILE* file, struct BMP_Header* header) {
-    char temp[10];
+ void readBMPHeader(FILE* file, struct BMP_Header* header) {
+    char temp[10] = "";
 
     fread(&temp, sizeof(char) * 2, 1, file);
     fread(&header->size, sizeof (int), 1, file);
@@ -61,7 +63,7 @@ void readBMPHeader(FILE* file, struct BMP_Header* header) {
  * @param  file: A pointer to the file being read or written
  * @param  header: The header made by makeBMPHeader function
  */
-void writeBMPHeader(FILE* file, struct BMP_Header* header) {
+ void writeBMPHeader(FILE* file, struct BMP_Header* header) {
 
 }
 
@@ -71,7 +73,7 @@ void writeBMPHeader(FILE* file, struct BMP_Header* header) {
  * @param  file: A pointer to the file being read or written
  * @param  header: Pointer to the destination DIB header
  */
-void readDIBHeader(FILE* file, struct DIB_Header* header) {
+ void readDIBHeader(FILE* file, struct DIB_Header* header) {
 
 }
 
@@ -81,7 +83,7 @@ void readDIBHeader(FILE* file, struct DIB_Header* header) {
  * @param  file: A pointer to the file being read or written
  * @param  header: The header made by makeDIBHeader function
  */
-void writeDIBHeader(FILE* file, struct DIB_Header* header) {
+ void writeDIBHeader(FILE* file, struct DIB_Header* header) {
 
 }
 
@@ -94,7 +96,7 @@ void writeDIBHeader(FILE* file, struct DIB_Header* header) {
  * @param  width: Width of the image that this header is for
  * @param  height: Height of the image that this header is for
  */
-void makeBMPHeader(struct BMP_Header* header, int width, int height) {
+ void makeBMPHeader(struct BMP_Header* header, int width, int height) {
 
 }
 
@@ -106,7 +108,7 @@ void makeBMPHeader(struct BMP_Header* header, int width, int height) {
 * @param  width: Width of the image that this header is for
 * @param  height: Height of the image that this header is for
 */
-void makeDIBHeader(struct DIB_Header* header, int width, int height) {
+ void makeDIBHeader(struct DIB_Header* header, int width, int height) {
 
 }
 
@@ -119,7 +121,7 @@ void makeDIBHeader(struct DIB_Header* header, int width, int height) {
  * @param  width: Width of the image that this header is for
  * @param  height: Height of the image that this header is for
  */
-void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
+ void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
 
 }
 
@@ -132,6 +134,6 @@ void readPixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
  * @param  width: Width of the image that this header is for
  * @param  height: Height of the image that this header is for
  */
-void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
+ void writePixelsBMP(FILE* file, struct Pixel** pArr, int width, int height) {
 
 }

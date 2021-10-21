@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o"
   "CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o"
   "CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o"
   "CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o"

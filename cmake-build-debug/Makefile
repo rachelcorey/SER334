@@ -129,30 +129,6 @@ SER334/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/build
 .PHONY : SER334/fast
 
-Module-3/BmpProcessor.o: Module-3/BmpProcessor.c.o
-.PHONY : Module-3/BmpProcessor.o
-
-# target to build an object file
-Module-3/BmpProcessor.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o
-.PHONY : Module-3/BmpProcessor.c.o
-
-Module-3/BmpProcessor.i: Module-3/BmpProcessor.c.i
-.PHONY : Module-3/BmpProcessor.i
-
-# target to preprocess a source file
-Module-3/BmpProcessor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.i
-.PHONY : Module-3/BmpProcessor.c.i
-
-Module-3/BmpProcessor.s: Module-3/BmpProcessor.c.s
-.PHONY : Module-3/BmpProcessor.s
-
-# target to generate assembly for a file
-Module-3/BmpProcessor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.s
-.PHONY : Module-3/BmpProcessor.c.s
-
 Module-3/CoreyImageProcessor.o: Module-3/CoreyImageProcessor.c.o
 .PHONY : Module-3/CoreyImageProcessor.o
 
@@ -234,9 +210,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SER334"
-	@echo "... Module-3/BmpProcessor.o"
-	@echo "... Module-3/BmpProcessor.i"
-	@echo "... Module-3/BmpProcessor.s"
 	@echo "... Module-3/CoreyImageProcessor.o"
 	@echo "... Module-3/CoreyImageProcessor.i"
 	@echo "... Module-3/CoreyImageProcessor.s"

@@ -30,47 +30,47 @@ int validateOutputType(char* type) {
 int main(int argc, char *argv[]) {
     char *imgFile;
     char *ptr;
-    long redShift = 0;
-    long blueShift = 0;
-    long greenShift = 0;
-    char outputType[3] = "";
-
-    int opt;
-    while ((opt = getopt(argc, argv, ":o:r:g:b:t:")) != -1) {
-        switch (opt) {
-            case 'o':
-                imgFile = optarg;
-                break;
-            case 'r':
-                if (validateInt(optarg)) {
-                    redShift = strtol(optarg, &ptr, 10);
-                }
-                break;
-            case 'g':
-                if (validateInt(optarg)) {
-                    greenShift = strtol(optarg, &ptr, 10);
-                }
-                break;
-            case 'b':
-                if (validateInt(optarg)) {
-                    blueShift = strtol(optarg, &ptr, 10);
-                }
-                break;
-            case 't':
-                if (validateOutputType(optarg)) {
-                    strcpy(outputType, optarg);
-                }
-                break;
-            case ':':
-                printf("\noption needs a value");
-                break;
-            case '?':
-                printf("\nunknown option: %c", optopt);
-                break;
-        }
-    }
-
-    int dflen;
+//    long redShift = 0;
+//    long blueShift = 0;
+//    long greenShift = 0;
+//    char outputType[3] = "";
+//
+//    int opt;
+//    while ((opt = getopt(argc, argv, ":o:r:g:b:t:")) != -1) {
+//        switch (opt) {
+//            case 'o':
+//                imgFile = optarg;
+//                break;
+//            case 'r':
+//                if (validateInt(optarg)) {
+//                    redShift = strtol(optarg, &ptr, 10);
+//                }
+//                break;
+//            case 'g':
+//                if (validateInt(optarg)) {
+//                    greenShift = strtol(optarg, &ptr, 10);
+//                }
+//                break;
+//            case 'b':
+//                if (validateInt(optarg)) {
+//                    blueShift = strtol(optarg, &ptr, 10);
+//                }
+//                break;
+//            case 't':
+//                if (validateOutputType(optarg)) {
+//                    strcpy(outputType, optarg);
+//                }
+//                break;
+//            case ':':
+//                printf("\noption needs a value");
+//                break;
+//            case '?':
+//                printf("\nunknown option: %c", optopt);
+//                break;
+//        }
+//    }
+//
+//    int dflen;
 //    if (imgFile != NULL) {
 //        dflen = strlen(imgFile);
 //        if (dflen >= 5
@@ -89,7 +89,9 @@ int main(int argc, char *argv[]) {
 
     // call convert stuff here
     BmpProcessor* bmpP = BmpProcessor_init();
-    FILE *img = fopen(imgFile, "rb");
+    const char fName[25] = "../Module-3/wb.bmp";
+    FILE *img = fopen(fName, "rb");
+
 
     readBMPHeader(img, bmpP->bmpHeader);
 
