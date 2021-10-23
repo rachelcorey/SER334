@@ -181,7 +181,6 @@ void readPixelsPPM(FILE* file, struct PixelProcessor *pP, int width, int height)
  * @param  height: Height of the image that this header is for
  */
 void writePixelsPPM(FILE* file, struct PixelProcessor *pP) {
-
     for (int i = 0; i < pP->height; ++i) {
         for (int j = 0; j < pP->width; ++j) {
 

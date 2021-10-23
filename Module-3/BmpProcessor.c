@@ -65,8 +65,8 @@ BMP_Header* BMPHeader_init() {
     fwrite(&header->offset_pixel_array, sizeof(int), 1, file);
 
 
-//    printf("printed: %d, %d, %d, %d\n", bmpP->bmpHeader->size, bmpP->bmpHeader->reserved1,
-//           bmpP->bmpHeader->reserved2, bmpP->bmpHeader->offset_pixel_array);
+//    printf("printed: %d, %d, %d, %d\n", header->size, header->reserved1,
+//           header->reserved2, header->offset_pixel_array);
 }
 
 /**
@@ -107,12 +107,12 @@ BMP_Header* BMPHeader_init() {
     fwrite(&header->colorsInTable, sizeof(int), 1, file);
     fwrite(&header->importantColors, sizeof(int), 1, file);
 
-
-//    printf("printed: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", bmpP->dibHeader->size, bmpP->dibHeader->imgWidth,
-//           bmpP->dibHeader->imgHeight, bmpP->dibHeader->planes, bmpP->dibHeader->bitsPerPixel,
-//           bmpP->dibHeader->compression,
-//           bmpP->dibHeader->imgSize, bmpP->dibHeader->xPixelsPerMeter, bmpP->dibHeader->yPixelsPerMeter,
-//           bmpP->dibHeader->colorsInTable, bmpP->dibHeader->importantColors);
+//
+//    printf("printed: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", header->size, header->imgWidth,
+//           header->imgHeight, header->planes, header->bitsPerPixel,
+//           header->compression,
+//           header->imgSize, header->xPixelsPerMeter, header->yPixelsPerMeter,
+//           header->colorsInTable, header->importantColors);
 }
 
 /**
@@ -125,10 +125,7 @@ BMP_Header* BMPHeader_init() {
  * @param  height: Height of the image that this header is for
  */
  void makeBMPHeader(struct BMP_Header* header, int width, int height) {
-
-
-
-
+    header->offset_pixel_array = 54;
 }
 
 
@@ -140,9 +137,8 @@ BMP_Header* BMPHeader_init() {
 * @param  height: Height of the image that this header is for
 */
  void makeDIBHeader(struct DIB_Header* header, int width, int height) {
-
-
-
-
+    header->bitsPerPixel = 24;
+    header->imgWidth = width;
+    header->imgHeight = height;
 }
 

@@ -39,6 +39,8 @@ ctype.h
 -
 limits.h
 -
+sys/stat.h
+-
 BmpProcessor.c
 /home/kirry/SER334/Module-3/BmpProcessor.c
 PixelProcessor.c

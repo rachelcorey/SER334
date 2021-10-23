@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <limits.h>
+#include <sys/stat.h>
 #include "BmpProcessor.c"
 #include "PixelProcessor.c"
 #include "PpmProcessor.c"
@@ -136,33 +137,70 @@ int main(int argc, char *argv[]) {
 //    fclose(output);
 
 
-// ******
-    // call convert BMP stuff here
-    BmpProcessor *bmpP = BmpProcessor_init();
-    const char fName[25] = "../Module-3/ttt.bmp";
+
+// *******
+//     PPM to BMP stuff here
+    PpmProcessor *ppmP = PpmProcessor_init();
+    const char fName[30] = "../Module-3/nehoymenoy.ppm";
     FILE *img = fopen(fName, "rb");
 
-    char h[45] = "";
+    readPPMHeader(img, ppmP->ppmHeader);
+    fseek(img, 4, SEEK_CUR);
 
-    readBMPHeader(img, bmpP->bmpHeader);
-    readDIBHeader(img, bmpP->dibHeader);
+    int width = ppmP->ppmHeader->imgWidth;
+    int height =ppmP->ppmHeader->imgHeight;
 
-    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
-    int pad = calculatePadding(pP->width);
-    readPixelsBMP(img, pP, pad);
+    int dest = fileno(img);
+    struct stat data;
+    fstat(dest, &data);
+    int size = data.st_size;
+    BmpProcessor *bmP = BmpProcessor_init();
+    makeBMPHeader(bmP->bmpHeader, width, height);
+    bmP->bmpHeader->size = size;
+    makeDIBHeader(bmP->dibHeader, width, height);
+    bmP->dibHeader->imgSize = size;
 
+    PixelProcessor *pP = PixelProcessor_init(width, height);
+    readPixelsPPM(img, pP, width, height);
     fclose(img);
-
     FILE *output = fopen("../Module-3/output.bmp", "wb");
 
-    writeBMPHeader(output,bmpP->bmpHeader);
-    writeDIBHeader(output,bmpP->dibHeader);
-    writePixelsBMP(output,pP,pad);
+    writeBMPHeader(output, bmP->bmpHeader);
+    writeDIBHeader(output,bmP->dibHeader);
 
-    BmpProcessor_clean(bmpP);
+    int pad = calculatePadding(pP->width);
+    writePixelsBMP(output,pP, pad);
 
-//    PpmProcessor_clean(ppmP);
-    PixelProcessor_clean(pP);
+//    fclose(output);
+
+
+// ******
+    // call convert BMP stuff here
+//    BmpProcessor *bmpP = BmpProcessor_init();
+//    const char fName[25] = "../Module-3/ttt.bmp";
+//    FILE *img = fopen(fName, "rb");
+//
+//    char h[45] = "";
+//
+//    readBMPHeader(img, bmpP->bmpHeader);
+//    readDIBHeader(img, bmpP->dibHeader);
+//
+//    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
+//    int pad = calculatePadding(pP->width);
+//    readPixelsBMP(img, pP, pad);
+//
+//    fclose(img);
+//
+//    FILE *output = fopen("../Module-3/output.bmp", "wb");
+//
+//    writeBMPHeader(output,bmpP->bmpHeader);
+//    writeDIBHeader(output,bmpP->dibHeader);
+//    writePixelsBMP(output,pP,pad);
+//
+//    BmpProcessor_clean(bmpP);
+//
+////    PpmProcessor_clean(ppmP);
+//    PixelProcessor_clean(pP);
 
 // *****
 // bmp to ppm here
