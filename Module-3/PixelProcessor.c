@@ -35,20 +35,6 @@ void readPixelsBMP(FILE* file, struct PixelProcessor *self, int paddingBytes) {
             fseek(file, paddingBytes, SEEK_CUR);
         }
     }
-//    for (int i = 0; i < self->height; ++i) {
-//        for (int j = 0; j < self->width; ++j) {
-//            unsigned char b, g, r;
-//            fread(&b, sizeof(char), 1, file);
-//            fread(&g, sizeof(char), 1, file);
-//            fread(&r, sizeof(char), 1, file);
-//            self->pixels[i * self->height + j].red = r;
-//            self->pixels[i * self->height + j].green = g;
-//            self->pixels[i * self->height + j].blue = b;
-//        }
-//        if (paddingBytes > 0) {
-//            fseek(file, paddingBytes, SEEK_CUR);
-//        }
-//    }
 }
 
 
@@ -84,7 +70,6 @@ void colorShiftPixels(struct PixelProcessor *pP, int rShift, int gShift, int bSh
     }
 }
 
-
 /**
  * write Pixels from BMP file based on width and height.
  *
@@ -96,8 +81,8 @@ void writePixelsBMP(FILE* file, PixelProcessor *pP, int pad) {
     for (int i = 0; i < pad; ++i) {
         p[i] = "0";
     }
-    for (int i = 0; i < pP->height; ++i) {
-        for (int j = 0; j < pP->width; ++j) {
+    for (int i = pP->width; i > 0; --i) {
+        for (int j = 0; j < pP->height; ++j) {
             fwrite(&pP->pixels[i * pP->height + j].blue, sizeof(unsigned char), 1, file);
             fwrite(&pP->pixels[i * pP->height + j].green, sizeof(unsigned char), 1, file);
             fwrite(&pP->pixels[i * pP->height + j].red, sizeof(unsigned char), 1, file);

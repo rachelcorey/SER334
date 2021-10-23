@@ -182,20 +182,6 @@ void readPixelsPPM(FILE* file, struct PixelProcessor *pP, int width, int height)
  */
 void writePixelsPPM(FILE* file, struct PixelProcessor *pP) {
 
-//    for (int i = pP->height - 1 ; i > 0; --i) {
-//        for (int j = pP->width - 1; j > 0; --j) {
-//
-//            fwrite(&pP->pixels[j*pP->height+i].red, 1, 1, file);
-//
-//            fwrite(&pP->pixels[j*pP->height+i].green, 1, 1, file);
-//
-//            fwrite(&pP->pixels[j*pP->height+i].blue, 1, 1, file);
-//
-//        }
-//        if (pad > 0) {
-//            fwrite(&p, sizeof(char) * pad, 1, file);
-//        }
-//    }
     for (int i = 0; i < pP->height; ++i) {
         for (int j = 0; j < pP->width; ++j) {
 

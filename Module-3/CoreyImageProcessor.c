@@ -138,31 +138,31 @@ int main(int argc, char *argv[]) {
 
 // ******
     // call convert BMP stuff here
-//    BmpProcessor *bmpP = BmpProcessor_init();
-//    const char fName[25] = "../Module-3/wb.bmp";
-//    FILE *img = fopen(fName, "rb");
-//
-//    char h[45] = "";
-//
-//    readBMPHeader(img, bmpP->bmpHeader);
-//    readDIBHeader(img, bmpP->dibHeader);
-//
-//    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
-//    int pad = calculatePadding(pP->width);
-//    readPixelsBMP(img, pP, pad);
-//
-//    fclose(img);
-//
-//    FILE *output = fopen("../Module-3/output.bmp", "wb");
-//
-//    writeBMPHeader(output,bmpP->bmpHeader);
-//    writeDIBHeader(output,bmpP->dibHeader);
-//    writePixelsBMP(output,pP,pad);
-//
-//    BmpProcessor_clean(bmpP);
-//
-////    PpmProcessor_clean(ppmP);
-//    PixelProcessor_clean(pP);
+    BmpProcessor *bmpP = BmpProcessor_init();
+    const char fName[25] = "../Module-3/ttt.bmp";
+    FILE *img = fopen(fName, "rb");
+
+    char h[45] = "";
+
+    readBMPHeader(img, bmpP->bmpHeader);
+    readDIBHeader(img, bmpP->dibHeader);
+
+    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
+    int pad = calculatePadding(pP->width);
+    readPixelsBMP(img, pP, pad);
+
+    fclose(img);
+
+    FILE *output = fopen("../Module-3/output.bmp", "wb");
+
+    writeBMPHeader(output,bmpP->bmpHeader);
+    writeDIBHeader(output,bmpP->dibHeader);
+    writePixelsBMP(output,pP,pad);
+
+    BmpProcessor_clean(bmpP);
+
+//    PpmProcessor_clean(ppmP);
+    PixelProcessor_clean(pP);
 
 // *****
 // bmp to ppm here
@@ -186,7 +186,6 @@ int main(int argc, char *argv[]) {
 //
 //
 //    PpmProcessor *ppmP = PpmProcessor_init();
-//    colorShiftPixels(pP, 56, 78, 45);
 //    FILE *output = fopen("../Module-3/output.ppm", "wb");
 //
 //    makePPMHeader(ppmP->ppmHeader, width, height);
