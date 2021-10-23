@@ -140,36 +140,37 @@ int main(int argc, char *argv[]) {
 
 // *******
 //     PPM to BMP stuff here
-    PpmProcessor *ppmP = PpmProcessor_init();
-    const char fName[30] = "../Module-3/nehoymenoy.ppm";
-    FILE *img = fopen(fName, "rb");
-
-    readPPMHeader(img, ppmP->ppmHeader);
-    fseek(img, 4, SEEK_CUR);
-
-    int width = ppmP->ppmHeader->imgWidth;
-    int height =ppmP->ppmHeader->imgHeight;
-
-    int dest = fileno(img);
-    struct stat data;
-    fstat(dest, &data);
-    int size = data.st_size;
-    BmpProcessor *bmP = BmpProcessor_init();
-    makeBMPHeader(bmP->bmpHeader, width, height);
-    bmP->bmpHeader->size = size;
-    makeDIBHeader(bmP->dibHeader, width, height);
-    bmP->dibHeader->imgSize = size;
-
-    PixelProcessor *pP = PixelProcessor_init(width, height);
-    readPixelsPPM(img, pP, width, height);
-    fclose(img);
-    FILE *output = fopen("../Module-3/output.bmp", "wb");
-
-    writeBMPHeader(output, bmP->bmpHeader);
-    writeDIBHeader(output,bmP->dibHeader);
-
-    int pad = calculatePadding(pP->width);
-    writePixelsBMP(output,pP, pad);
+//    PpmProcessor *ppmP = PpmProcessor_init();
+//    const char fName[30] = "../Module-3/nehoymenoy.ppm";
+//    FILE *img = fopen(fName, "rb");
+//
+//    readPPMHeader(img, ppmP->ppmHeader);
+//    fseek(img, 4, SEEK_CUR);
+//
+//    int width = ppmP->ppmHeader->imgWidth;
+//    int height =ppmP->ppmHeader->imgHeight;
+//
+//    int dest = fileno(img);
+//    struct stat data;
+//    fstat(dest, &data);
+//    int size = data.st_size;
+//    BmpProcessor *bmP = BmpProcessor_init();
+//    makeBMPHeader(bmP->bmpHeader, width, height);
+//    bmP->bmpHeader->size = size;
+//    makeDIBHeader(bmP->dibHeader, width, height);
+//    bmP->dibHeader->imgSize = size;
+//
+//    PixelProcessor *pP = PixelProcessor_init(width, height);
+//    readPixelsPPM(img, pP, width, height);
+//
+//    fclose(img);
+//    FILE *output = fopen("../Module-3/output.bmp", "wb");
+//
+//    writeBMPHeader(output, bmP->bmpHeader);
+//    writeDIBHeader(output,bmP->dibHeader);
+//
+//    int pad = calculatePadding(pP->width);
+//    writePixelsBMP(output,pP, pad);
 
 //    fclose(output);
 
@@ -204,39 +205,39 @@ int main(int argc, char *argv[]) {
 
 // *****
 // bmp to ppm here
-//    BmpProcessor *bmpP = BmpProcessor_init();
-//    const char fName[25] = "../Module-3/ttt.bmp";
-//    FILE *img = fopen(fName, "rb");
-//
-//    char h[45] = "";
-//
-//    readBMPHeader(img, bmpP->bmpHeader);
-//    readDIBHeader(img, bmpP->dibHeader);
-//
-//    int width = bmpP->dibHeader->imgWidth;
-//    int height = bmpP->dibHeader->imgHeight;
-//    PixelProcessor *pP = PixelProcessor_init(width, height);
-//
-//    int pad = calculatePadding(pP->width);
-//    readPixelsBMP(img, pP, pad);
-//
-//    fclose(img);
-//
-//
-//    PpmProcessor *ppmP = PpmProcessor_init();
-//    FILE *output = fopen("../Module-3/output.ppm", "wb");
-//
-//    makePPMHeader(ppmP->ppmHeader, width, height);
-//    writePPMHeader(output,ppmP->ppmHeader);
-//
-//    writePixelsPPM(output,pP);
-//    fclose(output);
-//
-//
-//    BmpProcessor_clean(bmpP);
-//
-////    PpmProcessor_clean(ppmP);
-//    PixelProcessor_clean(pP);
+    BmpProcessor *bmpP = BmpProcessor_init();
+    const char fName[25] = "../Module-3/ttt.bmp";
+    FILE *img = fopen(fName, "rb");
+
+    char h[45] = "";
+
+    readBMPHeader(img, bmpP->bmpHeader);
+    readDIBHeader(img, bmpP->dibHeader);
+
+    int width = bmpP->dibHeader->imgWidth;
+    int height = bmpP->dibHeader->imgHeight;
+    PixelProcessor *pP = PixelProcessor_init(width, height);
+
+    int pad = calculatePadding(pP->width);
+    readPixelsBMP(img, pP, pad);
+    colorShiftPixels(pP, 56,78,45);
+
+    fclose(img);
+
+    PpmProcessor *ppmP = PpmProcessor_init();
+    FILE *output = fopen("../Module-3/output.ppm", "wb");
+
+    makePPMHeader(ppmP->ppmHeader, width, height);
+    writePPMHeader(output,ppmP->ppmHeader);
+
+    writePixelsPPM(output,pP);
+    fclose(output);
+
+
+    BmpProcessor_clean(bmpP);
+
+    PpmProcessor_clean(ppmP);
+    PixelProcessor_clean(pP);
 
 //    if (output != NULL) {
 //        fclose(output);
