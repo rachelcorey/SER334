@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 
     // call convert stuff here
     BmpProcessor* bmpP = BmpProcessor_init();
-    const char fName[25] = "../Module-3/ttt.bmp";
+    const char fName[25] = "../Module-3/wb.bmp";
     FILE *img = fopen(fName, "rb");
 
     char h[45] ="";
@@ -102,15 +102,15 @@ int main(int argc, char *argv[]) {
     readPixelsBMP(img, pP);
 
     fclose(img);
-    FILE *output = fopen("../Module-3/output.bmp", "wb");
+    FILE *output = fopen("../Module-3/output2.bmp", "wb");
     fwrite("BM", sizeof(char) * 2, 1, output);
     fwrite(&bmpP->bmpHeader->size, sizeof(int), 1, output);
     fwrite(&bmpP->bmpHeader->reserved1, sizeof(short), 1, output);
     fwrite(&bmpP->bmpHeader->reserved2, sizeof(short), 1, output);
     fwrite(&bmpP->bmpHeader->offset_pixel_array, sizeof(int), 1, output);
 
-//    printf("printed: %d, %d, %d, %d\n", bmpP->bmpHeader->size, bmpP->bmpHeader->reserved1,
-//           bmpP->bmpHeader->reserved2, bmpP->bmpHeader->offset_pixel_array);
+    printf("printed: %d, %d, %d, %d\n", bmpP->bmpHeader->size, bmpP->bmpHeader->reserved1,
+           bmpP->bmpHeader->reserved2, bmpP->bmpHeader->offset_pixel_array);
 
     fwrite(&bmpP->dibHeader->size, sizeof(int), 1, output);
     fwrite(&bmpP->dibHeader->imgWidth, sizeof(int), 1, output);
@@ -124,17 +124,17 @@ int main(int argc, char *argv[]) {
     fwrite(&bmpP->dibHeader->colorsInTable, sizeof (int), 1, output);
     fwrite(&bmpP->dibHeader->importantColors, sizeof(int), 1, output);
 
-//    printf("printed: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", bmpP->dibHeader->size, bmpP->dibHeader->imgWidth,
-//           bmpP->dibHeader->imgHeight, bmpP->dibHeader->planes, bmpP->dibHeader->bitsPerPixel, bmpP->dibHeader->compression,
-//           bmpP->dibHeader->imgSize, bmpP->dibHeader->xPixelsPerMeter, bmpP->dibHeader->yPixelsPerMeter,
-//           bmpP->dibHeader->colorsInTable, bmpP->dibHeader->importantColors);
+    printf("printed: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", bmpP->dibHeader->size, bmpP->dibHeader->imgWidth,
+           bmpP->dibHeader->imgHeight, bmpP->dibHeader->planes, bmpP->dibHeader->bitsPerPixel, bmpP->dibHeader->compression,
+           bmpP->dibHeader->imgSize, bmpP->dibHeader->xPixelsPerMeter, bmpP->dibHeader->yPixelsPerMeter,
+           bmpP->dibHeader->colorsInTable, bmpP->dibHeader->importantColors);
 
 
     for (int i = 0; i < bmpP->dibHeader->imgHeight; ++i) {
         for (int j = 0; j < bmpP->dibHeader->imgWidth; ++j) {
-            fwrite(&pP->pixels[i][j].blue, sizeof(unsigned char), 1, output);
-            fwrite(&pP->pixels[i][j].green, sizeof(unsigned char), 1, output);
-            fwrite(&pP->pixels[i][j].red, sizeof(unsigned char), 1, output);
+            fwrite(&pP->pixels[i * pP->height + j].blue, sizeof(unsigned char), 1, output);
+            fwrite(&pP->pixels[i * pP->height + j].green, sizeof(unsigned char), 1, output);
+            fwrite(&pP->pixels[i * pP->height + j].red, sizeof(unsigned char), 1, output);
         }
     }
 
@@ -142,5 +142,6 @@ int main(int argc, char *argv[]) {
     fclose(output);
 
     BmpProcessor_clean(bmpP);
+    PixelProcessor_clean(pP);
     return 0;
 }

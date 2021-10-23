@@ -7,7 +7,7 @@ struct Pixel{
 };
 
 typedef struct PixelProcessor {
-    struct Pixel** pixels;
+    struct Pixel* pixels;
     int width;
     int height;
 } PixelProcessor;

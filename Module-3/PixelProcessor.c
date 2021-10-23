@@ -3,55 +3,34 @@
 
 struct PixelProcessor* PixelProcessor_init(int imgWidth, int imgHeight) {
     PixelProcessor* pixelProcessor = malloc(sizeof(PixelProcessor));
-    struct Pixel** pixelArray = malloc(((sizeof(struct Pixel)) * imgWidth * 4));
-    for (int i = 0; i < imgHeight; ++i) {
-        pixelArray[i] = malloc((sizeof(struct Pixel)) * imgHeight);
-    }
+    pixelProcessor->pixels = calloc(imgHeight * imgWidth, sizeof(struct Pixel));
     pixelProcessor->width = imgWidth;
     pixelProcessor->height = imgHeight;
-    pixelProcessor->pixels = pixelArray;
     return pixelProcessor;
 }
 
-struct Pixel* Pixel_init(unsigned char blue, unsigned char green, unsigned char red) {
-    struct Pixel* pixel = malloc(sizeof (struct Pixel));
-    pixel->red = red;
-    pixel->green = green;
-    pixel->blue = blue;
-    return pixel;
+void PixelProcessor_clean(PixelProcessor *self) {
+    free(self->pixels);
+    free(self);
 }
-
-void buildPixelArray(PixelProcessor *self, struct Pixel* pix, int x, int y) {
-    self->pixels[x][y] = *pix;
-}
-
 
 /**
  * read Pixels from BMP file based on width and height.
  *
  * @param  file: A pointer to the file being read or written
  */
-void readPixelsBMP(FILE* file, struct PixelProcessor *pixelProcessor) {
-    for (int i = 0; i < pixelProcessor->height; ++i) {
-        for (int j = 0; j < pixelProcessor->width; ++j) {
+void readPixelsBMP(FILE* file, struct PixelProcessor *self) {
+    for (int i = 0; i < self->height; ++i) {
+        for (int j = 0; j < self->width; ++j) {
             unsigned char b, g, r;
             fread(&b, sizeof(char), 1, file);
             fread(&g, sizeof(char), 1, file);
             fread(&r, sizeof(char), 1, file);
-            struct Pixel *p = Pixel_init(b, g, r);
-            buildPixelArray(pixelProcessor, p, i, j);
+            self->pixels[i * self->height + j].red = r;
+            self->pixels[i * self->height + j].green = g;
+            self->pixels[i * self->height + j].blue = b;
         }
     }
-
-
-//    for (int i = 0; i < pixelProcessor->height; ++i) {
-//        for (int j = 0; j < pixelProcessor->width; ++j) {
-//            printf("[r:%d b:%d: g:%d] ", pixelProcessor->pixels[i][j].red, pixelProcessor->pixels[i][j].blue, pixelProcessor->pixels[i][j].green);
-//        }
-//        printf("\n end of row \n");
-//        fseek(file, 4, SEEK_CUR);
-//    }
-}
 
 /**
  * Shift color of Pixel array. The dimension of the array is width * height. The shift value of RGB is
@@ -64,6 +43,7 @@ void readPixelsBMP(FILE* file, struct PixelProcessor *pixelProcessor) {
  * @param  gShift: the shift value of color g shift
  * @param  bShift: the shift value of color b shift
  */
-void colorShiftPixels(struct Pixel** pArr, int width, int height, int rShift, int gShift, int bShift) {
+    void colorShiftPixels(struct Pixel **pArr, int width, int height, int rShift, int gShift, int bShift) {
 
+    }
 }
