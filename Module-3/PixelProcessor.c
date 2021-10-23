@@ -33,7 +33,7 @@ void buildPixelArray(PixelProcessor *self, struct Pixel* pix, int x, int y) {
  */
 void readPixelsBMP(FILE* file, struct PixelProcessor *pixelProcessor) {
     for (int i = 0; i < pixelProcessor->height; ++i) {
-        for (int j = 0; j < pixelProcessor->width + 1; ++j) {
+        for (int j = 0; j < pixelProcessor->width; ++j) {
             unsigned char b, g, r;
             fread(&b, sizeof(char), 1, file);
             fread(&g, sizeof(char), 1, file);
