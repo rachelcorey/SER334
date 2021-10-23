@@ -43,7 +43,7 @@ void makePPMHeader(struct PPM_Header* header, int width, int height);
  * @param  width: Width of the image that this header is for
  * @param  height: Height of the image that this header is for
  */
-void readPixelsPPM(FILE* file, struct Pixel** pArr, int width, int height);
+void readPixelsPPM(FILE* file, struct PixelProcessor *pP, int width, int height);
 
 /**
  * write Pixels from PPM file based on width and height.
@@ -53,4 +53,4 @@ void readPixelsPPM(FILE* file, struct Pixel** pArr, int width, int height);
  * @param  width: Width of the image that this header is for
  * @param  height: Height of the image that this header is for
  */
-void writePixelsPPM(FILE* file, struct Pixel** pArr, int width, int height);
+void writePixelsPPM(FILE* file, struct PixelProcessor *pP);

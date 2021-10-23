@@ -37,7 +37,7 @@ void readPixelsBMP(FILE* file, struct PixelProcessor *self, int paddingBytes) {
 }
 
 
-unsigned char clamp(int color, int mod) {
+unsigned char clamp(unsigned char color, int mod) {
     if (color + mod < 0) {
         color = 0;
     } else if (color + mod > 255) {
