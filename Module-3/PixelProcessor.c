@@ -19,7 +19,7 @@ void PixelProcessor_clean(PixelProcessor *self) {
  *
  * @param  file: A pointer to the file being read or written
  */
-void readPixelsBMP(FILE* file, struct PixelProcessor *self) {
+void readPixelsBMP(FILE* file, struct PixelProcessor *self, int paddingBytes) {
     for (int i = 0; i < self->height; ++i) {
         for (int j = 0; j < self->width; ++j) {
             unsigned char b, g, r;
@@ -29,6 +29,9 @@ void readPixelsBMP(FILE* file, struct PixelProcessor *self) {
             self->pixels[i * self->height + j].red = r;
             self->pixels[i * self->height + j].green = g;
             self->pixels[i * self->height + j].blue = b;
+        }
+        if (paddingBytes > 0) {
+            fseek(file, paddingBytes, SEEK_CUR);
         }
     }
 
