@@ -1,9 +1,13 @@
-struct PPM_Header{
+typedef struct PPM_Header{
     char id[2];
     int imgWidth;
     int imgHeight;
     int maxColorValue;
-};
+} PPM_Header;
+
+typedef struct PpmProcessor {
+    struct PPM_Header *ppmHeader;
+} PpmProcessor;
 
 /**
  * read PPM header of a file. Useful for converting files from BMP to PPM.

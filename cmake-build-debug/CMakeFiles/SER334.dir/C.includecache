@@ -14,6 +14,8 @@ bits/types/FILE.h
 malloc.h
 -
 
+../Module-3/PpmProcessor.h
+
 /home/kirry/SER334/Module-3/BmpProcessor.c
 BmpProcessor.h
 -
@@ -39,10 +41,20 @@ BmpProcessor.c
 /home/kirry/SER334/Module-3/BmpProcessor.c
 PixelProcessor.c
 /home/kirry/SER334/Module-3/PixelProcessor.c
+PpmProcessor.c
+/home/kirry/SER334/Module-3/PpmProcessor.c
 
 /home/kirry/SER334/Module-3/PixelProcessor.c
 PixelProcessor.h
 -
 malloc.h
+-
+
+/home/kirry/SER334/Module-3/PpmProcessor.c
+PpmProcessor.h
+-
+malloc.h
+-
+string.h
 -
 

@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include "BmpProcessor.c"
 #include "PixelProcessor.c"
+#include "PpmProcessor.c"
 
 
 int validateInt(char *optInt) {
@@ -108,28 +109,48 @@ int main(int argc, char *argv[]) {
 //    }
 
     // call convert stuff here
-    BmpProcessor *bmpP = BmpProcessor_init();
-    const char fName[25] = "../Module-3/wb.bmp";
-    FILE *img = fopen(fName, "rb");
+    PpmProcessor *ppmP = PpmProcessor_init();
+    const char fName[30] = "../Module-3/nehoymenoy.ppm";
+    FILE *img = fopen(fName, "r");
 
-    char h[45] = "";
+    readPPMHeader(img, ppmP->ppmHeader);
 
-    readBMPHeader(img, bmpP->bmpHeader);
-    readDIBHeader(img, bmpP->dibHeader);
+    PpmProcessor_clean(ppmP);
 
-    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
-    int pad = calculatePadding(pP->width);
-    readPixelsBMP(img, pP, pad);
+//    printf("ppmheader:\n");
+//    printf("magic number: %s\n", ppmP->ppmHeader->id);
+//    printf("img width: %d \n", ppmP->ppmHeader->imgWidth);
+//    printf("img height: %d \n", ppmP->ppmHeader->imgHeight);
+//    printf("max color value: %d\n", ppmP->ppmHeader->maxColorValue);
 
+
+
+
+
+//    BmpProcessor *bmpP = BmpProcessor_init();
+//    const char fName[25] = "../Module-3/wb.bmp";
+//    FILE *img = fopen(fName, "rb");
+//
+//    char h[45] = "";
+//
+//    readBMPHeader(img, bmpP->bmpHeader);
+//    readDIBHeader(img, bmpP->dibHeader);
+//
+//    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
+//    int pad = calculatePadding(pP->width);
+//    readPixelsBMP(img, pP, pad);
+//
     fclose(img);
+//
+//    FILE *output = fopen("../Module-3/output2.bmp", "wb");
+//    writeBMPHeader(output,bmpP->bmpHeader);
+//    writeDIBHeader(output,bmpP->dibHeader);
+//    writePixelsBMP(output,pP,pad);
+//
+//    BmpProcessor_clean(bmpP);
+//    PixelProcessor_clean(pP);
 
-    FILE *output = fopen("../Module-3/output2.bmp", "wb");
-    writeBMPHeader(output,bmpP->bmpHeader);
-    writeDIBHeader(output,bmpP->dibHeader);
-    writePixelsBMP(output,pP,pad);
-
-    BmpProcessor_clean(bmpP);
-    PixelProcessor_clean(pP);
+//    fclose(output);
     return 0;
 }
 
