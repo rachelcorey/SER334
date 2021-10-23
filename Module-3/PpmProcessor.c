@@ -139,6 +139,19 @@ void writePPMHeader(FILE* file, struct PPM_Header* header) {
     fwrite("\n", sizeof(char), 1, file);
 }
 
+
+/**
+ * make PPM header based on width and height. Useful for converting files from BMP to PPM.
+ *
+ * @param  header: Pointer to the destination PPM header
+ * @param  width: Width of the image that this header is for
+ * @param  height: Height of the image that this header is for
+ */
+void makePPMHeader(struct PPM_Header* header, int width, int height) {
+    header->imgWidth = width;
+    header->imgHeight = height;
+}
+
 /**
  * read Pixels from PPM file based on width and height.
  *
@@ -169,6 +182,20 @@ void readPixelsPPM(FILE* file, struct PixelProcessor *pP, int width, int height)
  */
 void writePixelsPPM(FILE* file, struct PixelProcessor *pP) {
 
+//    for (int i = pP->height - 1 ; i > 0; --i) {
+//        for (int j = pP->width - 1; j > 0; --j) {
+//
+//            fwrite(&pP->pixels[j*pP->height+i].red, 1, 1, file);
+//
+//            fwrite(&pP->pixels[j*pP->height+i].green, 1, 1, file);
+//
+//            fwrite(&pP->pixels[j*pP->height+i].blue, 1, 1, file);
+//
+//        }
+//        if (pad > 0) {
+//            fwrite(&p, sizeof(char) * pad, 1, file);
+//        }
+//    }
     for (int i = 0; i < pP->height; ++i) {
         for (int j = 0; j < pP->width; ++j) {
 
