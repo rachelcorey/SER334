@@ -21,7 +21,7 @@ void PpmProcessor_clean(PpmProcessor *self) {
     free(self);
 }
 
-int readDim(FILE* file) {
+int readNumber(FILE* file) {
     int dim = 0;
     char *ptr;
     char imgDim[4] = "";
@@ -47,8 +47,6 @@ int readDim(FILE* file) {
 void readPPMHeader(FILE* file, struct PPM_Header* header) {
     char temp[10] = "";
     fread(&temp, sizeof(char), 3, file);
-    header->imgWidth = readDim(file);
-    header->imgHeight = readDim(file);
-    fread(&temp, sizeof(int), 1, file);
-    fread(&temp, sizeof(char), 2, file);
+    header->imgWidth = readNumber(file);
+    header->imgHeight = readNumber(file);
 }

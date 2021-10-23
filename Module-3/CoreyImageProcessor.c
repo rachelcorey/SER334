@@ -111,17 +111,43 @@ int main(int argc, char *argv[]) {
     // call convert stuff here
     PpmProcessor *ppmP = PpmProcessor_init();
     const char fName[30] = "../Module-3/nehoymenoy.ppm";
-    FILE *img = fopen(fName, "r");
+    FILE *img = fopen(fName, "rb");
 
     readPPMHeader(img, ppmP->ppmHeader);
 
+    char temp[10] = "";
+    fread(&temp, sizeof(int), 1, img);
+    fread(&temp, sizeof(char), 1, img);
+
+
+    int width = ppmP->ppmHeader->imgWidth;
+    int height =ppmP->ppmHeader->imgHeight;
+
+    int i = 0;
+    int ch;
+    int r;
+    int g;
+    int b;
+    while ((ch = fgetc(img)) != EOF) {
+        if (i == 3) {
+            printf("%d, %d, %d\n", r, g, b);
+            i = 0;
+        }
+        if (i == 0) {
+            r = ch;
+        } else if (i == 1) {
+            g = ch;
+        } else if (i == 2) {
+            b = ch;
+        }
+        ++i;
+    }
+
+
+
+
     PpmProcessor_clean(ppmP);
 
-//    printf("ppmheader:\n");
-//    printf("magic number: %s\n", ppmP->ppmHeader->id);
-//    printf("img width: %d \n", ppmP->ppmHeader->imgWidth);
-//    printf("img height: %d \n", ppmP->ppmHeader->imgHeight);
-//    printf("max color value: %d\n", ppmP->ppmHeader->maxColorValue);
 
 
 
