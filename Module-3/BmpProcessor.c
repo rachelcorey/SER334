@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include <string.h>
 
+
 BMP_Header* BMPHeader_init() {
     BMP_Header *bmpHeader = malloc(sizeof(BMP_Header));
     strcpy(bmpHeader->signature, "BM");
@@ -33,6 +34,7 @@ BMP_Header* BMPHeader_init() {
  void BmpProcessor_clean(BmpProcessor *self) {
     free(self->bmpHeader);
     free(self->dibHeader);
+    free(self);
 }
 
 /**

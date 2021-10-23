@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
 
 
     for (int i = 0; i < bmpP->dibHeader->imgHeight; ++i) {
-        for (int j = 0; j < bmpP->dibHeader->imgWidth + 1; ++j) {
+        for (int j = 0; j < bmpP->dibHeader->imgWidth; ++j) {
             fwrite(&pP->pixels[i][j].blue, sizeof(unsigned char), 1, output);
             fwrite(&pP->pixels[i][j].green, sizeof(unsigned char), 1, output);
             fwrite(&pP->pixels[i][j].red, sizeof(unsigned char), 1, output);
@@ -140,5 +140,7 @@ int main(int argc, char *argv[]) {
 
 
     fclose(output);
+
+    BmpProcessor_clean(bmpP);
     return 0;
 }
