@@ -25,4 +25,4 @@ typedef struct PixelProcessor {
  * @param  gShift: the shift value of color g shift 
  * @param  bShift: the shift value of color b shift 
  */
-void colorShiftPixels(struct Pixel** pArr, int width, int height, int rShift, int gShift, int bShift);
+void colorShiftPixels(struct PixelProcessor *pP, int rShift, int gShift, int bShift);

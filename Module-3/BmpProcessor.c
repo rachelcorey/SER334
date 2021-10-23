@@ -45,7 +45,6 @@ BMP_Header* BMPHeader_init() {
  */
  void readBMPHeader(FILE* file, struct BMP_Header* header) {
     char temp[10] = "";
-
     fread(&temp, sizeof(char) * 2, 1, file);
     fread(&header->size, sizeof (int), 1, file);
     fread(&temp, sizeof(short), 2, file);
@@ -59,7 +58,15 @@ BMP_Header* BMPHeader_init() {
  * @param  header: The header made by makeBMPHeader function
  */
  void writeBMPHeader(FILE* file, struct BMP_Header* header) {
+    fwrite("BM", sizeof(char) * 2, 1, file);
+    fwrite(&header->size, sizeof(int), 1, file);
+    fwrite(&header->reserved1, sizeof(short), 1, file);
+    fwrite(&header->reserved2, sizeof(short), 1, file);
+    fwrite(&header->offset_pixel_array, sizeof(int), 1, file);
 
+
+//    printf("printed: %d, %d, %d, %d\n", bmpP->bmpHeader->size, bmpP->bmpHeader->reserved1,
+//           bmpP->bmpHeader->reserved2, bmpP->bmpHeader->offset_pixel_array);
 }
 
 /**
@@ -88,6 +95,24 @@ BMP_Header* BMPHeader_init() {
  */
  void writeDIBHeader(FILE* file, struct DIB_Header* header) {
 
+    fwrite(&header->size, sizeof(int), 1, file);
+    fwrite(&header->imgWidth, sizeof(int), 1, file);
+    fwrite(&header->imgHeight, sizeof(int), 1, file);
+    fwrite(&header->planes, sizeof(short), 1, file);
+    fwrite(&header->bitsPerPixel, sizeof(short), 1, file);
+    fwrite(&header->compression, sizeof(int), 1, file);
+    fwrite(&header->imgSize, sizeof(int), 1, file);
+    fwrite(&header->xPixelsPerMeter, sizeof(int), 1, file);
+    fwrite(&header->yPixelsPerMeter, sizeof(int), 1, file);
+    fwrite(&header->colorsInTable, sizeof(int), 1, file);
+    fwrite(&header->importantColors, sizeof(int), 1, file);
+
+
+//    printf("printed: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", bmpP->dibHeader->size, bmpP->dibHeader->imgWidth,
+//           bmpP->dibHeader->imgHeight, bmpP->dibHeader->planes, bmpP->dibHeader->bitsPerPixel,
+//           bmpP->dibHeader->compression,
+//           bmpP->dibHeader->imgSize, bmpP->dibHeader->xPixelsPerMeter, bmpP->dibHeader->yPixelsPerMeter,
+//           bmpP->dibHeader->colorsInTable, bmpP->dibHeader->importantColors);
 }
 
 /**
@@ -101,6 +126,9 @@ BMP_Header* BMPHeader_init() {
  */
  void makeBMPHeader(struct BMP_Header* header, int width, int height) {
 
+
+
+
 }
 
 
@@ -113,17 +141,8 @@ BMP_Header* BMPHeader_init() {
 */
  void makeDIBHeader(struct DIB_Header* header, int width, int height) {
 
+
+
+
 }
 
-
-
-
-
-/**
- * write Pixels from BMP file based on width and height.
- *
- * @param  file: A pointer to the file being read or written
- */
- void writePixelsBMP(FILE* file) {
-
-}
