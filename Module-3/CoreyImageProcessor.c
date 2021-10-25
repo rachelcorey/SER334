@@ -13,14 +13,23 @@
 BmpProcessor *bmpP;
 PpmProcessor *ppmP;
 PixelProcessor *pP;
+int outputIsBMP;
+int inputIsBMP;
+int typeSet;
 
-//int validateInt(char *inty) {
-//    if (isdigit(inty)) {
-//        return 1;
-//    } else {
-//        return 0;
-//    }
-//}
+int validateInt(char inty) {
+    if (isdigit(inty)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+void setFileExt(char* outputFile, char* type) {
+    strcat(outputFile, ".");
+    strcat(outputFile, type);
+    typeSet = 1;
+}
 
 int validateFileType(int isInput, char *fileName) {
     int isBMP = 0;
@@ -28,8 +37,14 @@ int validateFileType(int isInput, char *fileName) {
 
     if (fileLength > 4) {
         if ((strcmp(&fileName[fileLength - 4], ".bmp") == 0)) {
+            if (isInput != 1) {
+                setFileExt(fileName, "bmp");
+            }
             isBMP = 1;
         } else if ((strcmp(&fileName[fileLength - 4], ".ppm") == 0)) {
+            if (isInput != 1) {
+                setFileExt(fileName, "ppm");
+            }
             isBMP = 0;
         } else {
             // file name is present, but lacking extension. warning will show.
@@ -72,16 +87,15 @@ int validateColorShift(char *numOption) {
     first = numOption[0];
     second = numOption[1];
 
-//    printf("wish this fucking ide was working %s\n", numOption);
-//    if (first == '-') {
-////        if (validateInt(&second)) {
-////            shift = strtol(numOption, &ptr, 10);
-////        }
-////    } else if (validateInt(numOption)) {
-////        shift = strtol(numOption, &ptr, 10);
-//    } else {
-//        printf("Error: Please enter a valid integer for color shifting.\n");
-//    }
+    if (first == '-') {
+        if (validateInt(second)) {
+            shift = strtol(numOption, &ptr, 10);
+        }
+    } else if (validateInt(*numOption)) {
+        shift = strtol(numOption, &ptr, 10);
+    } else {
+        printf("Error: Please enter a valid integer for color shifting.\n");
+    }
     return shift;
 }
 
@@ -98,6 +112,7 @@ void processImage(FILE* img, int inputIsBMP, int outputIsBMP, char* outputFile, 
         pP = PixelProcessor_init(width, height);
         pad = calculatePadding(pP->width);
         readPixelsBMP(img, pP, pad);
+        makePPMHeader(ppmP->ppmHeader, width, height);
     } else {
         readPPMHeader(img, ppmP->ppmHeader);
         fseek(img, 4, SEEK_CUR);
@@ -105,11 +120,17 @@ void processImage(FILE* img, int inputIsBMP, int outputIsBMP, char* outputFile, 
         height = ppmP->ppmHeader->imgHeight;
         pP = PixelProcessor_init(width, height);
         readPixelsPPM(img, pP, width, height);
+        int dest = fileno(img);
+        struct stat data;
+        fstat(dest, &data);
+        int size = data.st_size;
+        makeBMPHeader(bmpP->bmpHeader, width, height);
+        bmpP->bmpHeader->size = size;
+        makeDIBHeader(bmpP->dibHeader, width, height);
+        bmpP->dibHeader->imgSize = size;
+
     }
 
-    makeBMPHeader(bmpP->bmpHeader, width, height);
-    makeDIBHeader(bmpP->dibHeader, width, height);
-    makePPMHeader(ppmP->ppmHeader, width, height);
 
     fclose(img);
     colorShiftPixels(pP, red, green, blue);
@@ -131,6 +152,15 @@ int validateOutputType(char *type) {
     char bmpType[4] = {'b', 'm', 'p', '\0'};
     char ppmType[4] = {'p', 'p', 'm', '\0'};
     if (strcmp(bmpType, type) == 0 || strcmp(ppmType, type) == 0) {
+        if (strcmp(ppmType, type) == 0) {
+            strcpy(type, ppmType);
+            typeSet = 1;
+            outputIsBMP = 0;
+        } else {
+            strcpy(type, bmpType);
+            typeSet = 1;
+            outputIsBMP = 1;
+        }
         return 1;
     } else {
         printf("'%s' is not a supported output file type. Using BMP as default....", type);
@@ -153,6 +183,7 @@ void explainUsage() {
     printf("=================================================\n");
 }
 
+
 int main(int argc, char *argv[]) {
     char inputFile[40];
     strcpy(inputFile, "empty");
@@ -163,22 +194,20 @@ int main(int argc, char *argv[]) {
     long redShift = 0;
     long blueShift = 0;
     long greenShift = 0;
-    int inputIsBMP = 0;
-    int outputIsBMP = 0;
+    inputIsBMP = 0;
+    outputIsBMP = 0;
+    typeSet = 0;
     int opt;
 
-    printf("???????????????????????/");
 
     while ((opt = getopt(argc, argv, ":f:o:r:g:b:t:")) != -1) {
         switch (opt) {
             case 'f':
-                printf("optarg f: %s\n", optarg);
                 if (optarg != NULL) {
                     strcpy(inputFile, optarg);
                 }
                 break;
             case 'o':
-                printf("optarg o: %s\n", optarg);
                 if (optarg != NULL) {
                     if (strlen(optarg) > 0) {
                         strcpy(outputFile, optarg);
@@ -191,7 +220,6 @@ int main(int argc, char *argv[]) {
                 }
                 break;
             case 'r':
-                printf("%s , will this trigger?\n", optarg);
                 redShift = validateColorShift(optarg);
                 break;
             case 'g':
@@ -204,13 +232,12 @@ int main(int argc, char *argv[]) {
                 outputIsBMP = 3;
                 break;
             case 't':
-                printf("optarg t: %s\n", optarg);
                 if (optarg != NULL) {
                     strcpy(type, optarg);
-                    printf("type: %s\n", type);
                     if (validateOutputType(type)) {
-                        strcat(outputFile, ".");
-                        strcat(outputFile, type);
+                        setFileExt(outputFile, type);
+                    } else {
+                        outputIsBMP = 3;
                     }
                 } else {
                     outputIsBMP = 3;
@@ -221,29 +248,39 @@ int main(int argc, char *argv[]) {
         }
     }
 
-
     if (strlen(outputFile) < 1) {
         outputIsBMP = 3;
     }
     if (strcmp(inputFile, "empty") != 0) {
-        int outputLength = strlen(outputFile);
-        if (outputIsBMP == 3) {
-            printf("File output name or type was unspecified. Outputting file to root directory as 'output.bmp'.....\n");
-            strcpy(outputFile, "output.bmp");
+
+        char op[] = "output";
+        if (outputIsBMP == 3 || strcmp(outputFile, ".bmp") == 0 || strcmp(outputFile, ".ppm") == 0) {
+            printf("File output name or type was unspecified.\n");
+            if (typeSet) {
+                printf("Outputting as output.%s...\n", type);
+                strcpy(outputFile, op);
+                setFileExt(outputFile, type);
+            } else {
+                printf("Outputting as output.bmp....\n");
+                strcpy(outputFile, op);
+                setFileExt(outputFile, "bmp");
+            }
         }
         if(outputIsBMP == 2) {
-            printf("Output file type was invalid or not specified.\n");
-            printf("Program will output as .bmp......\n");
-            strcat(outputFile, ".bmp");
-            outputIsBMP = 1;
+            if (typeSet) {
+                setFileExt(outputFile, type);
+            } else {
+                printf("Output file type was invalid or not specified.\n");
+                printf("Program will output as .bmp......\n");
+                strcat(outputFile, ".bmp");
+                outputIsBMP = 1;
+            }
         }
         inputIsBMP = validateFileType(1, inputFile);
 
-        printf("input file name: %s , output file name: %s\n", inputFile, outputFile);
-
         FILE *img = fopen(inputFile, "rb");
         if (img != NULL) {
-            processImage(img, inputIsBMP, outputIsBMP, outputFile);
+            processImage(img, inputIsBMP, outputIsBMP, outputFile, redShift, greenShift, blueShift);
         } else {
             printf("FATAL ERROR: File '%s' not found in the system.\n", inputFile);
             printf("Terminating program........\n");
@@ -253,122 +290,6 @@ int main(int argc, char *argv[]) {
         explainUsage();
         exit(1);
     }
-
-// *******
-//     call convert PPM stuff here
-//    const char fName[30] = "../Module-3/nehoymenoy.ppm";
-//    FILE *img = fopen(fName, "rb");
-//
-//    readPPMHeader(img, ppmP->ppmHeader);
-//    fseek(img, 4, SEEK_CUR);
-//
-//    int width = ppmP->ppmHeader->imgWidth;
-//    int height =ppmP->ppmHeader->imgHeight;
-//
-//    PixelProcessor *pP = PixelProcessor_init(width, height);
-//    readPixelsPPM(img, pP, width, height);
-//    fclose(img);
-//    FILE *output = fopen("../Module-3/output.ppm", "wb");
-//
-//    writePPMHeader(output,ppmP->ppmHeader);
-//
-//    writePixelsPPM(output,pP);
-//    fclose(output);
-
-
-
-// *******
-//     PPM to BMP stuff here
-//    const char fName[30] = "../Module-3/nehoymenoy.ppm";
-//    FILE *img = fopen(fName, "rb");
-//
-//    readPPMHeader(img, ppmP->ppmHeader);
-//    fseek(img, 4, SEEK_CUR);
-//
-//    int width = ppmP->ppmHeader->imgWidth;
-//    int height =ppmP->ppmHeader->imgHeight;
-//
-//    int dest = fileno(img);
-//    struct stat data;
-//    fstat(dest, &data);
-//    int size = data.st_size;
-//    makeBMPHeader(bmpP->bmpHeader, width, height);
-//    bmpP->bmpHeader->size = size;
-//    makeDIBHeader(bmpP->dibHeader, width, height);
-//    bmpP->dibHeader->imgSize = size;
-//
-//    PixelProcessor *pP = PixelProcessor_init(width, height);
-//    readPixelsPPM(img, pP, width, height);
-//
-//    fclose(img);
-//
-//
-//    FILE *output = fopen("../Module-3/output.bmp", "wb");
-//
-//    writeBMPHeader(output, bmpP->bmpHeader);
-//    writeDIBHeader(output, bmpP->dibHeader);
-//
-//    int pad = calculatePadding(pP->width);
-//    writePixelsBMP(output,pP, pad);
-//
-//    fclose(output);
-
-
-// ******
-    // call convert BMP stuff here
-//    const char fName[25] = "../Module-3/ttt.bmp";
-//    FILE *img = fopen(fName, "rb");
-//
-//    char h[45] = "";
-//
-//    readBMPHeader(img, bmpP->bmpHeader);
-//    readDIBHeader(img, bmpP->dibHeader);
-//
-//    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
-//    int pad = calculatePadding(pP->width);
-//    readPixelsBMP(img, pP, pad);
-//
-//    fclose(img);
-//
-//
-//    FILE *output = fopen("../Module-3/output.bmp", "wb");
-//
-//    writeBMPHeader(output,bmpP->bmpHeader);
-//
-//    writeDIBHeader(output,bmpP->dibHeader);
-//
-//    writePixelsBMP(output,pP,pad);
-//
-//    fclose(output);
-
-
-
-
-// *****
-// bmp to ppm here
-//    const char fName[25] = "../Module-3/ttt.bmp";
-//    FILE *img = fopen(fName, "rb");
-//
-//    char h[45] = "";
-//
-//    readBMPHeader(img, bmpP->bmpHeader);
-//    readDIBHeader(img, bmpP->dibHeader);
-//
-//    int width = bmpP->dibHeader->imgWidth;
-//    int height = bmpP->dibHeader->imgHeight;
-//    PixelProcessor *pP = PixelProcessor_init(width, height);
-//
-//    int pad = calculatePadding(pP->width);
-//    readPixelsBMP(img, pP, pad);
-//
-//    fclose(img);
-//
-//    FILE *output = fopen("../Module-3/output.ppm", "wb");
-//
-//    makePPMHeader(ppmP->ppmHeader, width, height);
-//    writePPMHeader(output,ppmP->ppmHeader);
-//
-//    writePixelsPPM(output,pP);
 
     BmpProcessor_clean(bmpP);
     PpmProcessor_clean(ppmP);
