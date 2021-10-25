@@ -53,10 +53,10 @@ RM = /snap/clion/169/bin/cmake/linux/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kirry/SER334
+CMAKE_SOURCE_DIR = /home/kirry/CLionProjects/SER334
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kirry/SER334/cmake-build-debug
+CMAKE_BINARY_DIR = /home/kirry/CLionProjects/SER334/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/SER334.dir/depend.make
@@ -68,73 +68,28 @@ include CMakeFiles/SER334.dir/flags.make
 
 CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o: CMakeFiles/SER334.dir/flags.make
 CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o: ../Module-3/CoreyImageProcessor.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o -c /home/kirry/SER334/Module-3/CoreyImageProcessor.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o"
+	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o -c /home/kirry/CLionProjects/SER334/Module-3/CoreyImageProcessor.c
 
 CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.i"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-3/CoreyImageProcessor.c > CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.i
+	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/CLionProjects/SER334/Module-3/CoreyImageProcessor.c > CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.i
 
 CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.s"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-3/CoreyImageProcessor.c -o CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.s
-
-CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o: CMakeFiles/SER334.dir/flags.make
-CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o: ../Module-3/BmpProcessor.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o -c /home/kirry/SER334/Module-3/BmpProcessor.c
-
-CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.i"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-3/BmpProcessor.c > CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.i
-
-CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.s"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-3/BmpProcessor.c -o CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.s
-
-CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o: CMakeFiles/SER334.dir/flags.make
-CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o: ../Module-3/PixelProcessor.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o -c /home/kirry/SER334/Module-3/PixelProcessor.c
-
-CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.i"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-3/PixelProcessor.c > CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.i
-
-CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.s"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-3/PixelProcessor.c -o CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.s
-
-CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o: CMakeFiles/SER334.dir/flags.make
-CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o: ../Module-3/PpmProcessor.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o -c /home/kirry/SER334/Module-3/PpmProcessor.c
-
-CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.i"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/SER334/Module-3/PpmProcessor.c > CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.i
-
-CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.s"
-	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/SER334/Module-3/PpmProcessor.c -o CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.s
+	/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/CLionProjects/SER334/Module-3/CoreyImageProcessor.c -o CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.s
 
 # Object files for target SER334
 SER334_OBJECTS = \
-"CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o" \
-"CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o" \
-"CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o" \
-"CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o"
+"CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o"
 
 # External object files for target SER334
 SER334_EXTERNAL_OBJECTS =
 
 SER334: CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o
-SER334: CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o
-SER334: CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o
-SER334: CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o
 SER334: CMakeFiles/SER334.dir/build.make
 SER334: CMakeFiles/SER334.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kirry/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable SER334"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable SER334"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SER334.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -146,6 +101,6 @@ CMakeFiles/SER334.dir/clean:
 .PHONY : CMakeFiles/SER334.dir/clean
 
 CMakeFiles/SER334.dir/depend:
-	cd /home/kirry/SER334/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kirry/SER334 /home/kirry/SER334 /home/kirry/SER334/cmake-build-debug /home/kirry/SER334/cmake-build-debug /home/kirry/SER334/cmake-build-debug/CMakeFiles/SER334.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/kirry/CLionProjects/SER334/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kirry/CLionProjects/SER334 /home/kirry/CLionProjects/SER334 /home/kirry/CLionProjects/SER334/cmake-build-debug /home/kirry/CLionProjects/SER334/cmake-build-debug /home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles/SER334.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/SER334.dir/depend
 

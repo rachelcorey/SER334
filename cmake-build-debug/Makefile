@@ -57,10 +57,10 @@ RM = /snap/clion/169/bin/cmake/linux/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kirry/SER334
+CMAKE_SOURCE_DIR = /home/kirry/CLionProjects/SER334
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kirry/SER334/cmake-build-debug
+CMAKE_BINARY_DIR = /home/kirry/CLionProjects/SER334/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kirry/SER334/cmake-build-debug/CMakeFiles /home/kirry/SER334/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles /home/kirry/CLionProjects/SER334/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kirry/SER334/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -129,30 +129,6 @@ SER334/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/build
 .PHONY : SER334/fast
 
-Module-3/BmpProcessor.o: Module-3/BmpProcessor.c.o
-.PHONY : Module-3/BmpProcessor.o
-
-# target to build an object file
-Module-3/BmpProcessor.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.o
-.PHONY : Module-3/BmpProcessor.c.o
-
-Module-3/BmpProcessor.i: Module-3/BmpProcessor.c.i
-.PHONY : Module-3/BmpProcessor.i
-
-# target to preprocess a source file
-Module-3/BmpProcessor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.i
-.PHONY : Module-3/BmpProcessor.c.i
-
-Module-3/BmpProcessor.s: Module-3/BmpProcessor.c.s
-.PHONY : Module-3/BmpProcessor.s
-
-# target to generate assembly for a file
-Module-3/BmpProcessor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/BmpProcessor.c.s
-.PHONY : Module-3/BmpProcessor.c.s
-
 Module-3/CoreyImageProcessor.o: Module-3/CoreyImageProcessor.c.o
 .PHONY : Module-3/CoreyImageProcessor.o
 
@@ -177,54 +153,6 @@ Module-3/CoreyImageProcessor.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.s
 .PHONY : Module-3/CoreyImageProcessor.c.s
 
-Module-3/PixelProcessor.o: Module-3/PixelProcessor.c.o
-.PHONY : Module-3/PixelProcessor.o
-
-# target to build an object file
-Module-3/PixelProcessor.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.o
-.PHONY : Module-3/PixelProcessor.c.o
-
-Module-3/PixelProcessor.i: Module-3/PixelProcessor.c.i
-.PHONY : Module-3/PixelProcessor.i
-
-# target to preprocess a source file
-Module-3/PixelProcessor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.i
-.PHONY : Module-3/PixelProcessor.c.i
-
-Module-3/PixelProcessor.s: Module-3/PixelProcessor.c.s
-.PHONY : Module-3/PixelProcessor.s
-
-# target to generate assembly for a file
-Module-3/PixelProcessor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PixelProcessor.c.s
-.PHONY : Module-3/PixelProcessor.c.s
-
-Module-3/PpmProcessor.o: Module-3/PpmProcessor.c.o
-.PHONY : Module-3/PpmProcessor.o
-
-# target to build an object file
-Module-3/PpmProcessor.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.o
-.PHONY : Module-3/PpmProcessor.c.o
-
-Module-3/PpmProcessor.i: Module-3/PpmProcessor.c.i
-.PHONY : Module-3/PpmProcessor.i
-
-# target to preprocess a source file
-Module-3/PpmProcessor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.i
-.PHONY : Module-3/PpmProcessor.c.i
-
-Module-3/PpmProcessor.s: Module-3/PpmProcessor.c.s
-.PHONY : Module-3/PpmProcessor.s
-
-# target to generate assembly for a file
-Module-3/PpmProcessor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/PpmProcessor.c.s
-.PHONY : Module-3/PpmProcessor.c.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -234,18 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SER334"
-	@echo "... Module-3/BmpProcessor.o"
-	@echo "... Module-3/BmpProcessor.i"
-	@echo "... Module-3/BmpProcessor.s"
 	@echo "... Module-3/CoreyImageProcessor.o"
 	@echo "... Module-3/CoreyImageProcessor.i"
 	@echo "... Module-3/CoreyImageProcessor.s"
-	@echo "... Module-3/PixelProcessor.o"
-	@echo "... Module-3/PixelProcessor.i"
-	@echo "... Module-3/PixelProcessor.s"
-	@echo "... Module-3/PpmProcessor.o"
-	@echo "... Module-3/PpmProcessor.i"
-	@echo "... Module-3/PpmProcessor.s"
 .PHONY : help
 
 
