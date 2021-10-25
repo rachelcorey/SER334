@@ -82,16 +82,15 @@ void writePixelsBMP(FILE* file, PixelProcessor *pP, int pad) {
         p[i] = "0";
     }
     for (int i = pP->width; i > 0; --i) {
-        for (int j = 0; j < pP->height; ++j) {
+        for (int j = 0; j <= pP->height; ++j) {
             fwrite(&pP->pixels[i * pP->height + j].blue, sizeof(unsigned char), 1, file);
             fwrite(&pP->pixels[i * pP->height + j].green, sizeof(unsigned char), 1, file);
             fwrite(&pP->pixels[i * pP->height + j].red, sizeof(unsigned char), 1, file);
         }
+        fseek(file, -3, SEEK_CUR);
         if (pad > 0) {
             fwrite(&p, sizeof(char) * pad, 1, file);
         }
     }
-
-    fclose(file);
 }
 

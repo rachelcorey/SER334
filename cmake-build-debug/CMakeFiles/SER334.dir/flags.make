@@ -4,7 +4,7 @@
 # compile C with /bin/gcc
 C_DEFINES = 
 
-C_INCLUDES = -I/home/kirry/SER334/Module-3
+C_INCLUDES = -I/home/kirry/CLionProjects/SER334/Module-3
 
 C_FLAGS = -g -std=gnu11
 
