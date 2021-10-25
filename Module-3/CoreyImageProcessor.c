@@ -1,3 +1,14 @@
+/**
+* This program reads and parses an image file of the user's choice of bmp or ppm type, and can convert the file in to
+* bmp or ppm type, or shift the pixel color values by a specified amount.
+*
+* Completion time: 9000000 hours
+*
+* @author Rachel Corey, Whoever Wrote The Base Code On Canvas
+* @version 1.0, completed on 10/25/2021
+*
+*/
+
 #include <getopt.h>
 #include <stdio.h>
 #include <string.h>
@@ -17,6 +28,11 @@ int outputIsBMP;
 int inputIsBMP;
 int typeSet;
 
+/**
+ * Helper method for verifying if a character is an integer
+ * @param inty
+ * @return 1 if character is an integer, 0 if not
+ */
 int validateInt(char inty) {
     if (isdigit(inty)) {
         return 1;
@@ -25,12 +41,23 @@ int validateInt(char inty) {
     }
 }
 
-void setFileExt(char* outputFile, char* type) {
+/**
+ * Helper method for setting a file extension type for a given output file string
+ * @param outputFile the string of the output file
+ * @param type the type of the file it should be output to
+ */
+void setFileExt(char *outputFile, char *type) {
     strcat(outputFile, ".");
     strcat(outputFile, type);
     typeSet = 1;
 }
 
+/**
+ * Validates if a given file name has a valid extension on the end of it
+ * @param isInput if the file is given as an input for the program or not
+ * @param fileName the name of the file to check
+ * @return 1 if the extension string is valid, 0 if not
+ */
 int validateFileType(int isInput, char *fileName) {
     int isBMP = 0;
     int fileLength = strlen(fileName);
@@ -55,15 +82,20 @@ int validateFileType(int isInput, char *fileName) {
         isBMP = 2;
     } else {
         if (isInput) {
-                printf("FATAL ERROR: Input file type invalid!\n");
-                printf("Valid file extensions are .bmp or .ppm!\n");
-                printf("Terminating program.....\n");
-                exit(1);
-            }
+            printf("FATAL ERROR: Input file type invalid!\n");
+            printf("Valid file extensions are .bmp or .ppm!\n");
+            printf("Terminating program.....\n");
+            exit(1);
         }
+    }
     return isBMP;
 }
 
+/**
+ * Calculates the padding for a BMP type image
+ * @param imgWidth the width of the image
+ * @return the amount of padding needed to write to the file
+ */
 int calculatePadding(int imgWidth) {
     int pad = 0;
     int rowBytes = imgWidth * sizeof(struct Pixel);
@@ -79,6 +111,11 @@ int calculatePadding(int imgWidth) {
     return pad;
 }
 
+/**
+ * Validates if the given string for a color shift option in the command line is valid or not
+ * @param numOption the option given by the user
+ * @return 1 if it's a valid integer, 0 if not
+ */
 int validateColorShift(char *numOption) {
     int shift = 0;
     char *ptr;
@@ -99,7 +136,17 @@ int validateColorShift(char *numOption) {
     return shift;
 }
 
-void processImage(FILE* img, int inputIsBMP, int outputIsBMP, char* outputFile, int red, int green, int blue) {
+/**
+ * Processes the image input from the user
+ * @param img the image to be processed
+ * @param inputIsBMP if the input image is of BMP type or not
+ * @param outputIsBMP if the output image is of BMP type or not
+ * @param outputFile the file string to output to
+ * @param red the amount to shift the red pixels of the image
+ * @param green the amount to shift the green pixels of the image
+ * @param blue the amount to shift the blue pixels of the image
+ */
+void processImage(FILE *img, int inputIsBMP, int outputIsBMP, char *outputFile, int red, int green, int blue) {
     int pad = 0;
     int width = 0;
     int height = 0;
@@ -124,13 +171,12 @@ void processImage(FILE* img, int inputIsBMP, int outputIsBMP, char* outputFile, 
         struct stat data;
         fstat(dest, &data);
         int size = data.st_size;
-        makeBMPHeader(bmpP->bmpHeader, width, height);
+        makeBMPHeader(bmpP->bmpHeader);
         bmpP->bmpHeader->size = size;
         makeDIBHeader(bmpP->dibHeader, width, height);
         bmpP->dibHeader->imgSize = size;
 
     }
-
 
     fclose(img);
     colorShiftPixels(pP, red, green, blue);
@@ -148,6 +194,11 @@ void processImage(FILE* img, int inputIsBMP, int outputIsBMP, char* outputFile, 
     fclose(output);
 }
 
+/**
+ * Validates the output type from the -t command option
+ * @param type the user entered
+ * @return 1 if the type is valid, 0 otherwise
+ */
 int validateOutputType(char *type) {
     char bmpType[4] = {'b', 'm', 'p', '\0'};
     char ppmType[4] = {'p', 'p', 'm', '\0'};
@@ -167,6 +218,10 @@ int validateOutputType(char *type) {
         return 0;
     }
 }
+
+/**
+ * Explains the usage of the program, to be called when no arguments are entered when the program is run
+ */
 void explainUsage() {
     printf("ERROR: Please enter some arguments to use the program.\n");
     printf("====================== USAGE: =====================\n");
@@ -198,7 +253,6 @@ int main(int argc, char *argv[]) {
     outputIsBMP = 0;
     typeSet = 0;
     int opt;
-
 
     while ((opt = getopt(argc, argv, ":f:o:r:g:b:t:")) != -1) {
         switch (opt) {
@@ -251,8 +305,8 @@ int main(int argc, char *argv[]) {
     if (strlen(outputFile) < 1) {
         outputIsBMP = 3;
     }
-    if (strcmp(inputFile, "empty") != 0) {
 
+    if (strcmp(inputFile, "empty") != 0) {
         char op[] = "output";
         if (outputIsBMP == 3 || strcmp(outputFile, ".bmp") == 0 || strcmp(outputFile, ".ppm") == 0) {
             printf("File output name or type was unspecified.\n");
@@ -266,7 +320,7 @@ int main(int argc, char *argv[]) {
                 setFileExt(outputFile, "bmp");
             }
         }
-        if(outputIsBMP == 2) {
+        if (outputIsBMP == 2) {
             if (typeSet) {
                 setFileExt(outputFile, type);
             } else {
@@ -285,7 +339,7 @@ int main(int argc, char *argv[]) {
             printf("FATAL ERROR: File '%s' not found in the system.\n", inputFile);
             printf("Terminating program........\n");
             exit(1);
-            }
+        }
     } else {
         explainUsage();
         exit(1);

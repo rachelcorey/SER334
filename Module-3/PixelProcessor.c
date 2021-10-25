@@ -1,25 +1,35 @@
 #include <PixelProcessor.h>
 #include <malloc.h>
 
-struct PixelProcessor* PixelProcessor_init(int imgWidth, int imgHeight) {
-    PixelProcessor* pixelProcessor = malloc(sizeof(PixelProcessor));
+/**
+ * Initializes a PixelProcessor Object
+ * @param imgWidth the width of the image to process
+ * @param imgHeight the height of the image to process
+ */
+PixelProcessor *PixelProcessor_init(int imgWidth, int imgHeight) {
+    PixelProcessor *pixelProcessor = malloc(sizeof(PixelProcessor));
     pixelProcessor->pixels = calloc(imgHeight * imgWidth * 4, sizeof(struct Pixel));
     pixelProcessor->width = imgWidth;
     pixelProcessor->height = imgHeight;
     return pixelProcessor;
 }
 
+/**
+ * Cleans a PixelProcessor Object from the system
+ * @param self object to be freed
+ */
 void PixelProcessor_clean(PixelProcessor *self) {
     free(self->pixels);
     free(self);
 }
 
 /**
- * read Pixels from BMP file based on width and height.
- *
- * @param  file: A pointer to the file being read or written
+ * Read pixels from a BMP file
+ * @param file BMP file to be read
+ * @param self reference to this PixelProcessor object to store the data in
+ * @param paddingBytes amount of padding to read from the BMP
  */
-void readPixelsBMP(FILE* file, struct PixelProcessor *self, int paddingBytes) {
+void readPixelsBMP(FILE *file, struct PixelProcessor *self, int paddingBytes) {
 
     for (int i = self->width - 1; i > 0; --i) {
         for (int j = 0; j < self->height; ++j) {
@@ -37,7 +47,12 @@ void readPixelsBMP(FILE* file, struct PixelProcessor *self, int paddingBytes) {
     }
 }
 
-
+/**
+ * Clamps values entered for color shifting that are above 255 and below 0
+ * @param color initial color value
+ * @param mod the requested modification
+ * @return the clamped modification of the color
+ */
 unsigned char clamp(unsigned char color, int mod) {
     if (color + mod < 0) {
         color = 0;
@@ -50,12 +65,10 @@ unsigned char clamp(unsigned char color, int mod) {
 }
 
 /**
- * Shift color of Pixel array. The dimension of the array is width * height. The shift value of RGB is
+ * Shift color of Pixel array. The shift value of RGB is
  * rShift, gShift，bShift. Useful for color shift.
  *
- * @param  pArr: Pixel array of the image that this header is for
- * @param  width: Width of the image that this header is for
- * @param  height: Height of the image that this header is for
+ * @param  pP: the reference to this PixelProcessor object where the pixel array is stored
  * @param  rShift: the shift value of color r shift
  * @param  gShift: the shift value of color g shift
  * @param  bShift: the shift value of color b shift
@@ -71,12 +84,12 @@ void colorShiftPixels(struct PixelProcessor *pP, int rShift, int gShift, int bSh
 }
 
 /**
- * write Pixels from BMP file based on width and height.
- *
- * @param  file: A pointer to the file being read or written
+ * Write pixels to a BMP file
+ * @param file file to be written to
+ * @param pP a reference to this PixelProcessor object
+ * @param pad the amount of padding to write
  */
-void writePixelsBMP(FILE* file, PixelProcessor *pP, int pad) {
-
+void writePixelsBMP(FILE *file, PixelProcessor *pP, int pad) {
     char *p[pad];
     for (int i = 0; i < pad; ++i) {
         p[i] = "0";
