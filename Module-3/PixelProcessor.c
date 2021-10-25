@@ -3,7 +3,7 @@
 
 struct PixelProcessor* PixelProcessor_init(int imgWidth, int imgHeight) {
     PixelProcessor* pixelProcessor = malloc(sizeof(PixelProcessor));
-    pixelProcessor->pixels = calloc(imgHeight * imgWidth, sizeof(struct Pixel));
+    pixelProcessor->pixels = calloc(imgHeight * imgWidth * 4, sizeof(struct Pixel));
     pixelProcessor->width = imgWidth;
     pixelProcessor->height = imgHeight;
     return pixelProcessor;

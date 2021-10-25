@@ -10,25 +10,43 @@
 #include "PixelProcessor.c"
 #include "PpmProcessor.c"
 
+BmpProcessor *bmpP;
+PpmProcessor *ppmP;
+PixelProcessor *pP;
 
-int validateInt(char *optInt) {
-    if (isdigit(optInt)) {
-        return 1;
-    } else {
-        printf("\nPlease enter a valid digit for color shifting.");
-        return 0;
-    }
-}
+//int validateInt(char *inty) {
+//    if (isdigit(inty)) {
+//        return 1;
+//    } else {
+//        return 0;
+//    }
+//}
 
-int validateOutputType(char *type) {
-    char bmpType[3] = {'B', 'M', 'P'};
-    char ppmType[3] = {'P', 'P', 'M'};
-    if (strcmp(bmpType, type) == 0 || strcmp(ppmType, type) == 0) {
-        return 1;
+int validateFileType(int isInput, char *fileName) {
+    int isBMP = 0;
+    int fileLength = strlen(fileName);
+
+    if (fileLength > 4) {
+        if ((strcmp(&fileName[fileLength - 4], ".bmp") == 0)) {
+            isBMP = 1;
+        } else if ((strcmp(&fileName[fileLength - 4], ".ppm") == 0)) {
+            isBMP = 0;
+        } else {
+            // file name is present, but lacking extension. warning will show.
+            isBMP = 2;
+        }
+    } else if (fileLength >= 1) {
+        // file name is present, but lacking extension. warning will show.
+        isBMP = 2;
     } else {
-        printf("\nPlease enter a valid output type. Using BMP as default....");
-        return 0;
-    }
+        if (isInput) {
+                printf("FATAL ERROR: Input file type invalid!\n");
+                printf("Valid file extensions are .bmp or .ppm!\n");
+                printf("Terminating program.....\n");
+                exit(1);
+            }
+        }
+    return isBMP;
 }
 
 int calculatePadding(int imgWidth) {
@@ -46,78 +64,198 @@ int calculatePadding(int imgWidth) {
     return pad;
 }
 
+int validateColorShift(char *numOption) {
+    int shift = 0;
+    char *ptr;
+    char first;
+    char second;
+    first = numOption[0];
+    second = numOption[1];
 
+//    printf("wish this fucking ide was working %s\n", numOption);
+//    if (first == '-') {
+////        if (validateInt(&second)) {
+////            shift = strtol(numOption, &ptr, 10);
+////        }
+////    } else if (validateInt(numOption)) {
+////        shift = strtol(numOption, &ptr, 10);
+//    } else {
+//        printf("Error: Please enter a valid integer for color shifting.\n");
+//    }
+    return shift;
+}
 
+void processImage(FILE* img, int inputIsBMP, int outputIsBMP, char* outputFile, int red, int green, int blue) {
+    int pad = 0;
+    int width = 0;
+    int height = 0;
 
+    if (inputIsBMP) {
+        readBMPHeader(img, bmpP->bmpHeader);
+        readDIBHeader(img, bmpP->dibHeader);
+        width = bmpP->dibHeader->imgWidth;
+        height = bmpP->dibHeader->imgHeight;
+        pP = PixelProcessor_init(width, height);
+        pad = calculatePadding(pP->width);
+        readPixelsBMP(img, pP, pad);
+    } else {
+        readPPMHeader(img, ppmP->ppmHeader);
+        fseek(img, 4, SEEK_CUR);
+        width = ppmP->ppmHeader->imgWidth;
+        height = ppmP->ppmHeader->imgHeight;
+        pP = PixelProcessor_init(width, height);
+        readPixelsPPM(img, pP, width, height);
+    }
 
+    makeBMPHeader(bmpP->bmpHeader, width, height);
+    makeDIBHeader(bmpP->dibHeader, width, height);
+    makePPMHeader(ppmP->ppmHeader, width, height);
 
+    fclose(img);
+    colorShiftPixels(pP, red, green, blue);
+    FILE *output = fopen(outputFile, "wb");
 
+    if (outputIsBMP) {
+        writeBMPHeader(output, bmpP->bmpHeader);
+        writeDIBHeader(output, bmpP->dibHeader);
+        writePixelsBMP(output, pP, pad);
+    } else {
+        writePPMHeader(output, ppmP->ppmHeader);
+        writePixelsPPM(output, pP);
+    }
+
+    fclose(output);
+}
+
+int validateOutputType(char *type) {
+    char bmpType[4] = {'b', 'm', 'p', '\0'};
+    char ppmType[4] = {'p', 'p', 'm', '\0'};
+    if (strcmp(bmpType, type) == 0 || strcmp(ppmType, type) == 0) {
+        return 1;
+    } else {
+        printf("'%s' is not a supported output file type. Using BMP as default....", type);
+        return 0;
+    }
+}
+void explainUsage() {
+    printf("ERROR: Please enter some arguments to use the program.\n");
+    printf("====================== USAGE: =====================\n");
+    printf("================= For conversion: =================\n");
+    printf("./<a.out name> <inputFileName>.<bmp or ppm> -o <outputFileName> -t <bmp or ppm>\n");
+    printf("EXAMPLE: ./imageProcessor ../path/to/inputFile.bmp -o ../path/to/outputFile -t ppm\n");
+    printf("================ For color shifting: ==============\n");
+    printf("After the input file name/location, input - followed by the first letter of the color, followed by the amount of shifting for each color as an"
+           " integer from -255 to 255.\n");
+    printf("./<a.out name> <inputFileName>.<bmp or ppm> -r <int red> -g <int green> -b <int blue>\n");
+    printf("EXAMPLE: ./imageProcessor ../path/to/inputFile.bmp -r 69 g -4 b 20\n");
+    printf("OR:\n");
+    printf("EXAMPLE: ./imageProcessor ../path/to/inputFile.bmp -r 69 g -4 b 20 -o ../path/to/outputFile\n");
+    printf("=================================================\n");
+}
 
 int main(int argc, char *argv[]) {
-    char *imgFile;
-    char *ptr;
-    PpmProcessor *ppmP = PpmProcessor_init();
-    BmpProcessor *bmpP = BmpProcessor_init();
-//    long redShift = 0;
-//    long blueShift = 0;
-//    long greenShift = 0;
-//    char outputType[3] = "";
-//
-//    int opt;
-//    while ((opt = getopt(argc, argv, ":o:r:g:b:t:")) != -1) {
-//        switch (opt) {
-//            case 'o':
-//                imgFile = optarg;
-//                break;
-//            case 'r':
-//                if (validateInt(optarg)) {
-//                    redShift = strtol(optarg, &ptr, 10);
-//                }
-//                break;
-//            case 'g':
-//                if (validateInt(optarg)) {
-//                    greenShift = strtol(optarg, &ptr, 10);
-//                }
-//                break;
-//            case 'b':
-//                if (validateInt(optarg)) {
-//                    blueShift = strtol(optarg, &ptr, 10);
-//                }
-//                break;
-//            case 't':
-//                if (validateOutputType(optarg)) {
-//                    strcpy(outputType, optarg);
-//                }
-//                break;
-//            case ':':
-//                printf("\noption needs a value");
-//                break;
-//            case '?':
-//                printf("\nunknown option: %c", optopt);
-//                break;
-//        }
-//    }
-//
-//    int dflen;
-//    if (imgFile != NULL) {
-//        dflen = strlen(imgFile);
-//        if (dflen >= 5
-//            && ((strcmp(&imgFile[dflen - 4], ".bmp") == 0) || (strcmp(&imgFile[dflen - 4], ".ppm") == 0))
-//            && (access(imgFile, F_OK) != -1)) {
-//            printf("\nImporting data from %s\n", imgFile);
-////            readFile(imgFile);
-//        } else {
-//            printf("\nImage file has an invalid name or does not exist.\n");
-//            exit(1);
-//        }
-//    } else {
-//        printf("\nNo image file name provided. This is a required field.\n");
-//        exit(1);
-//    }
+    char inputFile[40];
+    strcpy(inputFile, "empty");
+    char outputFile[40];
+    char type[4] = "";
+    ppmP = PpmProcessor_init();
+    bmpP = BmpProcessor_init();
+    long redShift = 0;
+    long blueShift = 0;
+    long greenShift = 0;
+    int inputIsBMP = 0;
+    int outputIsBMP = 0;
+    int opt;
+
+    printf("???????????????????????/");
+
+    while ((opt = getopt(argc, argv, ":f:o:r:g:b:t:")) != -1) {
+        switch (opt) {
+            case 'f':
+                printf("optarg f: %s\n", optarg);
+                if (optarg != NULL) {
+                    strcpy(inputFile, optarg);
+                }
+                break;
+            case 'o':
+                printf("optarg o: %s\n", optarg);
+                if (optarg != NULL) {
+                    if (strlen(optarg) > 0) {
+                        strcpy(outputFile, optarg);
+                        outputIsBMP = validateFileType(0, outputFile);
+                    } else {
+                        outputIsBMP = 2;
+                    }
+                } else {
+                    outputIsBMP = 3;
+                }
+                break;
+            case 'r':
+                printf("%s , will this trigger?\n", optarg);
+                redShift = validateColorShift(optarg);
+                break;
+            case 'g':
+                greenShift = validateColorShift(optarg);
+                break;
+            case 'b':
+                blueShift = validateColorShift(optarg);
+                break;
+            case ':':
+                outputIsBMP = 3;
+                break;
+            case 't':
+                printf("optarg t: %s\n", optarg);
+                if (optarg != NULL) {
+                    strcpy(type, optarg);
+                    printf("type: %s\n", type);
+                    if (validateOutputType(type)) {
+                        strcat(outputFile, ".");
+                        strcat(outputFile, type);
+                    }
+                } else {
+                    outputIsBMP = 3;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    if (strlen(outputFile) < 1) {
+        outputIsBMP = 3;
+    }
+    if (strcmp(inputFile, "empty") != 0) {
+        int outputLength = strlen(outputFile);
+        if (outputIsBMP == 3) {
+            printf("File output name or type was unspecified. Outputting file to root directory as 'output.bmp'.....\n");
+            strcpy(outputFile, "output.bmp");
+        }
+        if(outputIsBMP == 2) {
+            printf("Output file type was invalid or not specified.\n");
+            printf("Program will output as .bmp......\n");
+            strcat(outputFile, ".bmp");
+            outputIsBMP = 1;
+        }
+        inputIsBMP = validateFileType(1, inputFile);
+
+        printf("input file name: %s , output file name: %s\n", inputFile, outputFile);
+
+        FILE *img = fopen(inputFile, "rb");
+        if (img != NULL) {
+            processImage(img, inputIsBMP, outputIsBMP, outputFile);
+        } else {
+            printf("FATAL ERROR: File '%s' not found in the system.\n", inputFile);
+            printf("Terminating program........\n");
+            exit(1);
+            }
+    } else {
+        explainUsage();
+        exit(1);
+    }
 
 // *******
 //     call convert PPM stuff here
-//    PpmProcessor *ppmP = PpmProcessor_init();
 //    const char fName[30] = "../Module-3/nehoymenoy.ppm";
 //    FILE *img = fopen(fName, "rb");
 //
@@ -130,7 +268,6 @@ int main(int argc, char *argv[]) {
 //    PixelProcessor *pP = PixelProcessor_init(width, height);
 //    readPixelsPPM(img, pP, width, height);
 //    fclose(img);
-//    colorShiftPixels(pP, 56, 78, 45);
 //    FILE *output = fopen("../Module-3/output.ppm", "wb");
 //
 //    writePPMHeader(output,ppmP->ppmHeader);
@@ -165,7 +302,6 @@ int main(int argc, char *argv[]) {
 //
 //    fclose(img);
 //
-//    colorShiftPixels(pP, 56,78,45);
 //
 //    FILE *output = fopen("../Module-3/output.bmp", "wb");
 //
@@ -180,31 +316,30 @@ int main(int argc, char *argv[]) {
 
 // ******
     // call convert BMP stuff here
-    const char fName[25] = "../Module-3/ttt.bmp";
-    FILE *img = fopen(fName, "rb");
-
-    char h[45] = "";
-
-    readBMPHeader(img, bmpP->bmpHeader);
-    readDIBHeader(img, bmpP->dibHeader);
-
-    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
-    int pad = calculatePadding(pP->width);
-    readPixelsBMP(img, pP, pad);
-
-    fclose(img);
-
-    colorShiftPixels(pP, 56,78,45);
-
-    FILE *output = fopen("../Module-3/output.bmp", "wb");
-
-    writeBMPHeader(output,bmpP->bmpHeader);
-
-    writeDIBHeader(output,bmpP->dibHeader);
-
-    writePixelsBMP(output,pP,pad);
-
-    fclose(output);
+//    const char fName[25] = "../Module-3/ttt.bmp";
+//    FILE *img = fopen(fName, "rb");
+//
+//    char h[45] = "";
+//
+//    readBMPHeader(img, bmpP->bmpHeader);
+//    readDIBHeader(img, bmpP->dibHeader);
+//
+//    PixelProcessor *pP = PixelProcessor_init(bmpP->dibHeader->imgWidth, bmpP->dibHeader->imgHeight);
+//    int pad = calculatePadding(pP->width);
+//    readPixelsBMP(img, pP, pad);
+//
+//    fclose(img);
+//
+//
+//    FILE *output = fopen("../Module-3/output.bmp", "wb");
+//
+//    writeBMPHeader(output,bmpP->bmpHeader);
+//
+//    writeDIBHeader(output,bmpP->dibHeader);
+//
+//    writePixelsBMP(output,pP,pad);
+//
+//    fclose(output);
 
 
 
@@ -225,7 +360,6 @@ int main(int argc, char *argv[]) {
 //
 //    int pad = calculatePadding(pP->width);
 //    readPixelsBMP(img, pP, pad);
-//    colorShiftPixels(pP, 56,78,45);
 //
 //    fclose(img);
 //
@@ -235,16 +369,10 @@ int main(int argc, char *argv[]) {
 //    writePPMHeader(output,ppmP->ppmHeader);
 //
 //    writePixelsPPM(output,pP);
-//    fclose(output);
-//
-//
+
     BmpProcessor_clean(bmpP);
     PpmProcessor_clean(ppmP);
     PixelProcessor_clean(pP);
-
-//    if (output != NULL) {
-//        fclose(output);
-//    }
     return 0;
 }
 

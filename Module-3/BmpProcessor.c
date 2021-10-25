@@ -63,10 +63,8 @@ BMP_Header* BMPHeader_init() {
     fwrite(&header->reserved1, sizeof(short), 1, file);
     fwrite(&header->reserved2, sizeof(short), 1, file);
     fwrite(&header->offset_pixel_array, sizeof(int), 1, file);
-
-
-    printf("printed: %d, %d, %d, %d\n", header->size, header->reserved1,
-           header->reserved2, header->offset_pixel_array);
+//    printf("printed: %d, %d, %d, %d\n", header->size, header->reserved1,
+//           header->reserved2, header->offset_pixel_array);
 }
 
 /**
@@ -75,7 +73,6 @@ BMP_Header* BMPHeader_init() {
  * @param  file: A pointer to the file being read or written
  */
  void readDIBHeader(FILE* file, struct DIB_Header* header) {
-
     fseek(file, 4, SEEK_CUR);
     fread(&header->imgWidth, sizeof(signed int), 1, file);
     fread(&header->imgHeight, sizeof(signed int), 1, file);
@@ -83,7 +80,6 @@ BMP_Header* BMPHeader_init() {
     fread(&header->bitsPerPixel, sizeof(unsigned short), 1, file);
     fseek(file, 4, SEEK_CUR);
     fread(&header->imgSize, sizeof(int), 1, file);
-//    header->imgSize += 54;
     fseek(file, 16, SEEK_CUR);
 }
 
@@ -94,7 +90,6 @@ BMP_Header* BMPHeader_init() {
  * @param  header: The header made by makeDIBHeader function
  */
  void writeDIBHeader(FILE* file, struct DIB_Header* header) {
-
     fwrite(&header->size, sizeof(int), 1, file);
     fwrite(&header->imgWidth, sizeof(int), 1, file);
     fwrite(&header->imgHeight, sizeof(int), 1, file);
@@ -106,16 +101,11 @@ BMP_Header* BMPHeader_init() {
     fwrite(&header->yPixelsPerMeter, sizeof(int), 1, file);
     fwrite(&header->colorsInTable, sizeof(int), 1, file);
     fwrite(&header->importantColors, sizeof(int), 1, file);
-//    int z = 0;
-//    fwrite(&z, sizeof(int), 1, file);
-//    fwrite(&z, sizeof(int), 1, file);
-
-    printf("printed: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", header->size, header->imgWidth,
-           header->imgHeight, header->planes, header->bitsPerPixel,
-           header->compression,
-           header->imgSize, header->xPixelsPerMeter, header->yPixelsPerMeter,
-           header->colorsInTable, header->importantColors);
-
+//    printf("printed: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\n", header->size, header->imgWidth,
+//           header->imgHeight, header->planes, header->bitsPerPixel,
+//           header->compression,
+//           header->imgSize, header->xPixelsPerMeter, header->yPixelsPerMeter,
+//           header->colorsInTable, header->importantColors);
 }
 
 /**
