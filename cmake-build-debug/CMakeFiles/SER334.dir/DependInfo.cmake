@@ -14,7 +14,7 @@ set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
-  "../Module-3"
+  "../Module-6"
   )
 
 # The set of dependency files which are needed:

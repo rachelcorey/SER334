@@ -6,8 +6,15 @@ struct Pixel {
     unsigned char red;
 };
 
+struct Section {
+    int width;
+    int OOBH;
+    int OOBV;
+};
+
 typedef struct PixelProcessor {
     struct Pixel *pixels;
+    struct Section *sections;
     int width;
     int height;
 } PixelProcessor;

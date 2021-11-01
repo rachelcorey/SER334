@@ -6,17 +6,15 @@
 
 #IncludeRegexTransform: 
 
-../Module-3/BmpProcessor.h
+../Module-6/BmpProcessor.h
 bits/types/FILE.h
 -
 
-../Module-3/PixelProcessor.h
+../Module-6/PixelProcessor.h
 malloc.h
 -
 
-../Module-3/PpmProcessor.h
-
-/home/kirry/CLionProjects/SER334/Module-3/BmpProcessor.c
+/home/kirry/CLionProjects/SER334/Module-6/BmpProcessor.c
 BmpProcessor.h
 -
 malloc.h
@@ -24,41 +22,19 @@ malloc.h
 string.h
 -
 
-/home/kirry/CLionProjects/SER334/Module-3/CoreyImageProcessor.c
-getopt.h
--
+/home/kirry/CLionProjects/SER334/Module-6/CoreyFilters.c
 stdio.h
 -
-string.h
--
-unistd.h
--
-stdlib.h
--
-ctype.h
--
-limits.h
--
-sys/stat.h
+math.h
 -
 BmpProcessor.c
-/home/kirry/CLionProjects/SER334/Module-3/BmpProcessor.c
+/home/kirry/CLionProjects/SER334/Module-6/BmpProcessor.c
 PixelProcessor.c
-/home/kirry/CLionProjects/SER334/Module-3/PixelProcessor.c
-PpmProcessor.c
-/home/kirry/CLionProjects/SER334/Module-3/PpmProcessor.c
+/home/kirry/CLionProjects/SER334/Module-6/PixelProcessor.c
 
-/home/kirry/CLionProjects/SER334/Module-3/PixelProcessor.c
+/home/kirry/CLionProjects/SER334/Module-6/PixelProcessor.c
 PixelProcessor.h
 -
 malloc.h
--
-
-/home/kirry/CLionProjects/SER334/Module-3/PpmProcessor.c
-PpmProcessor.h
--
-malloc.h
--
-string.h
 -
 

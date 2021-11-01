@@ -14,11 +14,65 @@ PixelProcessor *PixelProcessor_init(int imgWidth, int imgHeight) {
     return pixelProcessor;
 }
 
+struct Pixel* getAvgPixel(PixelProcessor *pP, int x, int y) {
+    struct Pixel* avgPix = malloc(sizeof(struct Pixel));
+    int rTotal, gTotal, bTotal = 0;
+
+    for (int i = x; i < x + 2; ++i) {
+        for (int j = y; j < y + 2; ++j) {
+            rTotal += pP->pixels[i * pP->height + j].red;
+            gTotal += pP->pixels[i * pP->height + j].green;
+            bTotal += pP->pixels[i * pP->height + j].blue;
+        }
+    }
+
+    avgPix->red = rTotal/9;
+    avgPix->green = gTotal/9;
+    avgPix->blue = bTotal/9;
+
+    return avgPix;
+}
+
+void blur3x3(PixelProcessor *pP, int x, int y) {
+    int curX = x - 1;
+    int curY = y - 1;
+    struct Pixel* avgPix = getAvgPixel(pP, x, y);
+
+    for (int i = curX; i < curX + 2; ++i) {
+        for (int j = curY; j < curY + 2; ++j) {
+            pP->pixels[i * pP->height + j].red = avgPix->red;
+            pP->pixels[i * pP->height + j].green = avgPix->green;
+            pP->pixels[i * pP->height + j].blue = avgPix->blue;
+        }
+    }
+}
+
+void blurSection(PixelProcessor *pP, struct Section sect, int imgHeight) {
+    int maxIncrementV = floor(imgHeight/3);
+    int maxIncrementH = floor(sect.width/3);
+    int counterV = 0;
+    int counterH = 0;
+    int curVPos = sect.width + 1;
+    int curHPos = 1;
+
+    while (counterH != maxIncrementH) {
+        while (counterV != maxIncrementV) {
+            blur3x3(pP, curHPos, curVPos);
+            ++counterV;
+            curVPos += 3;
+        }
+        counterV = 0;
+        ++counterH;
+        curHPos += 3;
+    }
+}
+
 /**
  * Cleans a PixelProcessor Object from the system
  * @param self object to be freed
  */
 void PixelProcessor_clean(PixelProcessor *self) {
+    free(self->sections);
     free(self->pixels);
     free(self);
 }
