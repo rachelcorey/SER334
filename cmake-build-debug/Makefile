@@ -129,29 +129,29 @@ SER334/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/build
 .PHONY : SER334/fast
 
-Module-3/CoreyImageProcessor.o: Module-3/CoreyImageProcessor.c.o
-.PHONY : Module-3/CoreyImageProcessor.o
+Module-6/CoreyFilters.o: Module-6/CoreyFilters.c.o
+.PHONY : Module-6/CoreyFilters.o
 
 # target to build an object file
-Module-3/CoreyImageProcessor.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o
-.PHONY : Module-3/CoreyImageProcessor.c.o
+Module-6/CoreyFilters.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-6/CoreyFilters.c.o
+.PHONY : Module-6/CoreyFilters.c.o
 
-Module-3/CoreyImageProcessor.i: Module-3/CoreyImageProcessor.c.i
-.PHONY : Module-3/CoreyImageProcessor.i
+Module-6/CoreyFilters.i: Module-6/CoreyFilters.c.i
+.PHONY : Module-6/CoreyFilters.i
 
 # target to preprocess a source file
-Module-3/CoreyImageProcessor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.i
-.PHONY : Module-3/CoreyImageProcessor.c.i
+Module-6/CoreyFilters.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-6/CoreyFilters.c.i
+.PHONY : Module-6/CoreyFilters.c.i
 
-Module-3/CoreyImageProcessor.s: Module-3/CoreyImageProcessor.c.s
-.PHONY : Module-3/CoreyImageProcessor.s
+Module-6/CoreyFilters.s: Module-6/CoreyFilters.c.s
+.PHONY : Module-6/CoreyFilters.s
 
 # target to generate assembly for a file
-Module-3/CoreyImageProcessor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.s
-.PHONY : Module-3/CoreyImageProcessor.c.s
+Module-6/CoreyFilters.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-6/CoreyFilters.c.s
+.PHONY : Module-6/CoreyFilters.c.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SER334"
-	@echo "... Module-3/CoreyImageProcessor.o"
-	@echo "... Module-3/CoreyImageProcessor.i"
-	@echo "... Module-3/CoreyImageProcessor.s"
+	@echo "... Module-6/CoreyFilters.o"
+	@echo "... Module-6/CoreyFilters.i"
+	@echo "... Module-6/CoreyFilters.s"
 .PHONY : help
 
 

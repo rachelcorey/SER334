@@ -4,7 +4,7 @@ project(SER334 C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(SER334
-        Module-3/CoreyImageProcessor.c)
+        Module-6/CoreyFilters.c)
 
 include_directories(Module-3/)
 

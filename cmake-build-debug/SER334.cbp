@@ -78,7 +78,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/kirry/CLionProjects/SER334/Module-3/CoreyImageProcessor.c">
+		<Unit filename="/home/kirry/CLionProjects/SER334/Module-6/CoreyFilters.c">
 			<Option target="SER334"/>
 		</Unit>
 		<Unit filename="/home/kirry/CLionProjects/SER334/CMakeLists.txt">

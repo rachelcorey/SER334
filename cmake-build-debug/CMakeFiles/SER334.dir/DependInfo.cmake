@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/kirry/CLionProjects/SER334/Module-3/CoreyImageProcessor.c" "/home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles/SER334.dir/Module-3/CoreyImageProcessor.c.o"
+  "/home/kirry/CLionProjects/SER334/Module-6/CoreyFilters.c" "/home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles/SER334.dir/Module-6/CoreyFilters.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
