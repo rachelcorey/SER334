@@ -22,6 +22,7 @@
 
 //problem assumptions
 #define MAXIMUM_IMAGE_SIZE 4096
+#define DIV_CONSTANT 4
 
 ////////////////////////////////////////////////////////////////////////////////
 //DATA STRUCTURES
@@ -54,7 +55,7 @@ void turnPixRed(int x, int y) {
 }
 
 void blurImage() {
-    int divisions = 2;
+    int divisions = 4;
     int sectWidth = floor(pP->width/divisions);
     blur_init(pP);
     pP->sections = malloc(sizeof(struct Section) * divisions);
@@ -66,20 +67,22 @@ void blurImage() {
     struct Pixel *old = pP->pixels;
     pP->pixels = pP->blurred;
     free(old);
+
 //    int i = 2;
 //    int j = 1;
 //    int num = i * pP->height + j;
-//
 //    turnPixRed(i, j);
-//    turnPixRed(i, 4);
-//
+//    printf("first pixel num: %d\n", num);
 //
 //    i = 5;
 //    num = i * pP->height + j;
+//    printf("second pixel num: %d\n", num);
 //    turnPixRed(i, j);
 //
 //    i = 8;
+//    j = 4;
 //    num = i * pP->height + j;
+//    printf("third pixel num: %d\n", num);
 //    turnPixRed(i, j);
 //
 //    i = 11;
@@ -89,6 +92,12 @@ void blurImage() {
 //    i = 14;
 //    num = i * pP->height + j;
 //    turnPixRed(i, j);
+
+//    for (int i = 2; i < pP->height - 1; i+=3) {
+//        for (int j = 1; j < pP->width/2 - 1; j+=3) {
+//            turnPixRed(i,j);
+//        }
+//    }
 
 }
 

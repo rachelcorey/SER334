@@ -92,35 +92,10 @@ void blur3x3(PixelProcessor *pP, int x, int y) {
 }
 
 void blurSection(PixelProcessor *pP, struct Section sect, int imgHeight) {
-    int maxIncrementV = floor(imgHeight);
-    int maxIncrementH = floor(sect.width);
-//    maxIncrementH = floor(pP->width);
-    int counterV = 0;
-    int counterH = 0;
-    int curVPos = 1;
-//    int curVPos = pP->width + 1;
-    int curHPos = 1;
-
-    while (counterH != maxIncrementH) {
-        while (counterV != maxIncrementV) {
-            blur3x3(pP, curHPos, curVPos);
-            ++counterV;
-            // 1 and 1: nothing happens
-            // 2 and 1: nothing happens
-            // 3 and 1: nothing happens
-            // 1 and 2: nothing happens
-            // 1 and 3: even horizontal black lines spaced 3px apart, except for leftmost 2px wide column
-            // 2 and 2: nothing happens
-            // 3 and 3: even horizontal black lines spaced 5px apart
-            // with maxIncrementV = floor(imgHeight):
-            // 4 and 4: cut into squares 12x12 spaced 1px horiz, 2px vert
-            // 2 and 4: 3px vert img, spaced 2px vert black lines
-            // 1 and 4: 3px vert img, spaced 5px vert black lines
-            curVPos += 3;
+    for (int i = 2; i < imgHeight - 1; i+=3) {
+        for (int j = 1; j < sect.width - 1; j+=3) {
+            blur3x3(pP, i, j);
         }
-        counterV = 0;
-        ++counterH;
-        curHPos += 1;
     }
 }
 
