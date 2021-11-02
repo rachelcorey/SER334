@@ -117,7 +117,7 @@ void PixelProcessor_clean(PixelProcessor *self) {
  */
 void readPixelsBMP(FILE *file, struct PixelProcessor *self, int paddingBytes) {
 
-    for (int i = self->width - 1; i > 0; --i) {
+    for (int i = self->width; i > 0; --i) {
         for (int j = 0; j < self->height; ++j) {
             unsigned char b, g, r;
             fread(&b, sizeof(char), 1, file);

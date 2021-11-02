@@ -55,18 +55,18 @@ void turnPixRed(int x, int y) {
 }
 
 void blurImage() {
-    int divisions = 4;
-    int sectWidth = floor(pP->width/divisions);
-    blur_init(pP);
-    pP->sections = malloc(sizeof(struct Section) * divisions);
-
-    struct Section *sec = malloc(sizeof(struct Section));
-    sec->width = sectWidth;
-    pP->sections[0] = *sec;
-    blurSection(pP, *sec, pP->height);
-    struct Pixel *old = pP->pixels;
-    pP->pixels = pP->blurred;
-    free(old);
+//    int divisions = 4;
+//    int sectWidth = floor(pP->width/divisions);
+//    blur_init(pP);
+//    pP->sections = malloc(sizeof(struct Section) * divisions);
+//
+//    struct Section *sec = malloc(sizeof(struct Section));
+//    sec->width = sectWidth;
+//    pP->sections[0] = *sec;
+//    blurSection(pP, *sec, pP->height);
+//    struct Pixel *old = pP->pixels;
+//    pP->pixels = pP->blurred;
+//    free(old);
 
 //    int i = 2;
 //    int j = 1;
@@ -93,11 +93,11 @@ void blurImage() {
 //    num = i * pP->height + j;
 //    turnPixRed(i, j);
 
-//    for (int i = 2; i < pP->height - 1; i+=3) {
-//        for (int j = 1; j < pP->width/2 - 1; j+=3) {
-//            turnPixRed(i,j);
-//        }
-//    }
+    for (int i = 2; i < pP->height; i+=3) {
+        for (int j = 1; j < pP->width; j+=3) {
+            turnPixRed(i,j);
+        }
+    }
 
 }
 
