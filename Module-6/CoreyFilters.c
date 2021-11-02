@@ -47,17 +47,49 @@ int calculatePadding(int imgWidth) {
     return pad;
 }
 
+void turnPixRed(int x, int y) {
+    pP->pixels[x * pP->height + y].red = 255;
+    pP->pixels[x * pP->height + y].green = 0;
+    pP->pixels[x * pP->height + y].blue = 0;
+}
+
 void blurImage() {
     int divisions = 4;
     int sectWidth = floor(pP->width/divisions);
+    blur_init(pP);
     pP->sections = malloc(sizeof(struct Section) * divisions);
 
-    for (int i = 0; i < divisions; ++i) {
-        struct Section *sec = malloc(sizeof (struct Section));
-        sec->width = sectWidth;
-        pP->sections[i] = *sec;
-        blurSection(pP, *sec, pP->height);
-    }
+    struct Section *sec = malloc(sizeof(struct Section));
+    sec->width = sectWidth;
+    pP->sections[0] = *sec;
+    blurSection(pP, *sec, pP->height);
+    struct Pixel *old = pP->pixels;
+    pP->pixels = pP->blurred;
+    free(old);
+//    int i = 2;
+//    int j = 1;
+//    int num = i * pP->height + j;
+//
+//    turnPixRed(i, j);
+//    turnPixRed(i, 4);
+//
+//
+//    i = 5;
+//    num = i * pP->height + j;
+//    turnPixRed(i, j);
+//
+//    i = 8;
+//    num = i * pP->height + j;
+//    turnPixRed(i, j);
+//
+//    i = 11;
+//    num = i * pP->height + j;
+//    turnPixRed(i, j);
+//
+//    i = 14;
+//    num = i * pP->height + j;
+//    turnPixRed(i, j);
+
 }
 
 void processImage(FILE *img, char *outputFile) {
@@ -93,7 +125,7 @@ int main(int argc, char* argv[]) {
     bmpP = BmpProcessor_init();
 
     FILE *img = fopen("../Module-6/test4.bmp", "rb");
-    processImage(img, "../Module-6/blurred.bmp");
+    processImage(img, "../../../Desktop/b.bmp");
 
     BmpProcessor_clean(bmpP);
     PixelProcessor_clean(pP);

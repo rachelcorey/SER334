@@ -14,21 +14,61 @@ PixelProcessor *PixelProcessor_init(int imgWidth, int imgHeight) {
     return pixelProcessor;
 }
 
-struct Pixel* getAvgPixel(PixelProcessor *pP, int x, int y) {
-    struct Pixel* avgPix = malloc(sizeof(struct Pixel));
-    int rTotal, gTotal, bTotal = 0;
+void blur_init(PixelProcessor *pP) {
+    pP->blurred = calloc(pP->height * pP->width * 4, sizeof(struct Pixel));
+}
 
-    for (int i = x; i < x + 2; ++i) {
-        for (int j = y; j < y + 2; ++j) {
+
+/**
+ *
+ * Clamps values entered for color shifting that are above 255 and below 0
+ * @param color initial color value
+ * @param mod the requested modification
+ * @return the clamped modification of the color
+ */
+unsigned char clamp(unsigned char color, int mod) {
+    if (color + mod < 0) {
+        color = 0;
+    } else if (color + mod > 255) {
+        color = 255;
+    } else {
+        color = color + mod;
+    }
+    return color;
+}
+
+
+unsigned char clampActual(unsigned char color, int actual) {
+    if (actual > 255) {
+        color = 255;
+    } else if (actual < 0) {
+        color = 0;
+    } else {
+        color = actual;
+    }
+    return color;
+}
+
+
+struct Pixel* getAvgPixel(PixelProcessor *pP, int x, int y) {
+    struct Pixel* avgPix = calloc(1, sizeof(struct Pixel));
+    int rTotal = 0;
+    int gTotal = 0;
+    int bTotal = 0;
+    int pixelsCounted = 0;
+
+    for (int i = x; i < x + 3; ++i) {
+        for (int j = y; j < y + 3; ++j) {
             rTotal += pP->pixels[i * pP->height + j].red;
             gTotal += pP->pixels[i * pP->height + j].green;
             bTotal += pP->pixels[i * pP->height + j].blue;
+            ++pixelsCounted;
         }
     }
 
-    avgPix->red = rTotal/9;
-    avgPix->green = gTotal/9;
-    avgPix->blue = bTotal/9;
+    avgPix->red = rTotal/pixelsCounted;
+    avgPix->green = gTotal/pixelsCounted;
+    avgPix->blue = bTotal/pixelsCounted;
 
     return avgPix;
 }
@@ -36,15 +76,18 @@ struct Pixel* getAvgPixel(PixelProcessor *pP, int x, int y) {
 void blur3x3(PixelProcessor *pP, int x, int y) {
     int curX = x - 1;
     int curY = y - 1;
-    struct Pixel* avgPix = getAvgPixel(pP, x, y);
 
-    for (int i = curX; i < curX + 2; ++i) {
-        for (int j = curY; j < curY + 2; ++j) {
-            pP->pixels[i * pP->height + j].red = avgPix->red;
-            pP->pixels[i * pP->height + j].green = avgPix->green;
-            pP->pixels[i * pP->height + j].blue = avgPix->blue;
+    for (int i = curX; i < curX + 3; ++i) {
+        for (int j = curY; j < curY + 3; ++j) {
+            struct Pixel* avgPix = getAvgPixel(pP, i, j);
+            int num = i * pP->height + j;
+            pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
+            pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
+            pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
+            free(avgPix);
         }
     }
+
 }
 
 void blurSection(PixelProcessor *pP, struct Section sect, int imgHeight) {
@@ -63,7 +106,6 @@ void blurSection(PixelProcessor *pP, struct Section sect, int imgHeight) {
         }
         counterV = 0;
         ++counterH;
-        curHPos += 3;
     }
 }
 
@@ -101,22 +143,7 @@ void readPixelsBMP(FILE *file, struct PixelProcessor *self, int paddingBytes) {
     }
 }
 
-/**
- * Clamps values entered for color shifting that are above 255 and below 0
- * @param color initial color value
- * @param mod the requested modification
- * @return the clamped modification of the color
- */
-unsigned char clamp(unsigned char color, int mod) {
-    if (color + mod < 0) {
-        color = 0;
-    } else if (color + mod > 255) {
-        color = 255;
-    } else {
-        color = color + mod;
-    }
-    return color;
-}
+
 
 /**
  * Shift color of Pixel array. The shift value of RGB is

@@ -14,6 +14,7 @@ struct Section {
 
 typedef struct PixelProcessor {
     struct Pixel *pixels;
+    struct Pixel *blurred;
     struct Section *sections;
     int width;
     int height;
