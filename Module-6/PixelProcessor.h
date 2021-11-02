@@ -18,6 +18,7 @@ typedef struct PixelProcessor {
     struct Section *sections;
     int width;
     int height;
+    int padding;
 } PixelProcessor;
 
 /**

@@ -11,6 +11,7 @@ PixelProcessor *PixelProcessor_init(int imgWidth, int imgHeight) {
     pixelProcessor->pixels = calloc(imgHeight * imgWidth * 4, sizeof(struct Pixel));
     pixelProcessor->width = imgWidth;
     pixelProcessor->height = imgHeight;
+    pixelProcessor->padding = 0;
     return pixelProcessor;
 }
 
@@ -91,11 +92,12 @@ void blur3x3(PixelProcessor *pP, int x, int y) {
 }
 
 void blurSection(PixelProcessor *pP, struct Section sect, int imgHeight) {
-    int maxIncrementV = floor(imgHeight/3);
-    int maxIncrementH = floor(sect.width/3);
+    int maxIncrementV = floor(imgHeight/2);
+    int maxIncrementH = floor(sect.width/2);
     int counterV = 0;
     int counterH = 0;
-    int curVPos = sect.width + 1;
+//    int curVPos = 1;
+    int curVPos = sect.width + 2;
     int curHPos = 1;
 
     while (counterH != maxIncrementH) {
@@ -106,6 +108,7 @@ void blurSection(PixelProcessor *pP, struct Section sect, int imgHeight) {
         }
         counterV = 0;
         ++counterH;
+        curHPos += 1;
     }
 }
 
