@@ -54,7 +54,7 @@ void turnPixRed(int x, int y) {
 }
 
 void blurImage() {
-    int divisions = 4;
+    int divisions = 2;
     int sectWidth = floor(pP->width/divisions);
     blur_init(pP);
     pP->sections = malloc(sizeof(struct Section) * divisions);
