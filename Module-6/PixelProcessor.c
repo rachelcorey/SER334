@@ -50,27 +50,46 @@ unsigned char clampActual(unsigned char color, int actual) {
     return color;
 }
 
+void turnPixRed2(PixelProcessor *pP, int x, int y) {
+    pP->blurred[x * pP->height + y].red = 255;
+    pP->blurred[x * pP->height + y].green = 0;
+    pP->blurred[x * pP->height + y].blue = 0;
+}
 
-struct Pixel* getAvgPixel(PixelProcessor *pP, int x, int y) {
+struct Pixel* getAvgPixel(PixelProcessor *pP, int sectWidth, int x, int y) {
     struct Pixel* avgPix = calloc(1, sizeof(struct Pixel));
     int rTotal = 0;
     int gTotal = 0;
     int bTotal = 0;
     int pixelsCounted = 0;
-    int xAmt = 3;
+    int xAmt = 2;
+    int yAmt = 2;
 
-    if (x == pP->height) {
-        xAmt = 2;
-    }
+//    if (x == pP->height) {
+//        xAmt = 2;
+////        x = 1;
+//    }
+//    if (y == sectWidth) {
+//        yAmt = 2;
+////        y = 1;
+//    }
 
-    for (int i = x; i < x + 3; ++i) {
+
+    for (int i = x; i < x + yAmt; ++i) {
         for (int j = y; j < y + xAmt; ++j) {
-            rTotal += pP->pixels[i * pP->height + j].red;
-            gTotal += pP->pixels[i * pP->height + j].green;
-            bTotal += pP->pixels[i * pP->height + j].blue;
-            ++pixelsCounted;
+                rTotal += pP->pixels[i * pP->height + j].red;
+                gTotal += pP->pixels[i * pP->height + j].green;
+                bTotal += pP->pixels[i * pP->height + j].blue;
+                ++pixelsCounted;
+            if (i == x + yAmt && j == y + xAmt && pixelsCounted < 9) {
+                printf("i: %d, j: %d, pc: %d\n", i, j, pixelsCounted);
+                rTotal = 0;
+                gTotal = 0;
+                bTotal = 0;
+            }
         }
     }
+
 
     avgPix->red = rTotal/pixelsCounted;
     avgPix->green = gTotal/pixelsCounted;
@@ -81,17 +100,19 @@ struct Pixel* getAvgPixel(PixelProcessor *pP, int x, int y) {
 
 
 
-void blur3x3(PixelProcessor *pP, int x, int y) {
+
+void blur3x3(PixelProcessor *pP, int sectWidth, int x, int y) {
     int curX = x - 1;
     int curY = y - 1;
 
     for (int i = curX; i < curX + 3; ++i) {
         for (int j = curY; j < curY + 3; ++j) {
-            struct Pixel* avgPix = getAvgPixel(pP, i, j);
+            struct Pixel* avgPix = getAvgPixel(pP, sectWidth, i, j);
             int num = i * pP->height + j;
             pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
             pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
             pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
+
             free(avgPix);
         }
     }

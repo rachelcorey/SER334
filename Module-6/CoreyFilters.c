@@ -61,6 +61,65 @@ void turnPixRed(int x, int y) {
     pP->blurred[x * pP->height + y].blue = 0;
 }
 
+
+struct Pixel* getAvgPixel_2(PixelProcessor *pP2, int sectWidth, int x, int y) {
+    struct Pixel* avgPix = calloc(1, sizeof(struct Pixel));
+    avgPix->red = 0;
+    avgPix->green = 0;
+    avgPix->blue = 0;
+    int rTotal = 1;
+    int gTotal = 1;
+    int bTotal = 1;
+    int pixelsCounted = 0;
+    int xAmt = 2;
+    int yAmt = 2;
+
+
+    for (int i = x; i < x + yAmt; ++i) {
+        for (int j = y; j < y + xAmt; ++j) {
+            if (j == sectWidth - 1 || i >= pP->height - 1) {
+//                turnPixRed(i, j);
+                rTotal += pP->pixels[i * pP->height + j].red;
+                gTotal += pP->pixels[i * pP->height + j].green;
+                bTotal += pP->pixels[i * pP->height + j].blue;
+                ++pixelsCounted;
+            }
+        }
+    }
+
+
+    if (pixelsCounted > 0) {
+        avgPix->red = rTotal / pixelsCounted;
+        avgPix->green = gTotal / pixelsCounted;
+        avgPix->blue = bTotal / pixelsCounted;
+    }
+
+    return avgPix;
+}
+
+
+
+
+void blur3x3_2(PixelProcessor *pP, int sectWidth, int x, int y, int n, int m) {
+    int curX = x;
+    int curY = y;
+
+    for (int i = curX; i < curX + n; ++i) {
+        for (int j = curY; j < curY + m; ++j) {
+            struct Pixel* avgPix = getAvgPixel_2(pP, sectWidth, i, j);
+            int num = i * pP->height + j;
+            pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
+            pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
+            pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
+//            turnPixRed(i,j);
+
+            free(avgPix);
+
+        }
+    }
+
+}
+
 void blurSection(int start, int sectWidth, int height, int offset) {
     int extraH = sectWidth % 3;
     int extraV = height % 3;
@@ -75,26 +134,34 @@ void blurSection(int start, int sectWidth, int height, int offset) {
             int c = (tH == 4 && tV == 1);
             int c2 = (tH == 1 && tV == 1);
             if ((j > sectWidth - extraH + offset || i >= height - extraV + 1)) {
-                if (tV == 1) {
-                    turnPixBlue(i, j);
-                }
-                else if (tH <= 1 && tV == 0) {
-                    printf("%d,%d\n", i,j);
+                if (j == pP->width - 1) {
+//                    turnPixBlue(i, j);
+                    blur3x3_2(pP, sectWidth, i, j, 2, 1);
+                } else if (tH <= 1 && tV == 0) {
                     ++bC;
                     if (bC >= 3) {
-                        turnPixBlue(i, j);
+//                        blur3x3(pP, sectWidth, i, j);
+                        blur3x3_2(pP, sectWidth, i-4, j-4, 4, 4);
+//                        turnPixBlue(i, j);
                         bC = 0;
                     }
+                } else if (tV == 1) {
+//                    blur3x3(pP, sectWidth, i, j);
+//                    blur3x3_2(pP, sectWidth, i-1, j, 2, 1);
                 }
+
                 tH = 0;
             } else if (c) {
-                turnPixRed(i,j);
+//                blur3x3(pP, sectWidth, i, j);
+//                turnPixRed(i,j);
                 tH = 0;
             } else if (c2) {
-                turnPixRed(i,j);
+//                blur3x3(pP, sectWidth, i, j);
+//                turnPixRed(i,j);
                 tH = -2;
             }
             ++tH;
+
         }
         if (tV == 2) {
             tV = -1;
@@ -102,7 +169,8 @@ void blurSection(int start, int sectWidth, int height, int offset) {
         ++tV;
         tH = 0;
         if (i == height + extraV) {
-            turnPixBlue(i - 1, sectWidth - 1);
+            blur3x3(pP, sectWidth, i - 1, sectWidth - 1);
+//            turnPixBlue(i - 1, sectWidth - 1);
         }
     }
 
