@@ -77,7 +77,7 @@ struct Pixel* getAvgPixel_2(PixelProcessor *pP2, int sectWidth, int x, int y) {
 
     for (int i = x; i < x + yAmt; ++i) {
         for (int j = y; j < y + xAmt; ++j) {
-            if (j == sectWidth - 1 || i >= pP->height - 1) {
+            if (j == sectWidth - 1 || i == pP->height) {
 //                turnPixRed(i, j);
                 rTotal += pP->pixels[i * pP->height + j].red;
                 gTotal += pP->pixels[i * pP->height + j].green;
@@ -141,22 +141,26 @@ void blurSection(int start, int sectWidth, int height, int offset) {
                     ++bC;
                     if (bC >= 3) {
 //                        blur3x3(pP, sectWidth, i, j);
-                        blur3x3_2(pP, sectWidth, i-4, j-4, 4, 4);
+                        // -3, -3, 2, 4
+                        // -3, -3, 4, 5
+                        blur3x3_2(pP, sectWidth, i, j-3, 1, 5);
 //                        turnPixBlue(i, j);
                         bC = 0;
                     }
-                } else if (tV == 1) {
-//                    blur3x3(pP, sectWidth, i, j);
-//                    blur3x3_2(pP, sectWidth, i-1, j, 2, 1);
+                } else if (tV <= 1 && tH > 1) {
+                    blur3x3(pP, sectWidth, i+1, j);
+//                    blur3x3_2(pP, sectWidth, i-1, j, 3, 1);
+
+//                    turnPixRed(i+1,j);
                 }
 
                 tH = 0;
             } else if (c) {
-//                blur3x3(pP, sectWidth, i, j);
+                blur3x3(pP, sectWidth, i, j);
 //                turnPixRed(i,j);
                 tH = 0;
             } else if (c2) {
-//                blur3x3(pP, sectWidth, i, j);
+                blur3x3(pP, sectWidth, i, j);
 //                turnPixRed(i,j);
                 tH = -2;
             }
@@ -169,7 +173,7 @@ void blurSection(int start, int sectWidth, int height, int offset) {
         ++tV;
         tH = 0;
         if (i == height + extraV) {
-            blur3x3(pP, sectWidth, i - 1, sectWidth - 1);
+//            blur3x3(pP, sectWidth, i - 1, sectWidth - 1);
 //            turnPixBlue(i - 1, sectWidth - 1);
         }
     }
