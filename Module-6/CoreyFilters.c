@@ -48,10 +48,17 @@ int calculatePadding(int imgWidth) {
     return pad;
 }
 
+
+void turnPixBlue(int x, int y) {
+    pP->blurred[x * pP->height + y].red = 0;
+    pP->blurred[x * pP->height + y].green = 0;
+    pP->blurred[x * pP->height + y].blue = 255;
+}
+
 void turnPixRed(int x, int y) {
-    pP->pixels[x * pP->height + y].red = 255;
-    pP->pixels[x * pP->height + y].green = 0;
-    pP->pixels[x * pP->height + y].blue = 0;
+    pP->blurred[x * pP->height + y].red = 255;
+    pP->blurred[x * pP->height + y].green = 0;
+    pP->blurred[x * pP->height + y].blue = 0;
 }
 
 void blurImage() {
@@ -64,9 +71,6 @@ void blurImage() {
 //    sec->width = sectWidth;
 //    pP->sections[0] = *sec;
 //    blurSection(pP, *sec, pP->height);
-//    struct Pixel *old = pP->pixels;
-//    pP->pixels = pP->blurred;
-//    free(old);
 
 //    int i = 2;
 //    int j = 1;
@@ -93,11 +97,72 @@ void blurImage() {
 //    num = i * pP->height + j;
 //    turnPixRed(i, j);
 
-    for (int i = 2; i < pP->height; i+=3) {
-        for (int j = 1; j < pP->width; j+=3) {
-            turnPixRed(i,j);
+    blur_init(pP);
+    int extraH = pP->width % 3;
+    int extraV = pP->height % 3;
+//    printf("%d %d\n", extraH, extraV);
+
+//    for (int i = 0; i <= pP->height; ++i) {
+//        for (int j = 0; j < pP->width; ++j) {
+//            if (j == pP->width - extraH || i == pP->height - extraV + 1) {
+//                turnPixBlue(i, j);
+//            } else {
+//                struct Pixel *avgPix = getAvgPixel(pP, i, j);
+//                int num = i * pP->height + j;
+//                pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
+//                pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
+//                pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
+//                free(avgPix);
+//            }
+//        }
+//    }
+
+    int tH = 0;
+    int tV = 0;
+
+    for (int i = 1; i <= pP->height + extraV; ++i) {
+        for (int j = 0; j < pP->width; ++j) {
+            if (j == pP->width - extraH || i == pP->height - extraV + 1) {
+                turnPixBlue(i, j);
+                tH = 0;
+            } else if (tH == 4 && tV == 1) {
+                turnPixRed(i,j);
+                tH = 0;
+            } else if (tH == 1 && tV == 1) {
+                turnPixRed(i,j);
+                tH = -2;
+            }
+            ++tH;
         }
+        if (tV == 2) {
+            tV = -1;
+        }
+        ++tV;
+        tH = 0;
     }
+
+//    for (int i = 0; i < pP->height; ++i) {
+//        for (int j = 0; j < pP->width; ++j) {
+//            blur3x3(pP,i,j);
+//        }
+//    }
+
+
+//    for (int i = 0; i < pP->height; ++i) {
+//        for (int j = 0; j < pP->width; ++j) {
+//            struct Pixel* avgPix = getAvgPixel(pP, i, j);
+//            int num = i * pP->height + j;
+//            pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
+//            pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
+//            pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
+//            free(avgPix);
+//
+//        }
+//    }
+
+    struct Pixel *old = pP->pixels;
+    pP->pixels = pP->blurred;
+    free(old);
 
 }
 

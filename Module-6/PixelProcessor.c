@@ -74,6 +74,8 @@ struct Pixel* getAvgPixel(PixelProcessor *pP, int x, int y) {
     return avgPix;
 }
 
+
+
 void blur3x3(PixelProcessor *pP, int x, int y) {
     int curX = x - 1;
     int curY = y - 1;
