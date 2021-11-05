@@ -11,6 +11,8 @@
 //INCLUDES
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 //TODO: finish me
 
@@ -49,6 +51,9 @@ int calculatePadding(int imgWidth) {
 }
 
 
+void makeYellow() {
+    colorShiftPixels(pP, 50, 50, -100);
+}
 void turnPixBlue(int x, int y) {
     pP->blurred[x * pP->height + y].red = 0;
     pP->blurred[x * pP->height + y].green = 0;
@@ -74,11 +79,9 @@ struct Pixel* getAvgPixel_2(PixelProcessor *pP2, int sectWidth, int x, int y) {
     int xAmt = 2;
     int yAmt = 2;
 
-
     for (int i = x; i < x + yAmt; ++i) {
         for (int j = y; j < y + xAmt; ++j) {
             if (j == sectWidth - 1 || i == pP->height) {
-//                turnPixRed(i, j);
                 rTotal += pP->pixels[i * pP->height + j].red;
                 gTotal += pP->pixels[i * pP->height + j].green;
                 bTotal += pP->pixels[i * pP->height + j].blue;
@@ -86,7 +89,6 @@ struct Pixel* getAvgPixel_2(PixelProcessor *pP2, int sectWidth, int x, int y) {
             }
         }
     }
-
 
     if (pixelsCounted > 0) {
         avgPix->red = rTotal / pixelsCounted;
@@ -96,9 +98,6 @@ struct Pixel* getAvgPixel_2(PixelProcessor *pP2, int sectWidth, int x, int y) {
 
     return avgPix;
 }
-
-
-
 
 void blur3x3_2(PixelProcessor *pP, int sectWidth, int x, int y, int n, int m) {
     int curX = x;
@@ -111,12 +110,63 @@ void blur3x3_2(PixelProcessor *pP, int sectWidth, int x, int y, int n, int m) {
             pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
             pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
             pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
-//            turnPixRed(i,j);
-
             free(avgPix);
 
         }
     }
+}
+
+
+void renderSection(int start, int sectWidth, int height, int offset) {
+    int extraH = sectWidth % 3;
+    int extraV = height % 3;
+    srand(time(NULL));
+    int centerX = rand() % pP->width;
+    int centerY = rand() % pP->height;
+    int holes = 0;
+    int c = 0;
+
+    if (pP->width > pP->height) {
+        holes = floor(pP->height/10);
+    } else {
+        holes = floor(pP->width/10);
+    }
+
+    int radius = rand() % holes;
+//    int circle = pow((centerX-100), 2) + pow((centerY-100), 2) - pow(radius, 2);
+
+    while (c < holes) {
+        for (int i = 1; i <= height + extraV; ++i) {
+            for (int j = start; j < sectWidth; ++j) {
+                int num = i * pP->height + j;
+
+                if (((i - centerX) * (i - centerX) + (j - centerY) * (j - centerY)) <= radius * radius) {
+                    if ((j > sectWidth - extraH + offset || i >= height - extraV + 1)) {
+//                        turnPixBlue(i, j);
+                    } else {
+//                        turnPixRed(i, j);
+                    }
+
+                    pP->blurred[num].red = 0;
+                    pP->blurred[num].green = 0;
+                    pP->blurred[num].blue = 0;
+                } else {
+                    pP->blurred[num].red = clamp(pP->pixels[num].red, 50);
+                    pP->blurred[num].green = clamp(pP->pixels[num].green, 50);
+                    pP->blurred[num].blue = clamp(pP->pixels[num].blue, -100);
+                }
+            }
+        }
+        ++c;
+        if (c % 2 == 0 || c % 3 == 0) {
+            radius = holes;
+        } else {
+            radius = rand() % holes + (rand() % (int)floor(holes));
+        }
+        centerX = rand() % pP->width;
+        centerY = rand() % pP->height;
+    }
+
 
 }
 
@@ -128,114 +178,41 @@ void blurSection(int start, int sectWidth, int height, int offset) {
     int tV = 0;
     int bC = 1;
 
-
     for (int i = 1; i <= height + extraV; ++i) {
         for (int j = start; j < sectWidth; ++j) {
             int c = (tH == 4 && tV == 1);
             int c2 = (tH == 1 && tV == 1);
             if ((j > sectWidth - extraH + offset || i >= height - extraV + 1)) {
                 if (j == pP->width - 1) {
-//                    turnPixBlue(i, j);
                     blur3x3_2(pP, sectWidth, i, j, 2, 1);
                 } else if (tH <= 1 && tV == 0) {
                     ++bC;
                     if (bC >= 3) {
-//                        blur3x3(pP, sectWidth, i, j);
-                        // -3, -3, 2, 4
-                        // -3, -3, 4, 5
                         blur3x3_2(pP, sectWidth, i, j-3, 1, 5);
-//                        turnPixBlue(i, j);
                         bC = 0;
                     }
                 } else if (tV <= 1 && tH > 1) {
                     blur3x3(pP, sectWidth, i+1, j);
-//                    blur3x3_2(pP, sectWidth, i-1, j, 3, 1);
-
-//                    turnPixRed(i+1,j);
                 }
-
                 tH = 0;
             } else if (c) {
                 blur3x3(pP, sectWidth, i, j);
-//                turnPixRed(i,j);
                 tH = 0;
             } else if (c2) {
                 blur3x3(pP, sectWidth, i, j);
-//                turnPixRed(i,j);
                 tH = -2;
             }
             ++tH;
-
         }
         if (tV == 2) {
             tV = -1;
         }
         ++tV;
         tH = 0;
-        if (i == height + extraV) {
-//            blur3x3(pP, sectWidth, i - 1, sectWidth - 1);
-//            turnPixBlue(i - 1, sectWidth - 1);
-        }
     }
-
-
 }
 
 void blurImage() {
-//    int divisions = 4;
-//    int sectWidth = floor(pP->width/divisions);
-//    blur_init(pP);
-//    pP->sections = malloc(sizeof(struct Section) * divisions);
-//
-//    struct Section *sec = malloc(sizeof(struct Section));
-//    sec->width = sectWidth;
-//    pP->sections[0] = *sec;
-//    blurSection(pP, *sec, pP->height);
-
-//    int i = 2;
-//    int j = 1;
-//    int num = i * pP->height + j;
-//    turnPixRed(i, j);
-//    printf("first pixel num: %d\n", num);
-//
-//    i = 5;
-//    num = i * pP->height + j;
-//    printf("second pixel num: %d\n", num);
-//    turnPixRed(i, j);
-//
-//    i = 8;
-//    j = 4;
-//    num = i * pP->height + j;
-//    printf("third pixel num: %d\n", num);
-//    turnPixRed(i, j);
-//
-//    i = 11;
-//    num = i * pP->height + j;
-//    turnPixRed(i, j);
-//
-//    i = 14;
-//    num = i * pP->height + j;
-//    turnPixRed(i, j);
-
-
-//    printf("%d %d\n", extraH, extraV);
-
-//    for (int i = 0; i <= pP->height; ++i) {
-//        for (int j = 0; j < pP->width; ++j) {
-//            if (j == pP->width - extraH || i == pP->height - extraV + 1) {
-//                turnPixBlue(i, j);
-//            } else {
-//                struct Pixel *avgPix = getAvgPixel(pP, i, j);
-//                int num = i * pP->height + j;
-//                pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
-//                pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
-//                pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
-//                free(avgPix);
-//            }
-//        }
-//    }
-
-
     blur_init(pP);
 
     int divisions = 4;
@@ -243,9 +220,11 @@ void blurImage() {
     int start = sectWidth;
     int offset = -1;
 
-    for (int i = 0; i <= 3; ++i) {
+
+    for (int i = 0; i <= divisions - 1; ++i) {
         int n = sectWidth * (1+i);
-        blurSection(start * i, n, pP->height, offset);
+//        blurSection(start * i, n, pP->height, offset);
+        renderSection(start * i, n, pP->height, offset);
         if (n % 3 == 1) {
             offset = 0;
         } else if (n % 3 == 2) {
@@ -254,27 +233,6 @@ void blurImage() {
             offset = -1;
         }
     }
-
-
-
-//    for (int i = 0; i < pP->height; ++i) {
-//        for (int j = 0; j < pP->width; ++j) {
-//            blur3x3(pP,i,j);
-//        }
-//    }
-
-
-//    for (int i = 0; i < pP->height; ++i) {
-//        for (int j = 0; j < pP->width; ++j) {
-//            struct Pixel* avgPix = getAvgPixel(pP, i, j);
-//            int num = i * pP->height + j;
-//            pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
-//            pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
-//            pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
-//            free(avgPix);
-//
-//        }
-//    }
 
     struct Pixel *old = pP->pixels;
     pP->pixels = pP->blurred;
@@ -306,9 +264,7 @@ void processImage(FILE *img, char *outputFile) {
     fclose(output);
 }
 
-void makeYellow() {
-    colorShiftPixels(pP, 50, 50, -100);
-}
+
 
 int main(int argc, char* argv[]) {
 
