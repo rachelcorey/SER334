@@ -61,6 +61,54 @@ void turnPixRed(int x, int y) {
     pP->blurred[x * pP->height + y].blue = 0;
 }
 
+void blurSection(int start, int sectWidth, int height, int offset) {
+    int extraH = sectWidth % 3;
+    int extraV = height % 3;
+
+    int tH = 0;
+    int tV = 0;
+    int bC = 1;
+
+
+    for (int i = 1; i <= height + extraV; ++i) {
+        for (int j = start; j < sectWidth; ++j) {
+            int c = (tH == 4 && tV == 1);
+            int c2 = (tH == 1 && tV == 1);
+            if ((j > sectWidth - extraH + offset || i >= height - extraV + 1)) {
+                if (tV == 1) {
+                    turnPixBlue(i, j);
+                }
+                else if (tH <= 1 && tV == 0) {
+                    printf("%d,%d\n", i,j);
+                    ++bC;
+                    if (bC >= 3) {
+                        turnPixBlue(i, j);
+                        bC = 0;
+                    }
+                }
+                tH = 0;
+            } else if (c) {
+                turnPixRed(i,j);
+                tH = 0;
+            } else if (c2) {
+                turnPixRed(i,j);
+                tH = -2;
+            }
+            ++tH;
+        }
+        if (tV == 2) {
+            tV = -1;
+        }
+        ++tV;
+        tH = 0;
+        if (i == height + extraV) {
+            turnPixBlue(i - 1, sectWidth - 1);
+        }
+    }
+
+
+}
+
 void blurImage() {
 //    int divisions = 4;
 //    int sectWidth = floor(pP->width/divisions);
@@ -97,9 +145,7 @@ void blurImage() {
 //    num = i * pP->height + j;
 //    turnPixRed(i, j);
 
-    blur_init(pP);
-    int extraH = pP->width % 3;
-    int extraV = pP->height % 3;
+
 //    printf("%d %d\n", extraH, extraV);
 
 //    for (int i = 0; i <= pP->height; ++i) {
@@ -117,29 +163,27 @@ void blurImage() {
 //        }
 //    }
 
-    int tH = 0;
-    int tV = 0;
 
-    for (int i = 1; i <= pP->height + extraV; ++i) {
-        for (int j = 0; j < pP->width; ++j) {
-            if (j == pP->width - extraH || i == pP->height - extraV + 1) {
-                turnPixBlue(i, j);
-                tH = 0;
-            } else if (tH == 4 && tV == 1) {
-                turnPixRed(i,j);
-                tH = 0;
-            } else if (tH == 1 && tV == 1) {
-                turnPixRed(i,j);
-                tH = -2;
-            }
-            ++tH;
+    blur_init(pP);
+
+    int divisions = 4;
+    int sectWidth = floor(pP->width/divisions);
+    int start = sectWidth;
+    int offset = -1;
+
+    for (int i = 0; i <= 3; ++i) {
+        int n = sectWidth * (1+i);
+        blurSection(start * i, n, pP->height, offset);
+        if (n % 3 == 1) {
+            offset = 0;
+        } else if (n % 3 == 2) {
+            offset = -2;
+        } else {
+            offset = -1;
         }
-        if (tV == 2) {
-            tV = -1;
-        }
-        ++tV;
-        tH = 0;
     }
+
+
 
 //    for (int i = 0; i < pP->height; ++i) {
 //        for (int j = 0; j < pP->width; ++j) {

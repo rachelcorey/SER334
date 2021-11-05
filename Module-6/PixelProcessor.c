@@ -57,9 +57,14 @@ struct Pixel* getAvgPixel(PixelProcessor *pP, int x, int y) {
     int gTotal = 0;
     int bTotal = 0;
     int pixelsCounted = 0;
+    int xAmt = 3;
+
+    if (x == pP->height) {
+        xAmt = 2;
+    }
 
     for (int i = x; i < x + 3; ++i) {
-        for (int j = y; j < y + 3; ++j) {
+        for (int j = y; j < y + xAmt; ++j) {
             rTotal += pP->pixels[i * pP->height + j].red;
             gTotal += pP->pixels[i * pP->height + j].green;
             bTotal += pP->pixels[i * pP->height + j].blue;
@@ -92,14 +97,14 @@ void blur3x3(PixelProcessor *pP, int x, int y) {
     }
 
 }
-
-void blurSection(PixelProcessor *pP, struct Section sect, int imgHeight) {
-    for (int i = 2; i < imgHeight - 1; i+=3) {
-        for (int j = 1; j < sect.width - 1; j+=3) {
-            blur3x3(pP, i, j);
-        }
-    }
-}
+//
+//void blurSection(PixelProcessor *pP, struct Section sect, int imgHeight) {
+//    for (int i = 2; i < imgHeight - 1; i+=3) {
+//        for (int j = 1; j < sect.width - 1; j+=3) {
+//            blur3x3(pP, i, j);
+//        }
+//    }
+//}
 
 /**
  * Cleans a PixelProcessor Object from the system
