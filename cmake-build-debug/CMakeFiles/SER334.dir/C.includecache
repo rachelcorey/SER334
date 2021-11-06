@@ -31,6 +31,8 @@ stdlib.h
 -
 time.h
 -
+pthread.h
+-
 BmpProcessor.c
 /home/kirry/CLionProjects/SER334/Module-6/BmpProcessor.c
 PixelProcessor.c

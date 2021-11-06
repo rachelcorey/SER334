@@ -11,12 +11,19 @@ PixelProcessor *PixelProcessor_init(int imgWidth, int imgHeight) {
     pixelProcessor->pixels = calloc(imgHeight * imgWidth * 4, sizeof(struct Pixel));
     pixelProcessor->width = imgWidth;
     pixelProcessor->height = imgHeight;
+
     pixelProcessor->padding = 0;
     return pixelProcessor;
 }
 
 void blur_init(PixelProcessor *pP) {
     pP->blurred = calloc(pP->height * pP->width * 4, sizeof(struct Pixel));
+    for (int i = 1; i <= pP->height; ++i) {
+        for (int j = 0; j < pP->width; ++j) {
+            int num = i * pP->height + j;
+            pP->blurred[num].w = 0;
+        }
+    }
 }
 
 

@@ -13,6 +13,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#include <pthread.h>
 
 //TODO: finish me
 
@@ -24,7 +25,7 @@
 
 //problem assumptions
 #define MAXIMUM_IMAGE_SIZE 4096
-#define DIV_CONSTANT 4
+#define NUM_DIVISIONS 4
 
 ////////////////////////////////////////////////////////////////////////////////
 //DATA STRUCTURES
@@ -116,15 +117,44 @@ void blur3x3_2(PixelProcessor *pP, int sectWidth, int x, int y, int n, int m) {
     }
 }
 
-
-void renderSection(int start, int sectWidth, int height, int offset) {
-    int extraH = sectWidth % 3;
-    int extraV = height % 3;
+struct Circle *circles_init(int num) {
+    struct Circle *circles = calloc(num, sizeof(struct Circle));
     srand(time(NULL));
     int centerX = rand() % pP->width;
     int centerY = rand() % pP->height;
-    int holes = 0;
+
+
+    int radius = rand() % num;
+
+    for (int i = 0; i < num; ++i) {
+        circles[i].cX = centerX;
+        circles[i].cY = centerY;
+        circles[i].radius = radius;
+        if (i % 2 == 0) {
+            radius = num;
+        } else {
+            radius = rand() % num + (rand() % (int)floor(num));
+        }
+        centerX = rand() % pP->width;
+        centerY = rand() % pP->height;
+    }
+
+    return circles;
+}
+
+
+static void * cheeseSection(void *arguments) {
+    struct SectionArgs *argz = arguments;
+    pthread_t threadNum = argz->threadNum;
+    int height = argz->height;
+    int start = argz->start;
+    int sectWidth = argz->sectWidth;
+    struct Circle *circles = argz->circles;
+
+    int extraV = height % 3;
+
     int c = 0;
+    int holes = 0;
 
     if (pP->width > pP->height) {
         holes = floor(pP->height/10);
@@ -132,45 +162,32 @@ void renderSection(int start, int sectWidth, int height, int offset) {
         holes = floor(pP->width/10);
     }
 
-    int radius = rand() % holes;
-//    int circle = pow((centerX-100), 2) + pow((centerY-100), 2) - pow(radius, 2);
-
     while (c < holes) {
         for (int i = 1; i <= height + extraV; ++i) {
             for (int j = start; j < sectWidth; ++j) {
                 int num = i * pP->height + j;
-
-                if (((i - centerX) * (i - centerX) + (j - centerY) * (j - centerY)) <= radius * radius) {
-                    if ((j > sectWidth - extraH + offset || i >= height - extraV + 1)) {
-//                        turnPixBlue(i, j);
-                    } else {
-//                        turnPixRed(i, j);
-                    }
-
+                if (((i - circles[c].cX) * (i - circles[c].cX) + (j - circles[c].cY) * (j - circles[c].cY)) <= circles[c].radius * circles[c].radius) {
                     pP->blurred[num].red = 0;
                     pP->blurred[num].green = 0;
                     pP->blurred[num].blue = 0;
-                } else {
-                    pP->blurred[num].red = clamp(pP->pixels[num].red, 50);
-                    pP->blurred[num].green = clamp(pP->pixels[num].green, 50);
-                    pP->blurred[num].blue = clamp(pP->pixels[num].blue, -100);
+                    pP->blurred[num].w = 1;
+                }
+                else {
+                    if (pP->blurred[num].w == 0) {
+                        pP->blurred[num].red = clamp(pP->pixels[num].red, 50);
+                        pP->blurred[num].green = clamp(pP->pixels[num].green, 50);
+                        pP->blurred[num].blue = clamp(pP->pixels[num].blue, -100);
+                        pP->blurred[num].w = 1;
+                    }
                 }
             }
         }
         ++c;
-        if (c % 2 == 0 || c % 3 == 0) {
-            radius = holes;
-        } else {
-            radius = rand() % holes + (rand() % (int)floor(holes));
-        }
-        centerX = rand() % pP->width;
-        centerY = rand() % pP->height;
     }
-
-
+    pthread_exit(&threadNum);
 }
 
-void blurSection(int start, int sectWidth, int height, int offset) {
+void blurSection(int threadNum, int start, int sectWidth, int height, int offset) {
     int extraH = sectWidth % 3;
     int extraV = height % 3;
 
@@ -215,16 +232,58 @@ void blurSection(int start, int sectWidth, int height, int offset) {
 void blurImage() {
     blur_init(pP);
 
-    int divisions = 4;
+    int divisions = NUM_DIVISIONS;
     int sectWidth = floor(pP->width/divisions);
     int start = sectWidth;
     int offset = -1;
 
+    int s, opt, num_threads;
+    pthread_attr_t attr;
+    ssize_t stack_size;
+    void *res;
+    int holes = 0;
+
+    if (pP->width > pP->height) {
+        holes = floor(pP->height/10);
+    } else {
+        holes = floor(pP->width/10);
+    }
+
+    struct SectionArgs *args = calloc(divisions, sizeof(*args));
+    struct Circle *circles = circles_init(holes);
+    if (args == NULL)
+        printf("args is null\n");
 
     for (int i = 0; i <= divisions - 1; ++i) {
         int n = sectWidth * (1+i);
+//        struct SectionArgs *args = calloc(1, sizeof(struct SectionArgs) * 4);
+//        args->threadNum = i;
+//        args->start = start * i;
+//        args->sectWidth = n;
+//        args->height = pP->height;
+//        args->offset = offset;
+//        printf("from caller: %lu, %d, %d, %d\n", args->threadNum, args->start, args->height, args->offset);
+//
+//
+//        pthread_create(&args->threadNum, NULL, &cheeseSection, &args);
+
+
+
+        args[i].threadNum = i + 1;
+        args[i].start = start * i;
+        args[i].sectWidth = n;
+        args[i].height = pP->height;
+        args[i].offset = offset;
+        args[i].circles = circles;
+
+
+            s = pthread_create(&args[i].threadNum, NULL,
+                               &cheeseSection, &args[i]);
+            if (s != 0)
+                printf("some error idk\n");
+
 //        blurSection(start * i, n, pP->height, offset);
-        renderSection(start * i, n, pP->height, offset);
+//        cheeseSection(start * i, n, pP->height);
         if (n % 3 == 1) {
             offset = 0;
         } else if (n % 3 == 2) {
@@ -233,6 +292,17 @@ void blurImage() {
             offset = -1;
         }
     }
+
+
+
+    for (int tnum = 0; tnum < divisions; tnum++) {
+        s = pthread_join(args[tnum].threadNum, &res);
+        if (s != 0)
+            printf("join error\n");
+
+    }
+    free(args->circles);
+    free(args);
 
     struct Pixel *old = pP->pixels;
     pP->pixels = pP->blurred;
