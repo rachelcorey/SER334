@@ -55,6 +55,7 @@ int calculatePadding(int imgWidth) {
 void makeYellow() {
     colorShiftPixels(pP, 50, 50, -100);
 }
+
 void turnPixBlue(int x, int y) {
     pP->blurred[x * pP->height + y].red = 0;
     pP->blurred[x * pP->height + y].green = 0;
@@ -68,8 +69,8 @@ void turnPixRed(int x, int y) {
 }
 
 
-struct Pixel* getAvgPixel_2(PixelProcessor *pP2, int sectWidth, int x, int y) {
-    struct Pixel* avgPix = calloc(1, sizeof(struct Pixel));
+struct Pixel *getAvgPixel_2(PixelProcessor *pP2, int sectWidth, int x, int y) {
+    struct Pixel *avgPix = calloc(1, sizeof(struct Pixel));
     avgPix->red = 0;
     avgPix->green = 0;
     avgPix->blue = 0;
@@ -106,7 +107,7 @@ void blur3x3_2(PixelProcessor *pP, int sectWidth, int x, int y, int n, int m) {
 
     for (int i = curX; i < curX + n; ++i) {
         for (int j = curY; j < curY + m; ++j) {
-            struct Pixel* avgPix = getAvgPixel_2(pP, sectWidth, i, j);
+            struct Pixel *avgPix = getAvgPixel_2(pP, sectWidth, i, j);
             int num = i * pP->height + j;
             pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
             pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
@@ -133,7 +134,7 @@ struct Circle *circles_init(int num) {
         if (i % 2 == 0) {
             radius = num;
         } else {
-            radius = rand() % num + (rand() % (int)floor(num));
+            radius = rand() % num + (rand() % (int) floor(num));
         }
         centerX = rand() % pP->width;
         centerY = rand() % pP->height;
@@ -143,7 +144,7 @@ struct Circle *circles_init(int num) {
 }
 
 
-static void * cheeseSection(void *arguments) {
+static void *cheeseSection(void *arguments) {
     struct SectionArgs *argz = arguments;
     pthread_t threadNum = argz->threadNum;
     int height = argz->height;
@@ -157,22 +158,22 @@ static void * cheeseSection(void *arguments) {
     int holes = 0;
 
     if (pP->width > pP->height) {
-        holes = floor(pP->height/10);
+        holes = floor(pP->height / 10);
     } else {
-        holes = floor(pP->width/10);
+        holes = floor(pP->width / 10);
     }
 
     while (c < holes) {
         for (int i = 1; i <= height + extraV; ++i) {
             for (int j = start; j < sectWidth; ++j) {
                 int num = i * pP->height + j;
-                if (((i - circles[c].cX) * (i - circles[c].cX) + (j - circles[c].cY) * (j - circles[c].cY)) <= circles[c].radius * circles[c].radius) {
+                if (((i - circles[c].cX) * (i - circles[c].cX) + (j - circles[c].cY) * (j - circles[c].cY)) <=
+                    circles[c].radius * circles[c].radius) {
                     pP->blurred[num].red = 0;
                     pP->blurred[num].green = 0;
                     pP->blurred[num].blue = 0;
                     pP->blurred[num].w = 1;
-                }
-                else {
+                } else {
                     if (pP->blurred[num].w == 0) {
                         pP->blurred[num].red = clamp(pP->pixels[num].red, 50);
                         pP->blurred[num].green = clamp(pP->pixels[num].green, 50);
@@ -187,7 +188,14 @@ static void * cheeseSection(void *arguments) {
     pthread_exit(&threadNum);
 }
 
-void blurSection(int threadNum, int start, int sectWidth, int height, int offset) {
+static void *blurSection(void *arguments) {
+    struct SectionArgs *argz = arguments;
+    pthread_t threadNum = argz->threadNum;
+    int height = argz->height;
+    int start = argz->start;
+    int sectWidth = argz->sectWidth;
+    int offset = argz->offset;
+    struct Circle *circles = argz->circles;
     int extraH = sectWidth % 3;
     int extraV = height % 3;
 
@@ -205,11 +213,11 @@ void blurSection(int threadNum, int start, int sectWidth, int height, int offset
                 } else if (tH <= 1 && tV == 0) {
                     ++bC;
                     if (bC >= 3) {
-                        blur3x3_2(pP, sectWidth, i, j-3, 1, 5);
+                        blur3x3_2(pP, sectWidth, i, j - 3, 1, 5);
                         bC = 0;
                     }
                 } else if (tV <= 1 && tH > 1) {
-                    blur3x3(pP, sectWidth, i+1, j);
+                    blur3x3(pP, sectWidth, i + 1, j);
                 }
                 tH = 0;
             } else if (c) {
@@ -227,13 +235,14 @@ void blurSection(int threadNum, int start, int sectWidth, int height, int offset
         ++tV;
         tH = 0;
     }
+    pthread_exit(&threadNum);
 }
 
 void blurImage() {
     blur_init(pP);
 
     int divisions = NUM_DIVISIONS;
-    int sectWidth = floor(pP->width/divisions);
+    int sectWidth = floor(pP->width / divisions);
     int start = sectWidth;
     int offset = -1;
 
@@ -244,9 +253,9 @@ void blurImage() {
     int holes = 0;
 
     if (pP->width > pP->height) {
-        holes = floor(pP->height/10);
+        holes = floor(pP->height / 10);
     } else {
-        holes = floor(pP->width/10);
+        holes = floor(pP->width / 10);
     }
 
     struct SectionArgs *args = calloc(divisions, sizeof(*args));
@@ -255,19 +264,7 @@ void blurImage() {
         printf("args is null\n");
 
     for (int i = 0; i <= divisions - 1; ++i) {
-        int n = sectWidth * (1+i);
-//        struct SectionArgs *args = calloc(1, sizeof(struct SectionArgs) * 4);
-//        args->threadNum = i;
-//        args->start = start * i;
-//        args->sectWidth = n;
-//        args->height = pP->height;
-//        args->offset = offset;
-//        printf("from caller: %lu, %d, %d, %d\n", args->threadNum, args->start, args->height, args->offset);
-//
-//
-//        pthread_create(&args->threadNum, NULL, &cheeseSection, &args);
-
-
+        int n = sectWidth * (1 + i);
 
         args[i].threadNum = i + 1;
         args[i].start = start * i;
@@ -276,14 +273,14 @@ void blurImage() {
         args[i].offset = offset;
         args[i].circles = circles;
 
+//        s = pthread_create(&args[i].threadNum, NULL,
+//                           &cheeseSection, &args[i]);
 
-            s = pthread_create(&args[i].threadNum, NULL,
-                               &cheeseSection, &args[i]);
-            if (s != 0)
-                printf("some error idk\n");
+        s = pthread_create(&args[i].threadNum, NULL,
+                           &blurSection, &args[i]);
+        if (s != 0)
+            printf("some error idk\n");
 
-//        blurSection(start * i, n, pP->height, offset);
-//        cheeseSection(start * i, n, pP->height);
         if (n % 3 == 1) {
             offset = 0;
         } else if (n % 3 == 2) {
@@ -292,7 +289,6 @@ void blurImage() {
             offset = -1;
         }
     }
-
 
 
     for (int tnum = 0; tnum < divisions; tnum++) {
@@ -335,8 +331,7 @@ void processImage(FILE *img, char *outputFile) {
 }
 
 
-
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     bmpP = BmpProcessor_init();
 
