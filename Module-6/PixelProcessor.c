@@ -16,12 +16,16 @@ PixelProcessor *PixelProcessor_init(int imgWidth, int imgHeight) {
     return pixelProcessor;
 }
 
-void blur_init(PixelProcessor *pP) {
-    pP->blurred = calloc(pP->height * pP->width * 4, sizeof(struct Pixel));
+/**
+ * Initializes the secondary filter array to write to
+ * @param pP the pixelprocessor object that contains the arrays
+ */
+void newPixels_init(PixelProcessor *pP) {
+    pP->filterNew = calloc(pP->height * pP->width * 4, sizeof(struct Pixel));
     for (int i = 1; i <= pP->height; ++i) {
         for (int j = 0; j < pP->width; ++j) {
             int num = i * pP->height + j;
-            pP->blurred[num].w = 0;
+            pP->filterNew[num].w = 0;
         }
     }
 }
@@ -45,7 +49,12 @@ unsigned char clamp(unsigned char color, int mod) {
     return color;
 }
 
-
+/**
+ * Clamps the values entered for color shifting, but not additive
+ * @param color the clamped color to assign
+ * @param actual the color to assign
+ * @return the clamped color
+ */
 unsigned char clampActual(unsigned char color, int actual) {
     if (actual > 255) {
         color = 255;
@@ -57,8 +66,16 @@ unsigned char clampActual(unsigned char color, int actual) {
     return color;
 }
 
-struct Pixel* getAvgPixel(PixelProcessor *pP, int sectWidth, int x, int y) {
-    struct Pixel* avgPix = calloc(1, sizeof(struct Pixel));
+/**
+ * Gets the neighborhood of 8 pixels around the given pixel coodinates to determine their average value
+ * @param pP the pixelprocessor object that holds the pixel array
+ * @param sectWidth the width of the section we are rendering
+ * @param x the x coordinate of the pixel
+ * @param y the y coordinate of the pixel
+ * @return the average value of the surrounding pixels
+ */
+struct Pixel *getAvgPixel(PixelProcessor *pP, int sectWidth, int x, int y) {
+    struct Pixel *avgPix = calloc(1, sizeof(struct Pixel));
     int rTotal = 0;
     int gTotal = 0;
     int bTotal = 0;
@@ -68,10 +85,10 @@ struct Pixel* getAvgPixel(PixelProcessor *pP, int sectWidth, int x, int y) {
 
     for (int i = x; i < x + yAmt; ++i) {
         for (int j = y; j < y + xAmt; ++j) {
-                rTotal += pP->pixels[i * pP->height + j].red;
-                gTotal += pP->pixels[i * pP->height + j].green;
-                bTotal += pP->pixels[i * pP->height + j].blue;
-                ++pixelsCounted;
+            rTotal += pP->pixels[i * pP->height + j].red;
+            gTotal += pP->pixels[i * pP->height + j].green;
+            bTotal += pP->pixels[i * pP->height + j].blue;
+            ++pixelsCounted;
             if (i == x + yAmt && j == y + xAmt && pixelsCounted < 9) {
                 rTotal = 0;
                 gTotal = 0;
@@ -81,25 +98,31 @@ struct Pixel* getAvgPixel(PixelProcessor *pP, int sectWidth, int x, int y) {
     }
 
 
-    avgPix->red = rTotal/pixelsCounted;
-    avgPix->green = gTotal/pixelsCounted;
-    avgPix->blue = bTotal/pixelsCounted;
+    avgPix->red = rTotal / pixelsCounted;
+    avgPix->green = gTotal / pixelsCounted;
+    avgPix->blue = bTotal / pixelsCounted;
 
     return avgPix;
 }
 
-
+/**
+ * Blurs a neighborhood of 3x3 pixels given a pixel
+ * @param pP the pixelprocessor object that contains the arrays to read and write to
+ * @param sectWidth the width of the section of the image we are rendering
+ * @param x the x coordinate of the pixel
+ * @param y the y coordinate of the pixel
+ */
 void blur3x3(PixelProcessor *pP, int sectWidth, int x, int y) {
     int curX = x - 1;
     int curY = y - 1;
 
     for (int i = curX; i < curX + 3; ++i) {
         for (int j = curY; j < curY + 3; ++j) {
-            struct Pixel* avgPix = getAvgPixel(pP, sectWidth, i, j);
+            struct Pixel *avgPix = getAvgPixel(pP, sectWidth, i, j);
             int num = i * pP->height + j;
-            pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
-            pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
-            pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
+            pP->filterNew[num].red = clampActual(pP->pixels[num].red, avgPix->red);
+            pP->filterNew[num].green = clampActual(pP->pixels[num].green, avgPix->green);
+            pP->filterNew[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
 
             free(avgPix);
         }
@@ -139,8 +162,6 @@ void readPixelsBMP(FILE *file, struct PixelProcessor *self, int paddingBytes) {
         }
     }
 }
-
-
 
 /**
  * Shift color of Pixel array. The shift value of RGB is
@@ -185,7 +206,14 @@ void writePixelsBMP(FILE *file, PixelProcessor *pP, int pad) {
     }
 }
 
-
+/**
+ * Get the average pixel around an edge pixel
+ * @param pP the pixelprocessor object to read and write the pixel arrays
+ * @param sectWidth the width of the image section we are rendering
+ * @param x the x coordinate of the pixel
+ * @param y the y coordinate of the pixel
+ * @return the average surrounding pixel object
+ */
 struct Pixel *getAvgPixel_edge(PixelProcessor *pP, int sectWidth, int x, int y) {
     struct Pixel *avgPix = calloc(1, sizeof(struct Pixel));
     avgPix->red = 0;
@@ -218,6 +246,15 @@ struct Pixel *getAvgPixel_edge(PixelProcessor *pP, int sectWidth, int x, int y) 
     return avgPix;
 }
 
+/**
+ * Blur a smaller-than-3x3 section of pixels around an edge pixel
+ * @param pP the pixelprocessor object that contains the arrays to read and write to
+ * @param sectWidth the width of the section we are rendering
+ * @param x the x coordinate of the pixel
+ * @param y the y coordinate of the pixel
+ * @param n the horizontal amount to sample
+ * @param m the vertical amount to sample
+ */
 void blur3x3_edge(PixelProcessor *pP, int sectWidth, int x, int y, int n, int m) {
     int curX = x;
     int curY = y;
@@ -226,15 +263,21 @@ void blur3x3_edge(PixelProcessor *pP, int sectWidth, int x, int y, int n, int m)
         for (int j = curY; j < curY + m; ++j) {
             struct Pixel *avgPix = getAvgPixel_edge(pP, sectWidth, i, j);
             int num = i * pP->height + j;
-            pP->blurred[num].red = clampActual(pP->pixels[num].red, avgPix->red);
-            pP->blurred[num].green = clampActual(pP->pixels[num].green, avgPix->green);
-            pP->blurred[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
+            pP->filterNew[num].red = clampActual(pP->pixels[num].red, avgPix->red);
+            pP->filterNew[num].green = clampActual(pP->pixels[num].green, avgPix->green);
+            pP->filterNew[num].blue = clampActual(pP->pixels[num].blue, avgPix->blue);
             free(avgPix);
 
         }
     }
 }
 
+/**
+ * Initialize an array of circles to draw on the image
+ * @param pP the pixelprocessor object that holds the width and height of the image to read
+ * @param num the number of circles needed
+ * @return an array of Circle objects to render on the image that can be shared between threads accordingly
+ */
 struct Circle *circles_init(PixelProcessor *pP, int num) {
     struct Circle *circles = calloc(num, sizeof(struct Circle));
     srand(time(NULL));
@@ -260,6 +303,10 @@ struct Circle *circles_init(PixelProcessor *pP, int num) {
     return circles;
 }
 
+/**
+ * Apply a Swiss Cheese filter to the given threaded section of the image
+ * @param arguments the struct of arguments to pass to the thread
+ */
 static void *cheeseSection(void *arguments) {
     struct SectionArgs *argz = arguments;
     PixelProcessor *pP = argz->pP;
@@ -270,16 +317,9 @@ static void *cheeseSection(void *arguments) {
     struct Circle *circles = argz->circles;
 
     int extraV = height % 3;
-    int extraH = sectWidth % 3;
-
-    // hehehe
-    if (extraH == 1) {
-        extraH = -1;
-    }
 
     int c = 0;
     int holes = 0;
-
 
     if (pP->width > pP->height) {
         holes = floor(pP->height / 10);
@@ -289,20 +329,20 @@ static void *cheeseSection(void *arguments) {
 
     while (c < holes) {
         for (int i = 1; i <= height + extraV; ++i) {
-            for (int j = start; j <= sectWidth + extraH; ++j) {
+            for (int j = start; j < sectWidth; ++j) {
                 int num = i * pP->height + j;
-                if (((i - circles[c].cX) * (i - circles[c].cX) + (j - circles[c].cY) * (j - circles[c].cY)) <=
+                if (((i - circles[c].cX) * (i - circles[c].cX) + (j - circles[c].cY) * (j - circles[c].cY)) <
                     circles[c].radius * circles[c].radius) {
-                    pP->blurred[num].red = 0;
-                    pP->blurred[num].green = 0;
-                    pP->blurred[num].blue = 0;
-                    pP->blurred[num].w = 1;
+                    pP->filterNew[num].red = 0;
+                    pP->filterNew[num].green = 0;
+                    pP->filterNew[num].blue = 0;
+                    pP->filterNew[num].w = 1;
                 } else {
-                    if (pP->blurred[num].w == 0) {
-                        pP->blurred[num].red = clamp(pP->pixels[num].red, 50);
-                        pP->blurred[num].green = clamp(pP->pixels[num].green, 50);
-                        pP->blurred[num].blue = clamp(pP->pixels[num].blue, -100);
-                        pP->blurred[num].w = 1;
+                    if (pP->filterNew[num].w == 0) {
+                        pP->filterNew[num].red = clamp(pP->pixels[num].red, 50);
+                        pP->filterNew[num].green = clamp(pP->pixels[num].green, 50);
+                        pP->filterNew[num].blue = clamp(pP->pixels[num].blue, -100);
+                        pP->filterNew[num].w = 1;
                     }
                 }
             }
@@ -312,9 +352,10 @@ static void *cheeseSection(void *arguments) {
     pthread_exit(&threadNum);
 }
 
-
-
-
+/**
+ * Apply a Blur filter to the given threaded section of the image
+ * @param arguments the struct of arguments to pass to the thread
+ */
 static void *blurSection(void *arguments) {
     struct SectionArgs *argz = arguments;
     PixelProcessor *pP = argz->pP;
@@ -361,11 +402,7 @@ static void *blurSection(void *arguments) {
         }
         ++tV;
         tH = 0;
-
-
     }
-
-
     pthread_exit(&threadNum);
 }
 

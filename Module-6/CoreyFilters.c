@@ -1,5 +1,5 @@
 /**
-* (basic description of the program or class)
+*
 *
 * Completion time: (estimation of hours spent on this program)
 *
@@ -23,7 +23,7 @@
 
 //problem assumptions
 #define MAXIMUM_IMAGE_SIZE 4096
-#define THREAD_COUNT 22
+#define THREAD_COUNT 4
 
 ////////////////////////////////////////////////////////////////////////////////
 //DATA STRUCTURES
@@ -35,6 +35,11 @@ SectionArgs *args;
 ////////////////////////////////////////////////////////////////////////////////
 //MAIN PROGRAM CODE
 
+/**
+ * Calculate the padding needed to read/write a BMP file
+ * @param imgWidth width of the image
+ * @return the amount of padding needed
+ */
 int calculatePadding(int imgWidth) {
     int pad = 0;
     int rowBytes = imgWidth * sizeof(struct Pixel);
@@ -50,7 +55,19 @@ int calculatePadding(int imgWidth) {
     return pad;
 }
 
-void handleSection(int i, int n, char filter, int divisions, int sectWidth, int start, int offset, struct Circle *circles) {
+/**
+ * Starts a thread and renders a section of the image based on the chosen filter
+ * @param i the thread iteration
+ * @param n the section width
+ * @param filter the chosen image filter
+ * @param divisions the number of divisions
+ * @param sectWidth the section width
+ * @param start the starting position to render at
+ * @param offset the amount of offset to apply
+ * @param circles the array of circles to generate holes
+ */
+void
+handleSection(int i, int n, char filter, int divisions, int sectWidth, int start, int offset, struct Circle *circles) {
     int s;
 
     args[i].pP = pP;
@@ -80,8 +97,13 @@ void handleSection(int i, int n, char filter, int divisions, int sectWidth, int 
     }
 }
 
+/**
+ * A function to loop through the chosen number of threads and call the handleSection function for the specified
+ * parameters.
+ * @param filter chosen image filter
+ */
 void processImage(char filter) {
-    blur_init(pP);
+    newPixels_init(pP);
 
     int divisions = THREAD_COUNT;
     int sectWidth = ceil(pP->width / divisions);
@@ -137,10 +159,16 @@ void processImage(char filter) {
     free(args->circles);
     free(args);
     struct Pixel *old = pP->pixels;
-    pP->pixels = pP->blurred;
+    pP->pixels = pP->filterNew;
     free(old);
 }
 
+/**
+ * Perform file processing operations
+ * @param img the input image file
+ * @param outputFile the output image file
+ * @param filter the chosen filter algorithm to run, c or b
+ */
 void processFile(FILE *img, char *outputFile, char filter) {
     int pad = 0;
     int width = 0;
@@ -172,23 +200,16 @@ void processFile(FILE *img, char *outputFile, char filter) {
     fclose(output);
 }
 
-// TODO: revise this
 /**
  * Explains the usage of the program, to be called when no arguments are entered when the program is run
  */
 void explainUsage() {
     printf("ERROR: Please enter some arguments to use the program.\n");
     printf("====================== USAGE: =====================\n");
-    printf("================= For conversion: =================\n");
-    printf("./<a.out name> <inputFileName>.<bmp or ppm> -o <outputFileName> -t <bmp or ppm>\n");
-    printf("EXAMPLE: ./imageProcessor ../path/to/inputFile.bmp -o ../path/to/outputFile -t ppm\n");
-    printf("================ For color shifting: ==============\n");
-    printf("After the input file name/location, input - followed by the first letter of the color, followed by the amount of shifting for each color as an"
-           " integer from -255 to 255.\n");
-    printf("./<a.out name> <inputFileName>.<bmp or ppm> -r <int red> -g <int green> -b <int blue>\n");
-    printf("EXAMPLE: ./imageProcessor ../path/to/inputFile.bmp -r 69 g -4 b 20\n");
+    printf("./<a.out name> -i <input file name.bmp> -o <output file name.bmp> -f <filter type c or b>\n");
+    printf("EXAMPLE: ./filter -i test1.bmp -o output.bmp -f b\n");
     printf("OR:\n");
-    printf("EXAMPLE: ./imageProcessor ../path/to/inputFile.bmp -r 69 g -4 b 20 -o ../path/to/outputFile\n");
+    printf("EXAMPLE: ./filter -i test1.bmp -o output.bmp -f c\n");
     printf("=================================================\n");
 }
 
@@ -219,6 +240,15 @@ int validateFileType(int isInput, char *fileName) {
         }
     }
     return isBMP;
+}
+
+
+/**
+ * Helper method for setting the .bmp extension for a given output file string
+ * @param outputFile the string of the output file
+ */
+void setFileExt(char *outputFile) {
+    strcat(outputFile, ".bmp");
 }
 
 int main(int argc, char *argv[]) {
@@ -260,10 +290,17 @@ int main(int argc, char *argv[]) {
     }
 
     if (strcmp(inputFile, "empty") != 0) {
-        if (strcmp(outputFile, "empty") == 1 || strcmp(outputFile, ".bmp") == 0 || validateFileType(0, outputFile) == 0) {
+        if (strcmp(outputFile, "empty") == 1 || strcmp(outputFile, ".bmp") == 0 ||
+            validateFileType(0, outputFile) == 0) {
             printf("Output file name or type was invalid or not specified.\n");
-            printf("Program will output as %s-2.bmp......\n", inputFile);
-            strcat(outputFile, "-2.bmp");
+            int len = strlen(inputFile);
+            char copy[len + 7];
+            strncpy(copy, inputFile, len - 4);
+            copy[strlen(copy) + 1] = '\0';
+            printf("Program will output as %s-2.bmp......\n", copy);
+            strncat(copy, "-2", 3);
+            setFileExt(copy);
+            strncpy(outputFile, copy, strlen(copy) + 1);
         }
 
         FILE *img = fopen(inputFile, "rb");

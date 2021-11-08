@@ -26,7 +26,7 @@ typedef struct SectionArgs {
 
 typedef struct PixelProcessor {
     struct Pixel *pixels;
-    struct Pixel *blurred;
+    struct Pixel *filterNew;
     int width;
     int height;
     int padding;
