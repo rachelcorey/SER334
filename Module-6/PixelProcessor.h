@@ -13,16 +13,16 @@ struct Circle {
     int radius;
 };
 
-struct SectionArgs {
+typedef struct SectionArgs {
     struct PixelProcessor *pP;
     struct Circle *circles;
     pthread_t threadNum;
+    int last;
     int start;
     int sectWidth;
     int height;
     int offset;
-
-};
+} SectionArgs;
 
 typedef struct PixelProcessor {
     struct Pixel *pixels;

@@ -1,6 +1,7 @@
 #include <PixelProcessor.h>
 #include <malloc.h>
 
+
 /**
  * Initializes a PixelProcessor Object
  * @param imgWidth the width of the image to process
@@ -11,7 +12,6 @@ PixelProcessor *PixelProcessor_init(int imgWidth, int imgHeight) {
     pixelProcessor->pixels = calloc(imgHeight * imgWidth * 4, sizeof(struct Pixel));
     pixelProcessor->width = imgWidth;
     pixelProcessor->height = imgHeight;
-
     pixelProcessor->padding = 0;
     return pixelProcessor;
 }
@@ -270,9 +270,16 @@ static void *cheeseSection(void *arguments) {
     struct Circle *circles = argz->circles;
 
     int extraV = height % 3;
+    int extraH = sectWidth % 3;
+
+    // hehehe
+    if (extraH == 1) {
+        extraH = -1;
+    }
 
     int c = 0;
     int holes = 0;
+
 
     if (pP->width > pP->height) {
         holes = floor(pP->height / 10);
@@ -282,7 +289,7 @@ static void *cheeseSection(void *arguments) {
 
     while (c < holes) {
         for (int i = 1; i <= height + extraV; ++i) {
-            for (int j = start; j < sectWidth; ++j) {
+            for (int j = start; j <= sectWidth + extraH; ++j) {
                 int num = i * pP->height + j;
                 if (((i - circles[c].cX) * (i - circles[c].cX) + (j - circles[c].cY) * (j - circles[c].cY)) <=
                     circles[c].radius * circles[c].radius) {
@@ -304,6 +311,9 @@ static void *cheeseSection(void *arguments) {
     }
     pthread_exit(&threadNum);
 }
+
+
+
 
 static void *blurSection(void *arguments) {
     struct SectionArgs *argz = arguments;
@@ -351,7 +361,11 @@ static void *blurSection(void *arguments) {
         }
         ++tV;
         tH = 0;
+
+
     }
+
+
     pthread_exit(&threadNum);
 }
 

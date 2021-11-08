@@ -15,9 +15,6 @@
 #include <time.h>
 #include <pthread.h>
 #include <getopt.h>
-
-//TODO: finish me
-
 #include "BmpProcessor.c"
 #include "PixelProcessor.c"
 
@@ -26,13 +23,14 @@
 
 //problem assumptions
 #define MAXIMUM_IMAGE_SIZE 4096
-#define NUM_DIVISIONS 4
+#define THREAD_COUNT 22
 
 ////////////////////////////////////////////////////////////////////////////////
 //DATA STRUCTURES
 
 BmpProcessor *bmpP;
 PixelProcessor *pP;
+SectionArgs *args;
 
 ////////////////////////////////////////////////////////////////////////////////
 //MAIN PROGRAM CODE
@@ -52,32 +50,57 @@ int calculatePadding(int imgWidth) {
     return pad;
 }
 
+void handleSection(int i, int n, char filter, int divisions, int sectWidth, int start, int offset, struct Circle *circles) {
+    int s;
 
+    args[i].pP = pP;
+    args[i].threadNum = i + 1;
+    args[i].start = start * i;
+    args[i].sectWidth = n;
+    args[i].height = pP->height;
+    args[i].offset = offset;
+    args[i].circles = circles;
+
+    if (i == divisions - 1) {
+        args[i].last = 1;
+    } else {
+        args[i].last = 0;
+    }
+
+    if (filter == 'c') {
+        s = pthread_create(&args[i].threadNum, NULL, &cheeseSection, &args[i]);
+    } else if (filter == 'b') {
+        s = pthread_create(&args[i].threadNum, NULL, &blurSection, &args[i]);
+    }
+
+    if (s != 0) {
+        printf("FATAL ERROR: Thread creation failed.\n");
+        printf("Terminating program.....\n");
+        exit(1);
+    }
+}
 
 void processImage(char filter) {
     blur_init(pP);
 
-    int divisions = NUM_DIVISIONS;
-    int sectWidth = floor(pP->width / divisions);
+    int divisions = THREAD_COUNT;
+    int sectWidth = ceil(pP->width / divisions);
     int start = sectWidth;
     int offset = -1;
-    struct Circle *circles = NULL;
+    int holes = 0;
 
     int s;
     void *res;
 
-    if (filter == 'c') {
-        int holes = 0;
-        if (pP->width > pP->height) {
-            holes = floor(pP->height / 10);
-        } else {
-            holes = floor(pP->width / 10);
-        }
-        circles = circles_init(pP, holes);
+    if (pP->width > pP->height) {
+        holes = floor(pP->height / 10);
+    } else {
+        holes = floor(pP->width / 10);
     }
 
-    struct SectionArgs *args = calloc(divisions, sizeof(*args));
-    args->pP = pP;
+    struct Circle *circles = circles_init(pP, holes);
+
+    args = calloc(divisions + 1, sizeof(*args));
     if (args == NULL) {
         printf("FATAL ERROR: Failed to create thread arguments.\n");
         printf("Terminating program.....\n");
@@ -86,26 +109,12 @@ void processImage(char filter) {
 
     for (int i = 0; i <= divisions - 1; ++i) {
         int n = sectWidth * (1 + i);
-
-        args[i].threadNum = i + 1;
-        args[i].start = start * i;
-        args[i].sectWidth = n;
-        args[i].height = pP->height;
-        args[i].offset = offset;
-
-        if (filter == 'c') {
-            args[i].circles = circles;
-            s = pthread_create(&args[i].threadNum, NULL, &cheeseSection, &args[i]);
-        } else if (filter == 'b') {
-            s = pthread_create(&args[i].threadNum, NULL, &blurSection, &args[i]);
+        if (i == divisions - 1 && pP->width - n >= 1) {
+            int diff = pP->width - n;
+            handleSection(i, n + diff, filter, divisions, sectWidth, start, offset, circles);
+        } else {
+            handleSection(i, n, filter, divisions, sectWidth, start, offset, circles);
         }
-
-        if (s != 0) {
-            printf("FATAL ERROR: Thread creation failed.\n");
-            printf("Terminating program.....\n");
-            exit(1);
-        }
-
         if (n % 3 == 1) {
             offset = 0;
         } else if (n % 3 == 2) {
@@ -113,10 +122,11 @@ void processImage(char filter) {
         } else {
             offset = -1;
         }
+
     }
 
-    for (int tnum = 0; tnum < divisions; tnum++) {
-        s = pthread_join(args[tnum].threadNum, &res);
+    for (int i = 0; i < divisions; ++i) {
+        s = pthread_join(args[i].threadNum, &res);
         if (s != 0) {
             printf("FATAL ERROR: Thread join failed.\n");
             printf("Terminating program.....\n");
@@ -126,7 +136,6 @@ void processImage(char filter) {
 
     free(args->circles);
     free(args);
-
     struct Pixel *old = pP->pixels;
     pP->pixels = pP->blurred;
     free(old);
@@ -145,6 +154,12 @@ void processFile(FILE *img, char *outputFile, char filter) {
     pad = calculatePadding(pP->width);
     readPixelsBMP(img, pP, pad);
     fclose(img);
+
+    if (width > MAXIMUM_IMAGE_SIZE || height > MAXIMUM_IMAGE_SIZE || width < THREAD_COUNT || height < THREAD_COUNT) {
+        printf("FATAL ERROR: Image dimensions were either too big or too small.\n");
+        printf("Terminating program........\n");
+        exit(1);
+    }
 
     processImage(filter);
 
@@ -178,16 +193,6 @@ void explainUsage() {
 }
 
 /**
- * Helper method for setting a file extension type for a given output file string
- * @param outputFile the string of the output file
- * @param type the type of the file it should be output to
- */
-void setFileExt(char *outputFile, char *type) {
-    strcat(outputFile, "-2.");
-    strcat(outputFile, type);
-}
-
-/**
  * Validates if a given file name has a valid extension on the end of it
  * @param isInput if the file is given as an input for the program or not
  * @param fileName the name of the file to check
@@ -199,17 +204,12 @@ int validateFileType(int isInput, char *fileName) {
 
     if (fileLength > 4) {
         if ((strcmp(&fileName[fileLength - 4], ".bmp") == 0)) {
-            if (isInput != 1) {
-                setFileExt(fileName, "bmp");
-            }
             isBMP = 1;
         } else {
-            // file name is present, but lacking extension. warning will show.
-            isBMP = 2;
+            isBMP = 0;
         }
     } else if (fileLength >= 1) {
-        // file name is present, but lacking extension. warning will show.
-        isBMP = 2;
+        isBMP = 0;
     } else {
         if (isInput) {
             printf("FATAL ERROR: Input file type invalid!\n");
@@ -229,9 +229,9 @@ int main(int argc, char *argv[]) {
     strcpy(outputFile, "empty");
     bmpP = BmpProcessor_init();
     int opt;
-    char filter;
+    char filter = 'n';
 
-    while ((opt = getopt(argc, argv, ":i:o:c:b:")) != -1) {
+    while ((opt = getopt(argc, argv, ":i:o:f:")) != -1) {
         switch (opt) {
             case 'i':
                 if (optarg != NULL) {
@@ -245,14 +245,14 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 break;
-            case 'c':
-                filter = 'c';
-                break;
-            case 'b':
-                filter = 'b';
-                break;
-            case ':':
-                filter = 'n';
+            case 'f':
+                if (optarg != NULL) {
+                    if (strcmp(optarg, "c") == 0) {
+                        filter = 'c';
+                    } else if (strcmp(optarg, "b") == 0) {
+                        filter = 'b';
+                    }
+                }
                 break;
             default:
                 break;
@@ -285,9 +285,6 @@ int main(int argc, char *argv[]) {
         explainUsage();
         exit(1);
     }
-
-//    FILE *img = fopen("../Module-6/test4.bmp", "rb");
-//    processFile(img, "../../../Desktop/b.bmp");
 
     BmpProcessor_clean(bmpP);
     PixelProcessor_clean(pP);
