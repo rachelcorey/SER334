@@ -14,6 +14,7 @@ struct Circle {
 };
 
 struct SectionArgs {
+    struct PixelProcessor *pP;
     struct Circle *circles;
     pthread_t threadNum;
     int start;
