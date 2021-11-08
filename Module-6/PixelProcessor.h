@@ -4,12 +4,32 @@ struct Pixel {
     unsigned char blue;
     unsigned char green;
     unsigned char red;
+    unsigned char w;
 };
+
+struct Circle {
+    int cX;
+    int cY;
+    int radius;
+};
+
+typedef struct SectionArgs {
+    struct PixelProcessor *pP;
+    struct Circle *circles;
+    pthread_t threadNum;
+    int last;
+    int start;
+    int sectWidth;
+    int height;
+    int offset;
+} SectionArgs;
 
 typedef struct PixelProcessor {
     struct Pixel *pixels;
+    struct Pixel *filterNew;
     int width;
     int height;
+    int padding;
 } PixelProcessor;
 
 /**

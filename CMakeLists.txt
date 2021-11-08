@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 11)
 add_executable(SER334
         Module-6/CoreyFilters.c)
 
-include_directories(Module-3/)
+include_directories(Module-6/)
 
 
 target_link_libraries(SER334 PRIVATE m)
