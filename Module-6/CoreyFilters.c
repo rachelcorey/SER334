@@ -1,10 +1,12 @@
 /**
 *
+* This program either blurs or applies a swiss cheese filter to a given image.
+* To set the number of threads, change the "THREAD_COUNT" constant.
 *
-* Completion time: (estimation of hours spent on this program)
+* Completion time: 999999999999999999999999999999
 *
-* @author (your name), (anyone else, e.g., Acuna, whose code you used)
-* @version (a version number or a date)
+* @author Rachel Corey
+* @version completed on 11/08
 */
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +25,7 @@
 
 //problem assumptions
 #define MAXIMUM_IMAGE_SIZE 4096
-#define THREAD_COUNT 4
+#define THREAD_COUNT 5
 
 ////////////////////////////////////////////////////////////////////////////////
 //DATA STRUCTURES
