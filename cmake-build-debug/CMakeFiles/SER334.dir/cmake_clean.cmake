@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SER334.dir/Module-6/CoreyFilters.c.o"
+  "CMakeFiles/SER334.dir/Module-7/CoreyInstanceHost.c.o"
+  "CMakeFiles/SER334.dir/Module-7/CoreyLoadBalancer.c.o"
+  "CMakeFiles/SER334.dir/Module-7/User.c.o"
   "SER334"
   "SER334.pdb"
 )
