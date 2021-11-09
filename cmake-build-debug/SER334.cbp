@@ -78,18 +78,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.c">
-			<Option target="SER334"/>
-		</Unit>
-		<Unit filename="/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.h">
-			<Option target="SER334"/>
-		</Unit>
-		<Unit filename="/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.c">
-			<Option target="SER334"/>
-		</Unit>
-		<Unit filename="/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h">
-			<Option target="SER334"/>
-		</Unit>
 		<Unit filename="/home/kirry/CLionProjects/SER334/Module-7/User.c">
 			<Option target="SER334"/>
 		</Unit>

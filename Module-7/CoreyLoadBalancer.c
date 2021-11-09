@@ -25,6 +25,7 @@ balancer* balancer_create(int batch_size) {
     return balance;
 }
 
+// TODO: finish this part
 /**
  * Shuts down the load balancer. Ensures any outstanding batches have
  * completed.

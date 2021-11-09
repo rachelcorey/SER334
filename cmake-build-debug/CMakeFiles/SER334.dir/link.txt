@@ -1,1 +1,1 @@
-/usr/bin/gcc -g CMakeFiles/SER334.dir/Module-7/User.c.o CMakeFiles/SER334.dir/Module-7/CoreyLoadBalancer.c.o CMakeFiles/SER334.dir/Module-7/CoreyInstanceHost.c.o -o SER334  -lm 
+/usr/bin/gcc -g CMakeFiles/SER334.dir/Module-7/User.c.o -o SER334  -lm -lpthread 

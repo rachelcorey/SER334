@@ -1,7 +1,12 @@
 #include <malloc.h>
+#include <stdio.h>
+#include <linux/unistd.h>
 #include <math.h>
 #include <unistd.h>
 #include <asm/unistd.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "CoreyInstanceHost.h"
 #include "CoreyLoadBalancer.h"
 
@@ -64,7 +69,7 @@ void * instance_process_data(void *batch) {
         cur = cur->next;
     }
     while (cur->next != NULL);
-    host_destroy(&cur->host);
+//    host_destroy(&cur->host);
     pthread_exit(&id);
 }
 
@@ -77,7 +82,8 @@ void * instance_process_data(void *batch) {
 * @param job_batch_list A list containing the jobs in a batch to process.
 */
 void host_request_instance(host* h, struct job_node* batch) {
-    pthread_create(&h->thread[h->instances], NULL, &instance_process_data, &batch[0]);
+    pthread_create(&h->thread[h->instances], NULL, &instance_process_data, &batch[0].host);
+    host_destroy(&batch[0].host);
 }
 
 
