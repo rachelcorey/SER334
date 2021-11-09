@@ -22,6 +22,7 @@ void* simulate_user_request(void* user_id);
 //variable to store load balancer object
 balancer* lb;
 
+
 /**
  * Entry point to simulation.
  * 

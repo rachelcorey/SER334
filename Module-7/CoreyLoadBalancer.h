@@ -19,6 +19,7 @@ struct job_node {
     int* data_result;     //pointer to place in global memory to store result.
                           //negative one (-1) means result not computed.
     struct job_node* next;//pointer to the next job in a list of jobs.
+    struct host* host;
 };
 
 //forward declarations for (public) functions
