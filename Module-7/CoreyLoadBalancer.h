@@ -8,7 +8,6 @@
 #ifndef LOADBALANCER_H
 #define LOADBALANCER_H
 
-#include "CoreyInstanceHost.h"
 
 //struct for representing the load balancer
 typedef struct balancer balancer;

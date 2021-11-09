@@ -6,41 +6,31 @@
 
 #IncludeRegexTransform: 
 
-../Module-6/BmpProcessor.h
-bits/types/FILE.h
--
+/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.c
+CoreyInstanceHost.h
+/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.h
 
-../Module-6/PixelProcessor.h
-malloc.h
--
+/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.h
 
-/home/kirry/CLionProjects/SER334/Module-6/BmpProcessor.c
-BmpProcessor.h
--
-malloc.h
--
-string.h
--
+/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.c
+CoreyLoadBalancer.h
+/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
 
-/home/kirry/CLionProjects/SER334/Module-6/CoreyFilters.c
+/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
+
+/home/kirry/CLionProjects/SER334/Module-7/User.c
+pthread.h
+-
 stdio.h
--
-math.h
 -
 stdlib.h
 -
 time.h
 -
-pthread.h
+unistd.h
 -
-BmpProcessor.c
-/home/kirry/CLionProjects/SER334/Module-6/BmpProcessor.c
-PixelProcessor.c
-/home/kirry/CLionProjects/SER334/Module-6/PixelProcessor.c
-
-/home/kirry/CLionProjects/SER334/Module-6/PixelProcessor.c
-PixelProcessor.h
--
-malloc.h
--
+CoreyLoadBalancer.c
+/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.c
+CoreyInstanceHost.c
+/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.c
 

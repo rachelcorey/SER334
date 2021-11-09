@@ -13,7 +13,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include "CoreyLoadBalancer.h"
+#include "CoreyLoadBalancer.c"
+#include "CoreyInstanceHost.c"
 
 //forward declarations for internal (private) functions.
 void* simulate_user_request(void* user_id);
