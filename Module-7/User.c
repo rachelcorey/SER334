@@ -48,7 +48,7 @@ int main() {
 
     nanosleep((struct timespec[]){{2, 0}}, NULL); //wait two seconds
 
-    balancer_destroy(&lb);
+//    balancer_destroy(&lb);
 
     //wait for all users to finish before program exit.
     for (int i = 0; i < number_of_requests; i++)
@@ -68,20 +68,20 @@ void* simulate_user_request(void* user_id) {
     int data = rand() % 100;
     int* result = (int*)malloc(sizeof(int));
     *result = -1;
-    
+
     //make the thread wait to simulate differences in when user requests occur.
     int ms = (rand() % 100) * 1000;
     nanosleep((struct timespec[]){{0, ms*1000000}}, NULL);
-    
+
     printf("User #%d: Wants to process data=%d and store it at %p.\n", (int)user_id, data, result);
-    
+
     //make request to balance to complete job and wait for it's completion.
     balancer_add_job(lb, (int)user_id, data, result);
     while(*result == -1);  //busy waiting, bad but simple
-    
+
     printf("User #%d: Received result from data=%d as result=%d.\n", (int)user_id, data, *result);
-    
+
     free(result);
-    
+
     pthread_exit(NULL);
 }

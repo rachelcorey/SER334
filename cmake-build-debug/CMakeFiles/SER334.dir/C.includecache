@@ -41,6 +41,8 @@ bits/pthreadtypes.h
 -
 pthread.h
 -
+memory.h
+-
 CoreyLoadBalancer.h
 /home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
 CoreyInstanceHost.h

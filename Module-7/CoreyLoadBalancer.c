@@ -1,6 +1,7 @@
 #include <malloc.h>
 #include <bits/pthreadtypes.h>
 #include <pthread.h>
+#include <memory.h>
 #include "CoreyLoadBalancer.h"
 #include "CoreyInstanceHost.h"
 
@@ -53,17 +54,20 @@ void balancer_add_job(balancer* lb, int user_id, int data, int* data_return) {
            user_id, data, data_return);
 
     struct job_node *j = malloc(sizeof(struct job_node));
-    j->host = lb->host;
+    j->user_id = user_id;
+    j->bal = lb;
     j->data = data;
     j->data_result = data_return;
+//    printf("from balancer_add_job: address of data result for user %d and data %d is: %p\n", j->user_id, j->data, j->data_result);
     j->next = lb->first;
     lb->first = j;
 
     if (lb->requests == lb->batchSize) {
         printf("Received batch and spinning up new instance.\n");
-        lb->first->host = lb->host;
         host_request_instance(lb->host, lb->first);
+    } else {
+        pthread_mutex_unlock(&lb->protecc);
     }
 
-    pthread_mutex_unlock(&lb->protecc);
+
 }

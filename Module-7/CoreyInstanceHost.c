@@ -13,12 +13,13 @@
 
 struct host {
     int instances;
-    pthread_t *thread;
+    pthread_t thread;
+    int complete;
 };
 
 
-pthread_t *create_instance(host *h) {
-    return malloc(sizeof(pthread_t) * sizeof(h));
+pthread_t create_instance(host *h) {
+    return (pthread_t) malloc(sizeof(pthread_t) * sizeof(h));
 }
 
 /**
@@ -28,6 +29,7 @@ host *host_create() {
     host *host = (struct host*) malloc(sizeof(struct host) + 1);
     host->instances = 0;
     host->thread = create_instance(host);
+    host->complete = 0;
     return host;
 }
 
@@ -36,7 +38,6 @@ host *host_create() {
 * completed.
 */
 void host_destroy(host** host) {
-
 //    do {
 //        int result = pow(cur->data, 2);
 //        cur->data_result = &result;
@@ -49,27 +50,18 @@ void host_destroy(host** host) {
 
 void * instance_process_data(void *batch) {
     struct job_node *cur = batch;
-    printf("data: %d\n", cur->data);
-    void *ptr = cur;
-    void *nxt = cur->next;
-    pthread_t id = syscall(__NR_gettid);
+    pthread_t id = cur->id;
+//    printf("the result from user %d for data %d is: %d, stored at: %p\n", cur->user_id, cur->data, *(cur->data_result), cur->data_result);
     do {
-        if (nxt == NULL) {
-            printf("cur.next is null\n");
-        }
-        int result = pow(cur->data, 2);
-        printf("result: %d\n", result);
-        if (ptr == NULL) {
-            printf("cur is null\n");
-        }
-        if (cur->data_result == NULL) {
-            printf("data result is null\n");
-        }
-        cur->data_result = &result;
+        *(cur->data_result) = cur->data * cur->data;
+//        printf("the result from user %d for data %d is: %d, stored at: %p\n", cur->user_id, cur->data, *(cur->data_result), cur->data_result);
         cur = cur->next;
     }
     while (cur->next != NULL);
-//    host_destroy(&cur->host);
+    *(cur->data_result) = cur->data * cur->data;
+//    cur->data_result = (int) pow(cur->data, 2);
+//    printf("the result from user %d for data %d is: %d, stored at: %p\n", cur->user_id, cur->data, *(cur->data_result), cur->data_result);
+    cur->bal->host->complete = 1;
     pthread_exit(&id);
 }
 
@@ -82,8 +74,11 @@ void * instance_process_data(void *batch) {
 * @param job_batch_list A list containing the jobs in a batch to process.
 */
 void host_request_instance(host* h, struct job_node* batch) {
-    pthread_create(&h->thread[h->instances], NULL, &instance_process_data, &batch[0].host);
-    host_destroy(&batch[0].host);
+    ++h->instances;
+    batch->id = h->thread;
+    pthread_create(&h->thread, NULL, &instance_process_data, &batch[0]);
+    while (!h->complete);
+    pthread_mutex_unlock(&batch->bal->protecc);
 }
 
 
