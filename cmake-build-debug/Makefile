@@ -129,54 +129,6 @@ SER334/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/build
 .PHONY : SER334/fast
 
-Module-7/CoreyInstanceHost.o: Module-7/CoreyInstanceHost.c.o
-.PHONY : Module-7/CoreyInstanceHost.o
-
-# target to build an object file
-Module-7/CoreyInstanceHost.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/CoreyInstanceHost.c.o
-.PHONY : Module-7/CoreyInstanceHost.c.o
-
-Module-7/CoreyInstanceHost.i: Module-7/CoreyInstanceHost.c.i
-.PHONY : Module-7/CoreyInstanceHost.i
-
-# target to preprocess a source file
-Module-7/CoreyInstanceHost.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/CoreyInstanceHost.c.i
-.PHONY : Module-7/CoreyInstanceHost.c.i
-
-Module-7/CoreyInstanceHost.s: Module-7/CoreyInstanceHost.c.s
-.PHONY : Module-7/CoreyInstanceHost.s
-
-# target to generate assembly for a file
-Module-7/CoreyInstanceHost.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/CoreyInstanceHost.c.s
-.PHONY : Module-7/CoreyInstanceHost.c.s
-
-Module-7/CoreyLoadBalancer.o: Module-7/CoreyLoadBalancer.c.o
-.PHONY : Module-7/CoreyLoadBalancer.o
-
-# target to build an object file
-Module-7/CoreyLoadBalancer.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/CoreyLoadBalancer.c.o
-.PHONY : Module-7/CoreyLoadBalancer.c.o
-
-Module-7/CoreyLoadBalancer.i: Module-7/CoreyLoadBalancer.c.i
-.PHONY : Module-7/CoreyLoadBalancer.i
-
-# target to preprocess a source file
-Module-7/CoreyLoadBalancer.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/CoreyLoadBalancer.c.i
-.PHONY : Module-7/CoreyLoadBalancer.c.i
-
-Module-7/CoreyLoadBalancer.s: Module-7/CoreyLoadBalancer.c.s
-.PHONY : Module-7/CoreyLoadBalancer.s
-
-# target to generate assembly for a file
-Module-7/CoreyLoadBalancer.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/CoreyLoadBalancer.c.s
-.PHONY : Module-7/CoreyLoadBalancer.c.s
-
 Module-7/User.o: Module-7/User.c.o
 .PHONY : Module-7/User.o
 
@@ -210,12 +162,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SER334"
-	@echo "... Module-7/CoreyInstanceHost.o"
-	@echo "... Module-7/CoreyInstanceHost.i"
-	@echo "... Module-7/CoreyInstanceHost.s"
-	@echo "... Module-7/CoreyLoadBalancer.o"
-	@echo "... Module-7/CoreyLoadBalancer.i"
-	@echo "... Module-7/CoreyLoadBalancer.s"
 	@echo "... Module-7/User.o"
 	@echo "... Module-7/User.i"
 	@echo "... Module-7/User.s"

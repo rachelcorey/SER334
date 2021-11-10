@@ -8,7 +8,6 @@
 #ifndef LOADBALANCER_H
 #define LOADBALANCER_H
 
-#include "CoreyInstanceHost.h"
 
 //struct for representing the load balancer
 typedef struct balancer balancer;
@@ -17,9 +16,11 @@ typedef struct balancer balancer;
 struct job_node {
     int user_id;          //unique id of user
     int data;             //input data provided by user.
-    int* data_result;     //pointer to place in global memory to store result.
+    int *data_result;     //pointer to place in global memory to store result.
                           //negative one (-1) means result not computed.
     struct job_node* next;//pointer to the next job in a list of jobs.
+    struct balancer *bal;
+    pthread_t id;
 };
 
 //forward declarations for (public) functions
@@ -44,6 +45,6 @@ void balancer_destroy(balancer** lb);
  * @param data the data the user wants to process.
  * @param data_return a pointer to a location to store the result of processing.
  */
-void balancer_add_job(balancer* lb, int user_id, int data, int* data_return);
+void balancer_add_job(balancer* lb, int user_id, int data, int *data_return);
 
 #endif /* LOADBALANCER_H */
