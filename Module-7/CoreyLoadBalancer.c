@@ -11,6 +11,7 @@ struct balancer {
     pthread_mutex_t protecc;
     int requests;
     int batchSize;
+    int requestsCompleted;
 };
 
 /**
@@ -18,6 +19,7 @@ struct balancer {
  */
 balancer* balancer_create(int batch_size) {
     balancer* balance = malloc(sizeof(struct balancer) + 1);
+    balance->requestsCompleted = 0;
     balance->host = host_create();
     balance->first = NULL;
     pthread_mutex_init(&balance->protecc, NULL);
@@ -26,7 +28,6 @@ balancer* balancer_create(int batch_size) {
     return balance;
 }
 
-// TODO: finish this part
 /**
  * Shuts down the load balancer. Ensures any outstanding batches have
  * completed.
@@ -66,9 +67,8 @@ void balancer_add_job(balancer* lb, int user_id, int data, int* data_return) {
         printf("Received batch and spinning up new instance.\n");
         host_request_instance(lb->host, lb->first);
         lb->requests = 0;
-    } else {
+        lb->requestsCompleted += lb->batchSize;
     }
 
     pthread_mutex_unlock(&lb->protecc);
-
 }

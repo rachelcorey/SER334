@@ -75,8 +75,8 @@ void host_request_instance(host* h, struct job_node* batch) {
     pthread_create(&h->thread, NULL, &instance_process_data, &batch[0]);
     if (h->complete == h->instances) {
         host_destroy(&h);
+        batch->bal->host = host_create();
     }
-    pthread_mutex_unlock(&batch->bal->protecc);
 }
 
 
