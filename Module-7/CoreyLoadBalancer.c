@@ -65,9 +65,10 @@ void balancer_add_job(balancer* lb, int user_id, int data, int* data_return) {
     if (lb->requests == lb->batchSize) {
         printf("Received batch and spinning up new instance.\n");
         host_request_instance(lb->host, lb->first);
+        lb->requests = 0;
     } else {
-        pthread_mutex_unlock(&lb->protecc);
     }
 
+    pthread_mutex_unlock(&lb->protecc);
 
 }

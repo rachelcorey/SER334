@@ -48,7 +48,7 @@ int main() {
 
     nanosleep((struct timespec[]){{2, 0}}, NULL); //wait two seconds
 
-//    balancer_destroy(&lb);
+    balancer_destroy(&lb);
 
     //wait for all users to finish before program exit.
     for (int i = 0; i < number_of_requests; i++)

@@ -38,14 +38,10 @@ host *host_create() {
 * completed.
 */
 void host_destroy(host** host) {
-//    do {
-//        int result = pow(cur->data, 2);
-//        cur->data_result = &result;
-//        cur = cur->next;
-//    }
-//    while (cur->next != NULL);
-    free(*host);
-    *host = NULL;
+    if ((*host)->complete) {
+        free(*host);
+        *host = NULL;
+    }
 }
 
 void * instance_process_data(void *batch) {
@@ -61,7 +57,7 @@ void * instance_process_data(void *batch) {
     *(cur->data_result) = cur->data * cur->data;
 //    cur->data_result = (int) pow(cur->data, 2);
 //    printf("the result from user %d for data %d is: %d, stored at: %p\n", cur->user_id, cur->data, *(cur->data_result), cur->data_result);
-    cur->bal->host->complete = 1;
+    ++cur->bal->host->complete;
     pthread_exit(&id);
 }
 
@@ -77,7 +73,9 @@ void host_request_instance(host* h, struct job_node* batch) {
     ++h->instances;
     batch->id = h->thread;
     pthread_create(&h->thread, NULL, &instance_process_data, &batch[0]);
-    while (!h->complete);
+    if (h->complete == h->instances) {
+        host_destroy(&h);
+    }
     pthread_mutex_unlock(&batch->bal->protecc);
 }
 
