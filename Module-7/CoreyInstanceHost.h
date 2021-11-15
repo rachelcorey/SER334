@@ -9,8 +9,7 @@
 #ifndef INSTANCEHOST_H
 #define INSTANCEHOST_H
 
-
-#include <pthread.h>
+#include "CoreyLoadBalancer.h"
 
 //struct for representing the host
 typedef struct host host;

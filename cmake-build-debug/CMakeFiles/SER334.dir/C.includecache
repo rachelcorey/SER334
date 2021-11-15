@@ -6,49 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.c
-malloc.h
--
-stdio.h
--
-linux/unistd.h
--
-math.h
--
-unistd.h
--
-asm/unistd.h
--
-sys/syscall.h
--
-sys/types.h
--
-unistd.h
--
-CoreyInstanceHost.h
 /home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.h
 CoreyLoadBalancer.h
 /home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
 
-/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.h
-pthread.h
--
-
-/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.c
-malloc.h
--
-bits/pthreadtypes.h
--
-pthread.h
--
-memory.h
--
-CoreyLoadBalancer.h
 /home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
 CoreyInstanceHost.h
 /home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.h
-
-/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
 
 /home/kirry/CLionProjects/SER334/Module-7/User.c
 pthread.h
@@ -61,8 +25,6 @@ time.h
 -
 unistd.h
 -
-CoreyLoadBalancer.c
-/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.c
-CoreyInstanceHost.c
-/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.c
+CoreyLoadBalancer.h
+/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
 
