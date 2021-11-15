@@ -6,25 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.h
-CoreyLoadBalancer.h
-/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
-
-/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
-CoreyInstanceHost.h
-/home/kirry/CLionProjects/SER334/Module-7/CoreyInstanceHost.h
-
-/home/kirry/CLionProjects/SER334/Module-7/User.c
-pthread.h
+/home/kirry/CLionProjects/SER334/Module-9/CoreySJFL.c
+bits/types/FILE.h
 -
 stdio.h
 -
-stdlib.h
--
-time.h
--
 unistd.h
 -
-CoreyLoadBalancer.h
-/home/kirry/CLionProjects/SER334/Module-7/CoreyLoadBalancer.h
+stdlib.h
+-
+string.h
+-
 
