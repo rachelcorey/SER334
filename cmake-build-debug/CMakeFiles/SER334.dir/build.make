@@ -66,27 +66,27 @@ include CMakeFiles/SER334.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/SER334.dir/flags.make
 
-CMakeFiles/SER334.dir/Module-7/User.c.o: CMakeFiles/SER334.dir/flags.make
-CMakeFiles/SER334.dir/Module-7/User.c.o: ../Module-7/User.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/SER334.dir/Module-7/User.c.o"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-7/User.c.o -c /home/kirry/CLionProjects/SER334/Module-7/User.c
+CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.o: CMakeFiles/SER334.dir/flags.make
+CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.o: ../Module-9/CoreySJFL.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.o -c /home/kirry/CLionProjects/SER334/Module-9/CoreySJFL.c
 
-CMakeFiles/SER334.dir/Module-7/User.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-7/User.c.i"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/CLionProjects/SER334/Module-7/User.c > CMakeFiles/SER334.dir/Module-7/User.c.i
+CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.i"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kirry/CLionProjects/SER334/Module-9/CoreySJFL.c > CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.i
 
-CMakeFiles/SER334.dir/Module-7/User.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-7/User.c.s"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/CLionProjects/SER334/Module-7/User.c -o CMakeFiles/SER334.dir/Module-7/User.c.s
+CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.s"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kirry/CLionProjects/SER334/Module-9/CoreySJFL.c -o CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.s
 
 # Object files for target SER334
 SER334_OBJECTS = \
-"CMakeFiles/SER334.dir/Module-7/User.c.o"
+"CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.o"
 
 # External object files for target SER334
 SER334_EXTERNAL_OBJECTS =
 
-SER334: CMakeFiles/SER334.dir/Module-7/User.c.o
+SER334: CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.o
 SER334: CMakeFiles/SER334.dir/build.make
 SER334: CMakeFiles/SER334.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kirry/CLionProjects/SER334/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable SER334"

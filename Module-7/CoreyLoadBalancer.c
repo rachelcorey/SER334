@@ -56,7 +56,6 @@ void balancer_add_job(balancer* lb, int user_id, int data, int* data_return) {
 
     struct job_node *j = malloc(sizeof(struct job_node));
     j->user_id = user_id;
-    j->bal = lb;
     j->data = data;
     j->data_result = data_return;
 //    printf("from balancer_add_job: address of data result for user %d and data %d is: %p\n", j->user_id, j->data, j->data_result);

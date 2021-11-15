@@ -129,29 +129,29 @@ SER334/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/build
 .PHONY : SER334/fast
 
-Module-7/User.o: Module-7/User.c.o
-.PHONY : Module-7/User.o
+Module-9/CoreySJFL.o: Module-9/CoreySJFL.c.o
+.PHONY : Module-9/CoreySJFL.o
 
 # target to build an object file
-Module-7/User.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/User.c.o
-.PHONY : Module-7/User.c.o
+Module-9/CoreySJFL.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.o
+.PHONY : Module-9/CoreySJFL.c.o
 
-Module-7/User.i: Module-7/User.c.i
-.PHONY : Module-7/User.i
+Module-9/CoreySJFL.i: Module-9/CoreySJFL.c.i
+.PHONY : Module-9/CoreySJFL.i
 
 # target to preprocess a source file
-Module-7/User.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/User.c.i
-.PHONY : Module-7/User.c.i
+Module-9/CoreySJFL.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.i
+.PHONY : Module-9/CoreySJFL.c.i
 
-Module-7/User.s: Module-7/User.c.s
-.PHONY : Module-7/User.s
+Module-9/CoreySJFL.s: Module-9/CoreySJFL.c.s
+.PHONY : Module-9/CoreySJFL.s
 
 # target to generate assembly for a file
-Module-7/User.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-7/User.c.s
-.PHONY : Module-7/User.c.s
+Module-9/CoreySJFL.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SER334.dir/build.make CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.s
+.PHONY : Module-9/CoreySJFL.c.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SER334"
-	@echo "... Module-7/User.o"
-	@echo "... Module-7/User.i"
-	@echo "... Module-7/User.s"
+	@echo "... Module-9/CoreySJFL.o"
+	@echo "... Module-9/CoreySJFL.i"
+	@echo "... Module-9/CoreySJFL.s"
 .PHONY : help
 
 
