@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SER334.dir/Module-9/CoreySJFL.c.o"
+  "CMakeFiles/SER334.dir/Module-10/Simulator.c.o"
   "SER334"
   "SER334.pdb"
 )

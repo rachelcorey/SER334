@@ -4,9 +4,9 @@ project(SER334 C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(SER334
-        Module-9/CoreySJFL.c)
+        Module-10/Simulator.c)
 
-include_directories(Module-9/)
+include_directories(Module-10/)
 
 
 target_link_libraries(SER334 PRIVATE m pthread)

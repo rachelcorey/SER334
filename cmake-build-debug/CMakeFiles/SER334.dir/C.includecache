@@ -6,7 +6,23 @@
 
 #IncludeRegexTransform: 
 
-/home/kirry/CLionProjects/SER334/Module-9/CoreySJFL.c
+../Module-10/DataLoader.h
+stdio.h
+-
+stdlib.h
+-
+
+../Module-10/PageTable.h
+stdio.h
+-
+stdlib.h
+-
+
+/home/kirry/CLionProjects/SER334/Module-10/CoreyDataLoader.c
+DataLoader.h
+-
+PageTable.h
+-
 bits/types/FILE.h
 -
 stdio.h
@@ -16,7 +32,5 @@ unistd.h
 stdlib.h
 -
 string.h
--
-math.h
 -
 

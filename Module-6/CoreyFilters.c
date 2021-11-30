@@ -25,7 +25,7 @@
 
 //problem assumptions
 #define MAXIMUM_IMAGE_SIZE 4096
-#define THREAD_COUNT 5
+#define THREAD_COUNT 20
 
 ////////////////////////////////////////////////////////////////////////////////
 //DATA STRUCTURES
