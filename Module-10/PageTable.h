@@ -26,7 +26,7 @@ struct page_table;
  * Creates a new page table object. Returns a pointer to created page table.
  *
  * @param page_count Number of pages.
- * @param frame_count Numbers of frames.
+ * @param frame_count Numbers of pages.
  * @param algorithm Page replacement algorithm
  * @param verbose Enables showing verbose table contents.
  * @return A page table object.
