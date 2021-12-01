@@ -60,7 +60,7 @@ int pageExists(struct page_table *pt, int page) {
 void accFIFO(struct page_table *pt, int page) {
 
     if (!pageExists(pt, page)) {
-        for (int i = 0; i < pt->frame_count; ++i) {
+        for (int i = 0; i < pt->page_count; ++i) {
             pt->pages[i].frame -= 1;
             if (pt->pages[i].frame == -1) {
                 pt->pages[i].bit = 100;
@@ -137,7 +137,7 @@ void print_enum(int val) {
             break;
     }
 
-};
+}
 
 /**
  * Displays page table replacement algorithm, number of page faults, and the

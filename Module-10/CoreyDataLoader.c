@@ -22,7 +22,6 @@ struct test_scenario* load_test_data(char* filename) {
     test->page_count = pages;
     test->frame_count = frames;
     test->refstr_len = entries;
-    test->refstr[0] = *(int *) malloc(sizeof(int) * entries);
 
     for (int i = 0; i < entries; ++i) {
         fscanf(file, "%d", &test->refstr[i]);
