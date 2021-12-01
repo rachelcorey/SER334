@@ -2,7 +2,9 @@
  * Program to simulate contents of page table with respect to a reference string
  * and a page replacement algorithm.
  *
- * @author Acuna
+ * Completion time: 4 hours
+ *
+ * @author Acuna, Rachel Corey
  * @version 1.0
  */
 #include <stdio.h>

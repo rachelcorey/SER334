@@ -21,8 +21,6 @@ stdlib.h
 /home/kirry/CLionProjects/SER334/Module-10/CoreyDataLoader.c
 DataLoader.h
 -
-PageTable.h
--
 bits/types/FILE.h
 -
 stdio.h
@@ -33,4 +31,18 @@ stdlib.h
 -
 string.h
 -
+
+/home/kirry/CLionProjects/SER334/Module-10/PageTable.c
+PageTable.h
+-
+
+/home/kirry/CLionProjects/SER334/Module-10/Simulator.c
+stdio.h
+-
+string.h
+-
+CoreyDataLoader.c
+/home/kirry/CLionProjects/SER334/Module-10/CoreyDataLoader.c
+PageTable.c
+/home/kirry/CLionProjects/SER334/Module-10/PageTable.c
 
